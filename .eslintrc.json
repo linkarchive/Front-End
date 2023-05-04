@@ -76,7 +76,7 @@
       }
     ],
     "import/extensions": [
-      "error",
+      "off",
       "ignorePackages",
       {
         "js": "never",
