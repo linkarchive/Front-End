@@ -1,7 +1,7 @@
-import React from 'react';
+import KakaoBtn from '@/components/KaKaoBtn';
 
 const Login = () => {
-  return <div>Login</div>;
+  return <KakaoBtn />;
 };
 
 export default Login;
