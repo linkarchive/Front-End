@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install",
-    "lint-front": "lint-staged"
+    "lint-front": "lint-staged",
+    "lint:css": "stylelint './src/**/*.tsx'"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -25,6 +26,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "styled-components": "^5.3.10",
+    "stylelint-order": "^6.0.3",
     "typescript": "5.0.4"
   },
   "devDependencies": {
@@ -44,6 +46,9 @@
     "eslint-webpack-plugin": "^3.1.1",
     "husky": "^8.0.0",
     "lint-staged": "^13.2.2",
-    "prettier": "^2.6.2"
+    "postcss-styled-syntax": "^0.4.0",
+    "prettier": "^2.6.2",
+    "stylelint": "^15.6.1",
+    "stylelint-config-standard": "^33.0.0"
   }
 }
