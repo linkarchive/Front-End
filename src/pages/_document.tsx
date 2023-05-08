@@ -30,7 +30,13 @@ export default class MyDocument extends Document {
   render() {
     return (
       <Html lang='en'>
-        <Head />
+        <Head>
+          <link
+            href='https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard.css'
+            rel='stylesheet'
+            as='style'
+          />
+        </Head>
         <body>
           <Main />
           <NextScript />
