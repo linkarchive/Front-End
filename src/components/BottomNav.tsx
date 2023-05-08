@@ -4,7 +4,7 @@ import UserSvg from '@/assets/svg/UserSvg';
 import React from 'react';
 import styled from 'styled-components';
 
-const Footer = () => {
+const BottomNav = () => {
   return (
     <FooterWrapper>
       <Nav>
@@ -32,4 +32,4 @@ const Nav = styled.nav`
   justify-content: space-around;
 `;
 
-export default Footer;
+export default BottomNav;
