@@ -1,6 +1,6 @@
-import HomeSvg from '@/assets/svg/HomeSvg';
-import ExploreSvg from '@/assets/svg/ExploreSvg';
-import UserSvg from '@/assets/svg/UserSvg';
+import HomeSvg from '@/components/HomeBtn';
+import ExploreBtn from '@/components/ExploreBtn';
+import UserBtn from '@/components/UserBtn';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -9,8 +9,8 @@ const BottomNav = () => {
     <FooterWrapper>
       <Nav>
         <HomeSvg />
-        <ExploreSvg />
-        <UserSvg />
+        <ExploreBtn />
+        <UserBtn />
       </Nav>
     </FooterWrapper>
   );

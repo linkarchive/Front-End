@@ -1,10 +1,10 @@
-import GoBackSvg from '@/assets/svg/GoBackSvg';
+import GoBackBtn from '@/components/GoBackBtn';
 
 const Header = () => {
   return (
     <header>
       <nav>
-        <GoBackSvg />
+        <GoBackBtn />
         Header
       </nav>
     </header>
