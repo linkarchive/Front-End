@@ -10,12 +10,22 @@ const GlobalStyle = createGlobalStyle`
   }
 
   html, body {
-    font-family: 'Roboto', sans-serif;
+    font-family: "Pretendard";
+    font-weight: 400;
     height: 100%;
     margin: auto;
     border-left: 1px solid black;
     border-right: 1px solid black;
     overflow: hidden;
+  }
+
+  @font-face {
+    font-family: 'Pretendard';
+    src: url('/fonts/Pretendard.woff2') format('woff2'),
+         url('/fonts/Pretendard.woff') format('woff');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: block;
   }
 `;
 
