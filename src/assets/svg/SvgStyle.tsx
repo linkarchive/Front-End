@@ -17,6 +17,7 @@ export const SvgWrapper = styled.div`
 
   a {
     width: 24px;
+
     svg {
       &:hover {
         fill: #4daa7f;

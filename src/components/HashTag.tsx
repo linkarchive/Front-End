@@ -20,7 +20,6 @@ HashTag.defaultProps = {
 };
 
 const Wrapper = styled.span<{ isDeletable?: boolean }>`
-  background-color: #fff;
   position: relative;
   display: inline-flex;
   justify-content: center;
@@ -28,21 +27,26 @@ const Wrapper = styled.span<{ isDeletable?: boolean }>`
   border: 1px solid black;
   border-radius: 5px;
   padding: 6px 10px;
+
+  background-color: #fff;
+
   ${({ isDeletable }) =>
     isDeletable &&
     `
-    :hover {
+    &:hover {
       svg {
         display: block;
       }
     }
   `}
+
   svg {
     display: none;
     position: absolute;
     top: -7px;
     right: -6px;
-    :hover {
+
+    &:hover {
       fill: red;
     }
   }
