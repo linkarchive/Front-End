@@ -1,5 +1,5 @@
-import CircleXMarkSvg from '@/assets/svg/CircleXMarkSvg';
 import styled from 'styled-components';
+import CircleXMarkSvg from './CircleXMarkBtn';
 
 interface HashTagProps {
   title: string;

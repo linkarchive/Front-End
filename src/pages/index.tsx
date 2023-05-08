@@ -1,7 +1,5 @@
-import Test from '@/components/Test';
-
 const Home = () => {
-  return <Test />;
+  return <h1>루트 페이지</h1>;
 };
 
 export default Home;
