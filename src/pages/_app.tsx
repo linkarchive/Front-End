@@ -1,10 +1,10 @@
 import MainLayout from '@/layouts/MainLayout';
 import GlobalStyle from '@/styles/GlobalStyle';
-// import '@/styles/globals.css';
 import { kakaoInit } from '@/utils';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import Script from 'next/script';
+import '@/styles/globals.css';
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
