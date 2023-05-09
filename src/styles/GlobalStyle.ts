@@ -12,7 +12,6 @@ const GlobalStyle = createGlobalStyle`
     font-weight: 400;
     height: 100%;
     margin: auto;
-    overflow: hidden;
   }
 
   @font-face {
