@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import Image from 'next/image';
-import Tag from '@/components/Link/Tag';
-import LinkWithProfile from '@/components/Link/LinkWithProfile';
+import Tag from '@/components/LinkItem/Tag';
+import LinkItemWithProfile from '@/components/LinkItem/LinkItemWithProfile';
 
-const Link = ({ Header }: { Header?: JSX.Element }) => {
+const LinkItem = ({ Header }: { Header?: JSX.Element }) => {
   return (
     <Wrapper>
       <article>
@@ -53,8 +53,8 @@ const Link = ({ Header }: { Header?: JSX.Element }) => {
   );
 };
 
-export default Link;
-export { Link, LinkWithProfile };
+export default LinkItem;
+export { LinkItem, LinkItemWithProfile };
 
 const Wrapper = styled.div`
   padding: 24px 0 16px;

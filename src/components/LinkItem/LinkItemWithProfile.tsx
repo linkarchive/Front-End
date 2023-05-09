@@ -1,10 +1,10 @@
 import Image from 'next/image';
-import Link from '@/components/Link';
+import LinkItem from '@/components/LinkItem';
 import styled from 'styled-components';
 
 const LinkWithProfile = () => {
   return (
-    <Link
+    <LinkItem
       Header={
         <Profile>
           <div className='profile'>
