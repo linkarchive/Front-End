@@ -4,9 +4,7 @@ const GlobalStyle = createGlobalStyle`
   * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    width: 400px;
-    position: relative;
+    width: 375px;
   }
 
   html, body {
@@ -14,9 +12,6 @@ const GlobalStyle = createGlobalStyle`
     font-weight: 400;
     height: 100%;
     margin: auto;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
-    overflow: hidden;
   }
 
   @font-face {
