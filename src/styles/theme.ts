@@ -47,6 +47,7 @@ const theme = {
     default: '#858585',
     hover: '#4DAA7F',
     click: '#4DAA7F',
+    active: '#4DAA7F',
   },
   hashTagColor: {
     backgroundColor: '#fff',

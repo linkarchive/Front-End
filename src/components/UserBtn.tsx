@@ -3,11 +3,15 @@ import Link from 'next/link';
 import UserSvgIcon from 'public/assets/svg/user.svg';
 import { SvgIcon, SvgWrapper } from './SvgStyle';
 
-const UserBtn = () => {
+type UserBtnProps = {
+  activeItem: string;
+};
+
+const UserBtn = ({ activeItem }: UserBtnProps) => {
   return (
     <SvgWrapper>
       <Link href='/user'>
-        <SvgIcon>
+        <SvgIcon isActive={activeItem === 'user'}>
           <UserSvgIcon />
         </SvgIcon>
       </Link>

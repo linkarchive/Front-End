@@ -41,6 +41,7 @@ const GlobalStyle = createGlobalStyle`
     --svg-color-default: ${theme.SvgIconColor.default};
     --svg-color-hover: ${theme.SvgIconColor.hover};
     --svg-color-click: ${theme.SvgIconColor.click};
+    --svg-color-active: ${theme.SvgIconColor.active};
 
     --hashtag-color-text: ${theme.hashTagColor.textColor};
     --hashtag-color-border: ${theme.hashTagColor.borderColor};
