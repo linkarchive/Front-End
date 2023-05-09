@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
-import { SvgIcon, SvgWrapper } from '../assets/svg/SvgStyle';
-import HomeSvgIcon from '@/assets/svg/home.svg';
+import HomeSvgIcon from 'public/assets/svg/home.svg';
+import { SvgIcon, SvgWrapper } from './SvgStyle';
 
 const HomeSvg = () => {
   return (

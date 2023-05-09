@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { SvgIcon } from '../assets/svg/SvgStyle';
 import GoBackSvgIcon from '@/assets/svg/chevron-left.svg';
+import { SvgIcon } from './SvgStyle';
 
 const GoBackBtn = () => {
   const router = useRouter();
