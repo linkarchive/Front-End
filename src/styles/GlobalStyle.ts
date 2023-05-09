@@ -11,7 +11,6 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Roboto', sans-serif;
     height: 100%;
     margin: auto;
-    overflow: hidden;
   }
 `;
 
