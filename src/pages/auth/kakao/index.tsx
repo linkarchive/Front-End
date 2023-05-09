@@ -11,17 +11,16 @@ const KaKao = () => {
 };
 
 const Wrapper = styled.div`
+  position: absolute;
   display: flex;
+  inset: 0;
+
+  margin: auto;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
   text-align: center;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
 
   > button {
     cursor: pointer;
