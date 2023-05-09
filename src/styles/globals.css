@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard.woff2') format('woff2'), url('/fonts/Pretendard.woff') format('woff');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: block;
+}
+
 html {
   height: 100%;
   width: 375px;
@@ -7,6 +15,9 @@ body {
   margin: 0 auto;
   width: 375px;
   min-height: 100%;
+
+  font-family: 'Pretendard';
+  font-weight: 400;
 }
 
 img {
