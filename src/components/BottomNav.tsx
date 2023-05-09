@@ -21,14 +21,15 @@ const FooterWrapper = styled.footer`
   display: flex;
   position: fixed;
   bottom: 0;
-  width: 375px;
+  width: var(--default-width);
   height: 70px;
   align-items: center;
-  border-top: 1px solid black;
+  border-top: 1px solid var(--border-color-gray);
 `;
 
 const Nav = styled.nav`
   display: flex;
+  width: 100%;
   justify-content: space-around;
 `;
 

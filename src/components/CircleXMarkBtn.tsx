@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import CircleXMarkSvgIcon from '@/assets/svg/circleXMark.svg';
+import CircleXMarkSvgIcon from 'public/assets/svg/circleXMark.svg';
 
 const CircleXMarkSvg = () => {
   return (
@@ -12,8 +12,8 @@ const CircleXMarkSvg = () => {
 
 const SvgIcon = styled.span`
   svg {
-    width: 14px;
-    height: 14px;
+    width: var(--svg-width-md);
+    height: var(--svg-height-md);
     cursor: pointer;
   }
 `;
