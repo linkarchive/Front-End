@@ -5,6 +5,8 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 
+const BottomNavHight = '70px';
+
 const BottomNav = () => {
   const router = useRouter();
   const [activeItem, setActiveItem] = useState<string>('home');
@@ -37,7 +39,7 @@ const FooterWrapper = styled.footer`
   position: fixed;
   bottom: 0;
   width: var(--default-width);
-  height: 70px;
+  height: ${BottomNavHight};
   align-items: center;
   border-top: 1px solid var(--border-color-gray);
 `;
@@ -49,3 +51,4 @@ const Nav = styled.nav`
 `;
 
 export default BottomNav;
+export { BottomNavHight };
