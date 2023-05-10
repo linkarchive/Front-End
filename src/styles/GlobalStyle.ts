@@ -5,10 +5,14 @@ import theme from './theme';
 const GlobalStyle = createGlobalStyle`
   // variables
   :root {
-    --font-color-primary: ${theme.fontColor.primary};
-    --font-color-base: ${theme.fontColor.base};
-    --font-color-light: ${theme.fontColor.light};
-    --font-color-lighter: ${theme.fontColor.lighter};
+    --font-color-white: ${theme.fontColor.white},
+    --font-color-lighterGray: ${theme.fontColor.lighterGray},
+    --font-color-lightGray: ${theme.fontColor.lightGray},
+    --font-color-mediumGray: ${theme.fontColor.mediumGray},
+    --font-color-darkGray: ${theme.fontColor.darkGray},
+    --font-color-black: ${theme.fontColor.black},
+    --font-color-lightPrimary: ${theme.fontColor.lightPrimary},
+    --font-color-primary: ${theme.fontColor.primary} 
 
     --font-size-xxxl: ${theme.fontSize.xxxl};
     --font-size-xxl: ${theme.fontSize.xxl};
@@ -28,7 +32,7 @@ const GlobalStyle = createGlobalStyle`
 
     --border-color-black: ${theme.borderColor.black};
     --border-color-darkGray: ${theme.borderColor.darkGray};
-    --border-color-gray: ${theme.borderColor.gray};
+    --border-color-gray: ${theme.borderColor.mediumGray};
     --border-color-lightGray: ${theme.borderColor.lightGray};
     --border-color-lighterGray: ${theme.borderColor.lighterGray};
 
