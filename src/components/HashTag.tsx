@@ -24,16 +24,20 @@ const Wrapper = styled.span<{ isDeletable?: boolean }>`
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid black;
+  border: 1px solid var(--hashtag-color-border);
   border-radius: 5px;
   padding: 6px 10px;
 
-  background-color: #fff;
+  background-color: var(--hashtag-color-background);
+
+  color: var(--hashtag-color-text);
 
   ${({ isDeletable }) =>
     isDeletable &&
     `
     &:hover {
+      border: 1px solid var(--hashtag-color-hover);
+
       svg {
         display: block;
       }
@@ -47,7 +51,7 @@ const Wrapper = styled.span<{ isDeletable?: boolean }>`
     right: -6px;
 
     &:hover {
-      fill: red;
+      fill: var(--button-color-hover);
     }
   }
 `;

@@ -1,18 +1,33 @@
-import HomeSvg from '@/components/HomeBtn';
+import HomeBtn from './HomeBtn';
 import ExploreBtn from '@/components/ExploreBtn';
 import UserBtn from '@/components/UserBtn';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useRouter } from 'next/router';
 
 const BottomNavHight = '70px';
 
 const BottomNav = () => {
+  const router = useRouter();
+  const [activeItem, setActiveItem] = useState<string>('home');
+
+  useEffect(() => {
+    const path = router.pathname;
+    const getActiveItem = () => {
+      if (path === '/') return 'home';
+      if (path.startsWith('/explore')) return 'explore';
+      if (path.startsWith('/user')) return 'user';
+      return 'home';
+    };
+    setActiveItem(getActiveItem());
+  }, [router.pathname]);
+
   return (
     <FooterWrapper>
       <Nav>
-        <HomeSvg />
-        <ExploreBtn />
-        <UserBtn />
+        <HomeBtn activeItem={activeItem} />
+        <ExploreBtn activeItem={activeItem} />
+        <UserBtn activeItem={activeItem} />
       </Nav>
     </FooterWrapper>
   );
@@ -23,14 +38,15 @@ const FooterWrapper = styled.footer`
   display: flex;
   position: fixed;
   bottom: 0;
-  width: 375px;
+  width: var(--default-width);
   height: ${BottomNavHight};
   align-items: center;
-  border-top: 1px solid black;
+  border-top: 1px solid var(--border-color-gray);
 `;
 
 const Nav = styled.nav`
   display: flex;
+  width: 100%;
   justify-content: space-around;
 `;
 

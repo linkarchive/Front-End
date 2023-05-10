@@ -1,13 +1,17 @@
 import React from 'react';
 import Link from 'next/link';
-import { SvgIcon, SvgWrapper } from '../assets/svg/SvgStyle';
-import UserSvgIcon from '@/assets/svg/user.svg';
+import UserSvgIcon from 'public/assets/svg/user.svg';
+import { SvgIcon, SvgWrapper } from './SvgStyle.styled';
 
-const UserBtn = () => {
+type UserBtnProps = {
+  activeItem: string;
+};
+
+const UserBtn = ({ activeItem }: UserBtnProps) => {
   return (
     <SvgWrapper>
       <Link href='/user'>
-        <SvgIcon>
+        <SvgIcon isActive={activeItem === 'user'}>
           <UserSvgIcon />
         </SvgIcon>
       </Link>
