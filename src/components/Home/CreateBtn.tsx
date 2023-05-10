@@ -5,13 +5,13 @@ import styled from 'styled-components';
 const CreateBtn = () => {
   return (
     <Wrapper>
-      <div className='button'>
-        <Link href='/'>
+      <Link href='/'>
+        <div className='button'>
           <span>
             <Image src='/assets/svg/add.svg' alt='' width={20} height={20} />
           </span>
-        </Link>
-      </div>
+        </div>
+      </Link>
     </Wrapper>
   );
 };
