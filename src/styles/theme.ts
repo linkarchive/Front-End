@@ -63,6 +63,7 @@ const theme = {
     default: palette.mediumGray,
     hover: palette.primary,
     click: palette.primary,
+    active: palette.primary,
   },
   hashTagColor: {
     backgroundColor: palette.white,

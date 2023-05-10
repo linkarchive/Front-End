@@ -1,13 +1,17 @@
 import React from 'react';
 import Link from 'next/link';
 import SearchSvgIcon from 'public/assets/svg/search.svg';
-import { SvgIcon, SvgWrapper } from './SvgStyle';
+import { SvgIcon, SvgWrapper } from './SvgStyle.styled';
 
-const ExploreBtn = () => {
+type ExploreBtnProps = {
+  activeItem: string;
+};
+
+const ExploreBtn = ({ activeItem }: ExploreBtnProps) => {
   return (
     <SvgWrapper>
       <Link href='/explore'>
-        <SvgIcon>
+        <SvgIcon isActive={activeItem === 'explore'}>
           <SearchSvgIcon />
         </SvgIcon>
       </Link>
