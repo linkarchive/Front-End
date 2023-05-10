@@ -1,5 +1,20 @@
+import CreateBtn from '@/components/Home/CreateBtn';
+import HomeHeader from '@/components/Home/HomeHeader';
+import LinkItem from '@/components/LinkItem';
+
 const Home = () => {
-  return <h1>루트 페이지</h1>;
+  return (
+    <div>
+      <HomeHeader />
+      <CreateBtn />
+
+      <LinkItem />
+      <LinkItem />
+      <LinkItem />
+      <LinkItem />
+      <LinkItem />
+    </div>
+  );
 };
 
 export default Home;
