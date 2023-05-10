@@ -6,6 +6,7 @@ import Script from 'next/script';
 import '@/styles/globals.css';
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyle, theme } from '@/styles';
+import wrapper from '@/store';
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
@@ -21,4 +22,4 @@ const App = ({ Component, pageProps }: AppProps) => {
   );
 };
 
-export default App;
+export default wrapper.withRedux(App);
