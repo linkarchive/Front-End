@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 interface SvgIconProps {
-  isActive: boolean;
+  isActive?: boolean;
+  onClick?: () => void;
 }
 
 export const SvgIcon = styled.span<SvgIconProps>`
