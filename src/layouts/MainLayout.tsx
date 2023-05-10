@@ -1,13 +1,18 @@
 import React from 'react';
-import BottomNav from '../components/BottomNav';
+import BottomNav, { BottomNavHight } from '@/components/BottomNav';
+import styled from 'styled-components';
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      <main>{children}</main>
+      <Main>{children}</Main>
       <BottomNav />
     </>
   );
 };
 
 export default MainLayout;
+
+const Main = styled.main`
+  padding-bottom: ${BottomNavHight};
+`;

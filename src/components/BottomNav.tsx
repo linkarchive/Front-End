@@ -4,6 +4,8 @@ import UserBtn from '@/components/UserBtn';
 import React from 'react';
 import styled from 'styled-components';
 
+const BottomNavHight = '70px';
+
 const BottomNav = () => {
   return (
     <FooterWrapper>
@@ -22,7 +24,7 @@ const FooterWrapper = styled.footer`
   position: fixed;
   bottom: 0;
   width: 375px;
-  height: 70px;
+  height: ${BottomNavHight};
   align-items: center;
   border-top: 1px solid black;
 `;
@@ -33,3 +35,4 @@ const Nav = styled.nav`
 `;
 
 export default BottomNav;
+export { BottomNavHight };
