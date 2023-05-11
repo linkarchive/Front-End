@@ -3,6 +3,7 @@
   "plugins": ["stylelint-order"],
   "customSyntax": "postcss-styled-syntax",
   "rules": {
+    "custom-property-pattern": "([a-z][a-z0-9]*)(-[a-z0-9]+)*$",
     "declaration-empty-line-before": [
       "always",
       {
