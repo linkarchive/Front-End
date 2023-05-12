@@ -3,7 +3,7 @@
 
 import axios from 'axios';
 
-const API_BASE_URL = '';
+const API_BASE_URL = 'http://api.link-archive.com:8080';
 
 const axiosApi = ({ options }: any) => {
   const instance = axios.create({

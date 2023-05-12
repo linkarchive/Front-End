@@ -1,30 +1,28 @@
-import KakaoBtn from '@/components/KaKaoBtn';
-import styled from 'styled-components';
+import API from '@/api/API';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
-const KaKao = () => {
+const KakaoAuth = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    const handleKakaoLogin = async () => {
+      if (router.query.code) {
+        const code = router.query.code as string;
+        const response = await API.kakaoLogin({ code });
+        console.log(response);
+      }
+    };
+
+    handleKakaoLogin();
+  }, [router.query]);
+
   return (
-    <Wrapper>
-      <h2>로그인 해주세요.</h2>
-      <KakaoBtn />
-    </Wrapper>
+    <>
+      <span>{router.query.code}</span>
+      <button type='button'>클릭</button>
+    </>
   );
 };
 
-const Wrapper = styled.div`
-  position: absolute;
-  display: flex;
-  inset: 0;
-
-  margin: auto;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  text-align: center;
-
-  > button {
-    cursor: pointer;
-  }
-`;
-
-export default KaKao;
+export default KakaoAuth;
