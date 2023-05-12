@@ -6,13 +6,14 @@ const GlobalStyle = createGlobalStyle`
   // variables
   :root {
     --font-color-white: ${theme.fontColor.white};
-    --font-color-lighterGray: ${theme.fontColor.lighterGray};
-    --font-color-lightGray: ${theme.fontColor.lightGray};
-    --font-color-mediumGray: ${theme.fontColor.mediumGray};
-    --font-color-darkGray: ${theme.fontColor.darkGray};
+    --font-color-lightergray: ${theme.fontColor.lighterGray};
+    --font-color-lightgray: ${theme.fontColor.lightGray};
+    --font-color-mediumgray: ${theme.fontColor.mediumGray};
+    --font-color-darkgray: ${theme.fontColor.darkGray};
     --font-color-black: ${theme.fontColor.black};
-    --font-color-lightPrimary: ${theme.fontColor.lightPrimary};
+    --font-color-light-primary: ${theme.fontColor.lightPrimary};
     --font-color-primary: ${theme.fontColor.primary};
+    --font-color-warn:${theme.fontColor.red};
 
     --font-size-xxxl: ${theme.fontSize.xxxl};
     --font-size-xxl: ${theme.fontSize.xxl};
@@ -24,6 +25,7 @@ const GlobalStyle = createGlobalStyle`
 
     --button-color-primary: ${theme.buttonColor.primary};
     --button-color-default: ${theme.buttonColor.default};
+    --button-color-disabled: ${theme.buttonColor.default};
     --button-color-hover: ${theme.buttonColor.hover};
     --button-color-click: ${theme.buttonColor.click};
 
@@ -31,10 +33,10 @@ const GlobalStyle = createGlobalStyle`
     --background-color-popup: ${theme.backgroundColor.popup};
 
     --border-color-black: ${theme.borderColor.black};
-    --border-color-darkGray: ${theme.borderColor.darkGray};
+    --border-color-darkgray: ${theme.borderColor.darkGray};
     --border-color-gray: ${theme.borderColor.mediumGray};
-    --border-color-lightGray: ${theme.borderColor.lightGray};
-    --border-color-lighterGray: ${theme.borderColor.lighterGray};
+    --border-color-lightgray: ${theme.borderColor.lightGray};
+    --border-color-lighter-gray: ${theme.borderColor.lighterGray};
 
     --default-width: ${theme.default.width};
 
