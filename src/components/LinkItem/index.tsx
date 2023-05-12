@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Image from 'next/image';
-import Tag from '@/components/LinkItem/Tag';
 import LinkItemWithProfile from '@/components/LinkItem/LinkItemWithProfile';
+import TagLabelList from '@/components/LinkItem/TagLabelList';
 
 const LinkItem = ({ Header }: { Header?: JSX.Element }) => {
   return (
@@ -25,14 +25,7 @@ const LinkItem = ({ Header }: { Header?: JSX.Element }) => {
           </div>
         </div>
 
-        <ul className='hashtag-list'>
-          <li>
-            <Tag />
-          </li>
-          <li>
-            <Tag />
-          </li>
-        </ul>
+        <TagLabelList className='tag-list' />
 
         <div className='utils'>
           <div className='read'>
@@ -108,6 +101,10 @@ const Wrapper = styled.div`
     }
   }
 
+  .tag-list {
+    padding: 0 29px;
+  }
+
   .utils {
     display: flex;
     justify-content: flex-end;
@@ -136,19 +133,6 @@ const Wrapper = styled.div`
       width: 12px;
       height: 12px;
       margin-right: 4px;
-    }
-  }
-
-  .hashtag-list {
-    display: flex;
-    flex-wrap: wrap;
-
-    padding: 0 29px;
-    margin-bottom: 4px;
-
-    li {
-      margin-right: 4px;
-      margin-bottom: 4px;
     }
   }
 `;
