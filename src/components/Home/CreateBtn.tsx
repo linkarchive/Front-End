@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const CreateBtn = () => {
   return (
     <Wrapper>
-      <Link href='/'>
+      <Link href='/create'>
         <div className='button'>
           <span>
             <Image src='/assets/svg/add.svg' alt='' width={20} height={20} />
