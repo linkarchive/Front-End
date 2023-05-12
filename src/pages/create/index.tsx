@@ -1,11 +1,12 @@
 import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { BottomNavHight } from '@/components/BottomNav';
 import Header from '@/components/Header';
 import Input, { InputWithButton } from '@/components/Input';
 import LinkInfo from '@/components/Create/LinkInfo';
+import TagLabelList from '@/components/LinkItem/TagLabelList';
 
 const Create = () => {
   const dispatch = useAppDispatch();
@@ -14,12 +15,33 @@ const Create = () => {
     dispatch(routerSlice.actions.loadCreatePage());
   }, [dispatch]);
 
+  const isValidUrl = (url: string): Boolean => {
+    const urlRegex =
+      /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
+    return urlRegex.test(url);
+  };
+
+  const urlInput = useRef('');
+
   return (
     <>
       <Header />
       <Wrapper>
         <InputBlock>
-          <InputWithButton text='불러오기' onClick={() => {}} label='링크' onChange={() => {}} />
+          <InputWithButton
+            text='불러오기'
+            onClick={() => {
+              if (isValidUrl(urlInput.current)) {
+                console.log('hi');
+              } else {
+                console.log('by');
+              }
+            }}
+            label='링크'
+            onChange={(e) => {
+              urlInput.current = e.target.value;
+            }}
+          />
         </InputBlock>
         <InputBlock>
           <Input label='제목' onChange={() => {}} />
