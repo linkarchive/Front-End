@@ -7,7 +7,7 @@ import styled from 'styled-components';
 const Login = () => {
   return (
     <Wrapper>
-      <h2>로그인 해주세요.</h2>
+      <h2>로그인 해주세요.test</h2>
       <Link href={KakaoAuthUrl}>
         <Content>
           <Image src='/kakao_login.png' alt='kakao_login' fill />
