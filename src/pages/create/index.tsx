@@ -2,14 +2,14 @@ import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
 import React, { useEffect } from 'react';
 
-const User = () => {
+const Create = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(routerSlice.actions.loadProfilePage());
+    dispatch(routerSlice.actions.loadCreatePage());
   }, [dispatch]);
 
-  return <div>User</div>;
+  return <div>create</div>;
 };
 
-export default User;
+export default Create;
