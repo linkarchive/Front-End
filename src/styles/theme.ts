@@ -8,6 +8,7 @@ const palette = {
   black: '#000000',
   lightPrimary: '#78D389',
   primary: '#4DAA7F',
+  red: '#ff3535',
 };
 
 const theme = {
@@ -23,6 +24,7 @@ const theme = {
     black: palette.black,
     lightPrimary: palette.lightPrimary,
     primary: palette.primary,
+    red: palette.red,
   },
   fontSize: {
     xxxl: '32px',
