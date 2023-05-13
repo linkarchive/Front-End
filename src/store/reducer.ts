@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux';
 import { HYDRATE } from 'next-redux-wrapper';
 import { exampleSlice } from './slices/exampleSlice';
+import { routerSlice } from './slices/routerSlice';
 
 const combinedReducer = combineReducers({
   auth: exampleSlice.reducer,
+  router: routerSlice.reducer,
 });
 
 const rootReducer: typeof combinedReducer = (state, action) => {
