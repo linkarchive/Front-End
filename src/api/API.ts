@@ -27,6 +27,27 @@ const API = {
     });
     return response;
   },
+  createLink: async (data: {
+    title: string;
+    link: string;
+    thumbnail: string;
+    tagList: string[];
+  }) => {
+    const response = await defaultInstance.post(`link/metadata`, {
+      data,
+    });
+    return response;
+  },
+  createTag: async (tag: string) => {
+    const response = await defaultInstance.post(`tag`, {
+      tag,
+    });
+    return response;
+  },
+  tagsByUserId: async (userId: string) => {
+    const response = await defaultInstance.get(`tags/userId${userId}`);
+    return response;
+  },
 };
 
 export default API;
