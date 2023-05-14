@@ -4,11 +4,18 @@ import CircleXMarkSvg from './CircleXMarkBtn';
 interface HashTagProps {
   title: string;
   isDeletable?: boolean;
+  onClick?: ({
+    e,
+    text,
+  }: {
+    e: React.MouseEvent<HTMLSpanElement, MouseEvent>;
+    text: string;
+  }) => void;
 }
 
-const HashTag = ({ title, isDeletable }: HashTagProps) => {
+const HashTag = ({ title, isDeletable, onClick }: HashTagProps) => {
   return (
-    <Wrapper isDeletable={isDeletable}>
+    <Wrapper isDeletable={isDeletable} onClick={(e) => onClick && onClick({ e, text: title })}>
       {isDeletable && <CircleXMarkSvg />}
       <span>{title}</span>
     </Wrapper>
@@ -57,3 +64,4 @@ const Wrapper = styled.span<{ isDeletable?: boolean }>`
 `;
 
 export default HashTag;
+export { Wrapper };
