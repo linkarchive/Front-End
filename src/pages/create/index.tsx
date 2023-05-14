@@ -1,12 +1,20 @@
 import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import styled from 'styled-components';
+import API from '@/api/API';
 import { BottomNavHight } from '@/components/BottomNav';
 import Header from '@/components/Header';
 import Input, { InputWithButton } from '@/components/Input';
 import LinkInfo from '@/components/Create/LinkInfo';
 import TagLabelList from '@/components/LinkItem/TagLabelList';
+
+const isValidUrl = (url: string): Boolean => {
+  const urlRegex =
+    /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
+  return urlRegex.test(url);
+};
 
 const Create = () => {
   const dispatch = useAppDispatch();
@@ -15,13 +23,28 @@ const Create = () => {
     dispatch(routerSlice.actions.loadCreatePage());
   }, [dispatch]);
 
-  const isValidUrl = (url: string): Boolean => {
-    const urlRegex =
-      /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
-    return urlRegex.test(url);
-  };
-
   const urlInput = useRef('');
+  const [errorMessages, setErrorMessages] = useState({
+    url: '',
+    title: '',
+    hashtag: '',
+  });
+
+  const [isValid, setIsValid] = useState(false);
+  // TODO api 연동 작업
+  const fetchURLMetadata = useQuery(['metadata', urlInput.current], {
+    queryFn: ({ queryKey }) => API.urlMetadata(encodeURIComponent(queryKey[1])),
+    enabled: isValid,
+    retry: false,
+  });
+
+  const handleFetchURL = () => {
+    if (isValidUrl(urlInput.current)) {
+      setIsValid(true);
+    } else {
+      setErrorMessages((prev) => ({ ...prev, url: ERROR_MESSAGE.URL.INVALID }));
+    }
+  };
 
   return (
     <>
@@ -30,14 +53,9 @@ const Create = () => {
         <InputBlock>
           <InputWithButton
             text='불러오기'
-            onClick={() => {
-              if (isValidUrl(urlInput.current)) {
-                console.log('hi');
-              } else {
-                console.log('by');
-              }
-            }}
+            onClick={handleFetchURL}
             label='링크'
+            errMessage={errorMessages.url}
             onChange={(e) => {
               urlInput.current = e.target.value;
             }}
@@ -116,3 +134,9 @@ const Button = styled.button`
     color: var(--font-color-white);
   }
 `;
+
+const ERROR_MESSAGE = {
+  URL: {
+    INVALID: 'URL을 다시 확인해주세요',
+  },
+};

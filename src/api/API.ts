@@ -18,6 +18,15 @@ const API = {
     });
     return response;
   },
+
+  urlMetadata: async (url: string) => {
+    const response = await defaultInstance.get(`link/metadata`, {
+      params: {
+        url,
+      },
+    });
+    return response;
+  },
 };
 
 export default API;
