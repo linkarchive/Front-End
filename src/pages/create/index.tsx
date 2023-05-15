@@ -1,11 +1,19 @@
+import { useAppDispatch } from '@/store';
+import { routerSlice } from '@/store/slices/routerSlice';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { BottomNavHight } from '@/components/BottomNav';
 import Header from '@/components/Header';
 import Input, { InputWithButton } from '@/components/Input';
 import LinkInfo from '@/components/Create/LinkInfo';
-import TagLabelList from '@/components/LinkItem/TagLabelList';
 
 const Create = () => {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(routerSlice.actions.loadCreatePage());
+  }, [dispatch]);
+
   return (
     <>
       <Header />
@@ -14,7 +22,7 @@ const Create = () => {
           <InputWithButton text='불러오기' onClick={() => {}} label='링크' onChange={() => {}} />
         </InputBlock>
         <InputBlock>
-          <Input className='tmp' label='제목' onChange={() => {}} />
+          <Input label='제목' onChange={() => {}} />
           <Bottom>
             <p className='info'>미리보기</p>
             <LinkInfo />
@@ -24,7 +32,6 @@ const Create = () => {
           <InputWithButton text='asdf' onClick={() => {}} label='asdf' onChange={() => {}} />
           <Bottom>
             <p className='info'>자주 사용하는 태그</p>
-            <TagLabelList />
           </Bottom>
         </InputBlock>
         <ButtonBlock>
