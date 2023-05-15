@@ -1,14 +1,15 @@
 import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
 import React, { useEffect, useRef, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import styled from 'styled-components';
 import API from '@/api/API';
 import { BottomNavHight } from '@/components/BottomNav';
 import Header from '@/components/Header';
 import Input, { InputWithButton } from '@/components/Input';
 import LinkInfo from '@/components/Create/LinkInfo';
-import TagLabelList from '@/components/LinkItem/TagLabelList';
+import HashTagList from '@/components/Create/HashTagList';
 
 const isValidUrl = (url: string): Boolean => {
   const urlRegex =
@@ -23,33 +24,73 @@ const Create = () => {
     dispatch(routerSlice.actions.loadCreatePage());
   }, [dispatch]);
 
+  const router = useRouter();
+
   const urlInput = useRef('');
+  const [title, setTitle] = useState('');
+  const [hashtagInput, setHashTagInput] = useState('');
+  const [hashtags, setHashtags] = useState<string[]>([]);
   const [errorMessages, setErrorMessages] = useState({
     url: '',
     title: '',
     hashtag: '',
   });
-
   const [isValid, setIsValid] = useState(false);
-  // TODO api 연동 작업
+
+  // TODO api 통신 작업
+  const {
+    data: freqTags,
+    isLoading,
+    isError,
+  } = useQuery(['freqTagList'], { queryFn: () => API.tagsByUserId(''), enabled: false });
   const fetchURLMetadata = useQuery(['metadata', urlInput.current], {
-    queryFn: ({ queryKey }) => API.urlMetadata(encodeURIComponent(queryKey[1])),
+    queryFn: () => API.urlMetadata(encodeURIComponent(urlInput.current)),
     enabled: isValid,
     retry: false,
   });
+  const createLink = useMutation({ mutationFn: API.createLink });
 
   const handleFetchURL = () => {
     if (isValidUrl(urlInput.current)) {
       setIsValid(true);
     } else {
-      setErrorMessages((prev) => ({ ...prev, url: ERROR_MESSAGE.URL.INVALID }));
+      handleErrorMessage({ key: 'url', message: ERROR_MESSAGE.URL.INVALID });
     }
+  };
+
+  const handleAddTags = (text) => {
+    // TODO 태그 validation
+    setHashtags((prev) => [...prev, text]);
+  };
+
+  const handleCreate = () => {
+    if (createLink.isLoading) return;
+
+    const [link, thumbnail] = ['', ''];
+    const tagList = [...hashtags];
+    createLink.mutate(
+      { title, link, thumbnail, tagList },
+      {
+        onSuccess: (data) => router.push('/'),
+      }
+    );
+  };
+
+  const handleErrorMessage = ({ key, message }: { key: string; message: string }) => {
+    const errmsgs = { ...errorMessages };
+    errmsgs[key] = message;
+    setErrorMessages(errmsgs);
   };
 
   return (
     <>
       <Header />
-      <Wrapper>
+      <Wrapper
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleCreate();
+        }}
+      >
         <InputBlock>
           <InputWithButton
             text='불러오기'
@@ -62,20 +103,46 @@ const Create = () => {
           />
         </InputBlock>
         <InputBlock>
-          <Input label='제목' onChange={() => {}} />
+          <Input
+            label='제목'
+            value={title}
+            onChange={(e) => {
+              setTitle(e.target.value);
+            }}
+          />
           <Bottom>
             <p className='info'>미리보기</p>
             <LinkInfo />
           </Bottom>
         </InputBlock>
         <InputBlock>
-          <InputWithButton text='asdf' onClick={() => {}} label='asdf' onChange={() => {}} />
+          <InputWithButton
+            label='해시태그'
+            value={hashtagInput}
+            onChange={(e) => {
+              setHashTagInput(e.target.value);
+            }}
+            text='추가'
+            onClick={() => {
+              if (!hashtagInput) return;
+              handleAddTags(hashtagInput);
+              setHashTagInput('');
+            }}
+          />
           <Bottom>
+            {/* // TODO MVP 제외
             <p className='info'>자주 사용하는 태그</p>
+            <TagLabelList /> */}
+            <HashTagList
+              tags={hashtags}
+              handleDelete={(value) => setHashtags((prev) => prev.filter((v) => v !== value))}
+            />
           </Bottom>
         </InputBlock>
         <ButtonBlock>
-          <Button disabled>추가하기</Button>
+          <Button type='submit' disabled={!fetchURLMetadata.isSuccess}>
+            추가하기
+          </Button>
         </ButtonBlock>
       </Wrapper>
     </>
@@ -84,7 +151,7 @@ const Create = () => {
 
 export default Create;
 
-const Wrapper = styled.div`
+const Wrapper = styled.form`
   padding-top: 16px;
 `;
 
