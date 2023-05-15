@@ -11,6 +11,23 @@ import Input, { InputWithButton } from '@/components/Input';
 import LinkInfo from '@/components/Create/LinkInfo';
 import HashTagList from '@/components/Create/HashTagList';
 
+const validateHashTag = (text: string): string => {
+  const encoder = new TextEncoder();
+  const byteLength = encoder.encode(text).length;
+  const isValidLength = !(byteLength < 4 || byteLength > 16); // 최소 4바이트, 최대 16바이트
+  const noSpecialSybmols = /^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]+$/; // 특수기호, 이모지 불가
+
+  if (!isValidLength) {
+    return ERROR_MESSAGE.HASHTAG.TOO_LONG;
+  }
+
+  if (!noSpecialSybmols.test(text)) {
+    return ERROR_MESSAGE.HASHTAG.NO_SPECIAL;
+  }
+
+  return '';
+};
+
 const isValidUrl = (url: string): Boolean => {
   const urlRegex =
     /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
@@ -38,12 +55,14 @@ const Create = () => {
   const [isValid, setIsValid] = useState(false);
 
   // TODO api 통신 작업
-  const {
-    data: freqTags,
-    isLoading,
-    isError,
-  } = useQuery(['freqTagList'], { queryFn: () => API.tagsByUserId(''), enabled: false });
-  const fetchURLMetadata = useQuery(['metadata', urlInput.current], {
+  /** MVP 이후 개발
+    const {
+      data: freqTags,
+      isLoading,
+      isError,
+    } = useQuery(['freqTagList'], { queryFn: () => API.tagsByUserId(''), enabled: false });
+  */
+  const getURLMetadata = useQuery(['metadata', urlInput.current], {
     queryFn: () => API.urlMetadata(encodeURIComponent(urlInput.current)),
     enabled: isValid,
     retry: false,
@@ -59,8 +78,19 @@ const Create = () => {
   };
 
   const handleAddTags = (text) => {
-    // TODO 태그 validation
+    let message = '';
+    if (hashtags.length === 5) {
+      message = ERROR_MESSAGE.HASHTAG.MAXIMUM;
+      handleErrorMessage({ key: 'hashtag', message });
+      return;
+    }
+    message = validateHashTag(text);
+    if (message) {
+      handleErrorMessage({ key: 'hashtag', message });
+      return;
+    }
     setHashtags((prev) => [...prev, text]);
+    initErrorMessage({ key: 'hashtag' });
   };
 
   const handleCreate = () => {
@@ -71,9 +101,13 @@ const Create = () => {
     createLink.mutate(
       { title, link, thumbnail, tagList },
       {
-        onSuccess: (data) => router.push('/'),
+        onSuccess: () => router.push('/'),
       }
     );
+  };
+
+  const initErrorMessage = ({ key }: { key: string }) => {
+    handleErrorMessage({ key, message: '' });
   };
 
   const handleErrorMessage = ({ key, message }: { key: string; message: string }) => {
@@ -119,10 +153,15 @@ const Create = () => {
           <InputWithButton
             label='해시태그'
             value={hashtagInput}
+            onKeyDown={(e) => {
+              // FIXME 한글 입력시 'ㅁㄴㅇㄹ ' 공백 입력 이슈
+              if (e.key === ' ') e.preventDefault();
+            }}
             onChange={(e) => {
               setHashTagInput(e.target.value);
             }}
             text='추가'
+            errMessage={errorMessages.hashtag}
             onClick={() => {
               if (!hashtagInput) return;
               handleAddTags(hashtagInput);
@@ -140,7 +179,7 @@ const Create = () => {
           </Bottom>
         </InputBlock>
         <ButtonBlock>
-          <Button type='submit' disabled={!fetchURLMetadata.isSuccess}>
+          <Button type='submit' disabled={!getURLMetadata.isSuccess}>
             추가하기
           </Button>
         </ButtonBlock>
@@ -205,5 +244,11 @@ const Button = styled.button`
 const ERROR_MESSAGE = {
   URL: {
     INVALID: 'URL을 다시 확인해주세요',
+  },
+  HASHTAG: {
+    TOO_LONG: '너무 길어요',
+    TOO_SHORT: '너무 짧아요',
+    NO_SPECIAL: '특수기호는 안돼요',
+    MAXIMUM: '5개까지 등록할 수 있어요',
   },
 };
