@@ -37,6 +37,7 @@ const GlobalStyle = createGlobalStyle`
     --border-color-gray: ${theme.borderColor.mediumGray};
     --border-color-lightgray: ${theme.borderColor.lightGray};
     --border-color-lighter-gray: ${theme.borderColor.lighterGray};
+    --border-color-primary: ${theme.borderColor.primary};
 
     --default-width: ${theme.default.width};
 
