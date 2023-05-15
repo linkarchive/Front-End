@@ -19,7 +19,7 @@ const HomeHeader = () => {
 
 export default HomeHeader;
 
-const Wrapper = styled.header`
+export const Wrapper = styled.header`
   nav {
     display: flex;
     align-items: center;
