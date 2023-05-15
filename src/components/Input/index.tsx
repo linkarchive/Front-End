@@ -39,10 +39,6 @@ const Input = ({
   );
 };
 
-Input.deafultProps = {
-  className: '',
-};
-
 export default Input;
 export { InputWithButton };
 export type { InputProps };
