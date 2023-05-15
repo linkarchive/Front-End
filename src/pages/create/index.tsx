@@ -11,29 +11,6 @@ import Input, { InputWithButton } from '@/components/Input';
 import LinkInfo from '@/components/Create/LinkInfo';
 import HashTagList from '@/components/Create/HashTagList';
 
-const validateHashTag = (text: string): string => {
-  const encoder = new TextEncoder();
-  const byteLength = encoder.encode(text).length;
-  const isValidLength = !(byteLength < 4 || byteLength > 16); // 최소 4바이트, 최대 16바이트
-  const noSpecialSybmols = /^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]+$/; // 특수기호, 이모지 불가
-
-  if (!isValidLength) {
-    return ERROR_MESSAGE.HASHTAG.TOO_LONG;
-  }
-
-  if (!noSpecialSybmols.test(text)) {
-    return ERROR_MESSAGE.HASHTAG.NO_SPECIAL;
-  }
-
-  return '';
-};
-
-const isValidUrl = (url: string): Boolean => {
-  const urlRegex =
-    /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
-  return urlRegex.test(url);
-};
-
 const Create = () => {
   const dispatch = useAppDispatch();
 
@@ -251,4 +228,27 @@ const ERROR_MESSAGE = {
     NO_SPECIAL: '특수기호는 안돼요',
     MAXIMUM: '5개까지 등록할 수 있어요',
   },
+};
+
+const validateHashTag = (text: string): string => {
+  const encoder = new TextEncoder();
+  const byteLength = encoder.encode(text).length;
+  const isValidLength = !(byteLength < 4 || byteLength > 16); // 최소 4바이트, 최대 16바이트
+  const noSpecialSybmols = /^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]+$/; // 특수기호, 이모지 불가
+
+  if (!isValidLength) {
+    return ERROR_MESSAGE.HASHTAG.TOO_LONG;
+  }
+
+  if (!noSpecialSybmols.test(text)) {
+    return ERROR_MESSAGE.HASHTAG.NO_SPECIAL;
+  }
+
+  return '';
+};
+
+const isValidUrl = (url: string): Boolean => {
+  const urlRegex =
+    /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
+  return urlRegex.test(url);
 };
