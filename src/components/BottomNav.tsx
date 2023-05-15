@@ -42,6 +42,7 @@ const FooterWrapper = styled.footer`
   height: ${BottomNavHight};
   align-items: center;
   border-top: 1px solid var(--border-color-lighter-gray);
+
   background-color: var(--background-color-default);
 `;
 
