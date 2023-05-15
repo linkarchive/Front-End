@@ -1,13 +1,17 @@
 import GoBackBtn from '@/components/GoBackBtn';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 const Header = () => {
+  const name = useSelector((state: RootState) => state.router.name);
+
   return (
     <Wrapper>
       <nav>
         {/* FIXME 뒤로가기 버튼 크기 조정 */}
         <GoBackBtn />
-        <span className='title'>Header</span>
+        <Title>{name}</Title>
       </nav>
     </Wrapper>
   );
@@ -28,16 +32,16 @@ const Wrapper = styled.header`
     flex-direction: row;
     align-items: center;
   }
+`;
 
-  .title {
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, 0);
+const Title = styled.span`
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
 
-    color: --var(--font-color-darkgray);
-    text-align: center;
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 21px;
-  }
+  color: --var(--font-color-darkgray);
+  text-align: center;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 21px;
 `;
