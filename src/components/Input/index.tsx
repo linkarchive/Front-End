@@ -2,12 +2,12 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import InputWithButton from '@/components/Input/InputWithButton';
 
-const Input = ({ children, className }: { className?: string; children?: JSX.Element }) => {
+const Input = ({ children }: { children?: JSX.Element }) => {
   const [value, setValue] = useState('');
   const id = 'temp';
 
   return (
-    <Wrapper className={className}>
+    <Wrapper>
       <label htmlFor={id}>제목</label>
       <div className='input'>
         <input
