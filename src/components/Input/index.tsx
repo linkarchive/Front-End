@@ -8,7 +8,6 @@ interface InputProps {
   name?: string;
   errMessage?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  className?: string;
   inputProps?: HTMLInputElement;
 }
 
@@ -19,11 +18,10 @@ const Input = ({
   name,
   errMessage,
   onChange,
-  className,
   ...inputProps
 }: InputProps) => {
   return (
-    <Wrapper className={className}>
+    <Wrapper>
       <label htmlFor={name}>{label}</label>
       <div className='input'>
         <input
