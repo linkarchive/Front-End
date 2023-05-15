@@ -6,7 +6,6 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import styled from 'styled-components';
 import API from '@/api/API';
 import { BottomNavHight } from '@/components/BottomNav';
-import Header from '@/components/Header';
 import Input, { InputWithButton } from '@/components/Input';
 import LinkInfo from '@/components/Create/LinkInfo';
 import HashTagList from '@/components/Create/HashTagList';
@@ -94,74 +93,71 @@ const Create = () => {
   };
 
   return (
-    <>
-      <Header />
-      <Wrapper
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleCreate();
-        }}
-      >
-        <InputBlock>
-          <InputWithButton
-            text='불러오기'
-            onClick={handleFetchURL}
-            label='링크'
-            errMessage={errorMessages.url}
-            onChange={(e) => {
-              urlInput.current = e.target.value;
-            }}
-          />
-        </InputBlock>
-        <InputBlock>
-          <Input
-            label='제목'
-            value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-            }}
-          />
-          <Bottom>
-            <p className='info'>미리보기</p>
-            <LinkInfo />
-          </Bottom>
-        </InputBlock>
-        <InputBlock>
-          <InputWithButton
-            label='해시태그'
-            value={hashtagInput}
-            onKeyDown={(e) => {
-              // FIXME 한글 입력시 'ㅁㄴㅇㄹ ' 공백 입력 이슈
-              if (e.key === ' ') e.preventDefault();
-            }}
-            onChange={(e) => {
-              setHashTagInput(e.target.value);
-            }}
-            text='추가'
-            errMessage={errorMessages.hashtag}
-            onClick={() => {
-              if (!hashtagInput) return;
-              handleAddTags(hashtagInput);
-              setHashTagInput('');
-            }}
-          />
-          <Bottom>
-            {/* // TODO MVP 제외
+    <Wrapper
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleCreate();
+      }}
+    >
+      <InputBlock>
+        <InputWithButton
+          text='불러오기'
+          onClick={handleFetchURL}
+          label='링크'
+          errMessage={errorMessages.url}
+          onChange={(e) => {
+            urlInput.current = e.target.value;
+          }}
+        />
+      </InputBlock>
+      <InputBlock>
+        <Input
+          label='제목'
+          value={title}
+          onChange={(e) => {
+            setTitle(e.target.value);
+          }}
+        />
+        <Bottom>
+          <p className='info'>미리보기</p>
+          <LinkInfo />
+        </Bottom>
+      </InputBlock>
+      <InputBlock>
+        <InputWithButton
+          label='해시태그'
+          value={hashtagInput}
+          onKeyDown={(e) => {
+            // FIXME 한글 입력시 'ㅁㄴㅇㄹ ' 공백 입력 이슈
+            if (e.key === ' ') e.preventDefault();
+          }}
+          onChange={(e) => {
+            setHashTagInput(e.target.value);
+          }}
+          text='추가'
+          errMessage={errorMessages.hashtag}
+          onClick={() => {
+            if (!hashtagInput) return;
+            handleAddTags(hashtagInput);
+            setHashTagInput('');
+          }}
+        />
+        <Bottom>
+          {/* // TODO MVP 제외
             <p className='info'>자주 사용하는 태그</p>
             <TagLabelList /> */}
-            <HashTagList
-              tags={hashtags}
-              handleDelete={(value) => setHashtags((prev) => prev.filter((v) => v !== value))}
-            />
-          </Bottom>
-        </InputBlock>
-        <ButtonBlock>
-          <Button type='submit' disabled={!getURLMetadata.isSuccess}>
-            추가하기
-          </Button>
-        </ButtonBlock>
-      </Wrapper>
-    </>
+          <HashTagList
+            tags={hashtags}
+            handleDelete={(value) => setHashtags((prev) => prev.filter((v) => v !== value))}
+          />
+        </Bottom>
+      </InputBlock>
+      <ButtonBlock>
+        <Button type='submit' disabled={!getURLMetadata.isSuccess}>
+          추가하기
+        </Button>
+      </ButtonBlock>
+    </Wrapper>
   );
 };
 
