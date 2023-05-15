@@ -9,7 +9,6 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name?: string;
   errMessage?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  className?: string;
 }
 
 const Input = ({
@@ -19,11 +18,10 @@ const Input = ({
   name,
   errMessage,
   onChange,
-  className,
   ...inputProps
 }: InputProps) => {
   return (
-    <Wrapper className={className}>
+    <Wrapper>
       <label htmlFor={name}>{label}</label>
       <div className='input'>
         <input
@@ -39,10 +37,6 @@ const Input = ({
       {errMessage && <span className='error'>{errMessage}</span>}
     </Wrapper>
   );
-};
-
-Input.deafultProps = {
-  className: '',
 };
 
 export default Input;
