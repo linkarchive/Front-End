@@ -19,7 +19,7 @@ const API = {
     return response;
   },
 
-  urlMetadata: async (url: string) => {
+  getUrlMetadata: async (url: string) => {
     const response = await defaultInstance.get(`link/metadata`, {
       params: {
         url,
@@ -27,6 +27,7 @@ const API = {
     });
     return response;
   },
+
   createLink: async (data: {
     title: string;
     link: string;
@@ -38,13 +39,15 @@ const API = {
     });
     return response;
   },
+
   createTag: async (tag: string) => {
     const response = await defaultInstance.post(`tag`, {
       tag,
     });
     return response;
   },
-  tagsByUserId: async (userId: string) => {
+
+  getTagsByUserId: async (userId: string) => {
     const response = await defaultInstance.get(`tags/userId${userId}`);
     return response;
   },
