@@ -1,10 +1,17 @@
-import Input from '@/components/Input';
+import Input, { InputProps } from '@/components/Input';
 import styled from 'styled-components';
 
-const InputWithButton = () => {
+interface InputWithButtonProps extends InputProps {
+  text: string;
+  onClick: (e) => void;
+}
+
+const InputWithButton = ({ text, onClick, ...inputProps }: InputWithButtonProps) => {
   return (
-    <Input>
-      <Button type='button'>asdf</Button>
+    <Input {...inputProps}>
+      <Button type='button' onClick={onClick}>
+        {text}
+      </Button>
     </Input>
   );
 };

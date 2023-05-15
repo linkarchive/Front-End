@@ -1,37 +1,47 @@
-import { useState } from 'react';
 import styled from 'styled-components';
-import InputWithButton from '@/components/Input/InputWithButton';
+import InputWithButton from './InputWithButton';
 
-const Input = ({ children }: { children?: JSX.Element }) => {
-  const [value, setValue] = useState('');
-  const id = 'temp';
+interface InputProps {
+  children?: JSX.Element;
+  value?: string;
+  label: string;
+  name?: string;
+  errMessage?: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  inputProps?: HTMLInputElement;
+}
 
+const Input = ({
+  children,
+  value,
+  label,
+  name,
+  errMessage,
+  onChange,
+  ...inputProps
+}: InputProps) => {
   return (
     <Wrapper>
-      <label htmlFor={id}>제목</label>
+      <label htmlFor={name}>{label}</label>
       <div className='input'>
         <input
+          {...inputProps}
           type='text'
-          name=''
-          id={id}
           value={value}
           onChange={(e) => {
-            setValue(e.target.value);
+            onChange(e);
           }}
         />
         {children}
       </div>
-      <span className='error'>에러메세지</span>
+      {errMessage && <span className='error'>{errMessage}</span>}
     </Wrapper>
   );
 };
 
-Input.deafultProps = {
-  className: '',
-};
-
 export default Input;
 export { InputWithButton };
+export type { InputProps };
 
 const Wrapper = styled.div`
   label {
