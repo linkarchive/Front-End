@@ -1,14 +1,15 @@
 import styled from 'styled-components';
 import InputWithButton from './InputWithButton';
+import { InputHTMLAttributes } from 'react';
 
-interface InputProps {
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   children?: JSX.Element;
   value?: string;
   label: string;
   name?: string;
   errMessage?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  inputProps?: HTMLInputElement;
+  className?: string;
 }
 
 const Input = ({
@@ -18,10 +19,11 @@ const Input = ({
   name,
   errMessage,
   onChange,
+  className,
   ...inputProps
 }: InputProps) => {
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       <label htmlFor={name}>{label}</label>
       <div className='input'>
         <input
@@ -37,6 +39,10 @@ const Input = ({
       {errMessage && <span className='error'>{errMessage}</span>}
     </Wrapper>
   );
+};
+
+Input.deafultProps = {
+  className: '',
 };
 
 export default Input;
