@@ -31,7 +31,7 @@ const theme = {
     xxl: '24px',
     xl: '20px',
     lg: '18px',
-    md: '12px',
+    md: '16px',
     sm: '10px',
     xs: '8px',
   },
@@ -51,6 +51,7 @@ const theme = {
     mediumGray: palette.mediumGray,
     lightGray: palette.lightGray,
     lighterGray: palette.lighterGray,
+    primary: palette.primary,
   },
   SvgIconSize: {
     xxxl: '28px',
