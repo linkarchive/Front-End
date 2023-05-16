@@ -173,6 +173,9 @@ const InputBlock = styled.div`
 `;
 
 const Bottom = styled.div`
+  position: relative;
+  top: 12px;
+
   p {
     margin-bottom: 5px;
 
