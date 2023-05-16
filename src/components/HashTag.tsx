@@ -46,6 +46,8 @@ const Wrapper = styled.span<{ variant: Variant; isDeletable?: boolean }>`
   background-color: var(--hashtag-color-background);
 
   ${({ variant }) => HashTagVariant[variant]};
+
+  cursor: pointer;
 `;
 
 const HashTagVariant = {
