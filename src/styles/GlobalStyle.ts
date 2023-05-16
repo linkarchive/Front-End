@@ -50,7 +50,13 @@ const GlobalStyle = createGlobalStyle`
     --svg-color-active: ${theme.SvgIconColor.active};
 
     --hashtag-color-text: ${theme.hashTagColor.textColor};
+    --hashtag-color-active-text:${theme.hashTagColor.activeColor};
+    --hashtag-color-inactive-text:${theme.hashTagColor.inactiveColor};
+    --hashtag-color-neutral-text:${theme.hashTagColor.neutralColor};
     --hashtag-color-border: ${theme.hashTagColor.borderColor};
+    --hashtag-color-active-border:${theme.hashTagColor.activeColor};
+    --hashtag-color-inactive-border:${theme.hashTagColor.inactiveColor};
+    --hashtag-color-neutral-border:${theme.hashTagColor.neutralColor};
     --hashtag-color-background: ${theme.hashTagColor.backgroundColor};
     --hashtag-color-hover: ${theme.hashTagColor.borderHoverColor};
 
