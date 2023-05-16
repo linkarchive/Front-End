@@ -138,7 +138,7 @@ const Create = () => {
           errMessage={errorMessages.hashtag}
           onClick={() => {
             if (!hashtagInput) return;
-            handleAddTags(hashtagInput);
+            handleAddTags(hashtagInput.trim());
             setHashTagInput('');
           }}
         />
