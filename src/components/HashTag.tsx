@@ -1,8 +1,9 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import CircleXMarkSvg from './CircleXMarkBtn';
 
 interface HashTagProps {
   title: string;
+  variant?: Variant;
   isDeletable?: boolean;
   onClick?: ({
     e,
@@ -13,55 +14,57 @@ interface HashTagProps {
   }) => void;
 }
 
-const HashTag = ({ title, isDeletable, onClick }: HashTagProps) => {
+type Variant = 'active' | 'inactive' | 'neutral';
+
+const HashTag = ({ title, variant, isDeletable, onClick }: HashTagProps) => {
   return (
-    <Wrapper isDeletable={isDeletable} onClick={(e) => onClick && onClick({ e, text: title })}>
-      {isDeletable && <CircleXMarkSvg />}
+    <Wrapper
+      variant={variant}
+      isDeletable={isDeletable}
+      data-hashtag={title}
+      onClick={(e) => onClick && onClick({ e, text: e.currentTarget.dataset.hashtag })}
+    >
       <span>{title}</span>
+      {isDeletable && <CircleXMarkSvg />}
     </Wrapper>
   );
 };
 
 HashTag.defaultProps = {
+  variant: 'neutral',
   isDeletable: false,
 };
 
-const Wrapper = styled.span<{ isDeletable?: boolean }>`
+const Wrapper = styled.span<{ variant: Variant; isDeletable?: boolean }>`
   position: relative;
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid var(--hashtag-color-border);
   border-radius: 5px;
   padding: 6px 10px;
 
   background-color: var(--hashtag-color-background);
 
-  color: var(--hashtag-color-text);
-
-  ${({ isDeletable }) =>
-    isDeletable &&
-    `
-    &:hover {
-      border: 1px solid var(--hashtag-color-hover);
-
-      svg {
-        display: block;
-      }
-    }
-  `}
-
-  svg {
-    display: none;
-    position: absolute;
-    top: -7px;
-    right: -6px;
-
-    &:hover {
-      fill: var(--button-color-hover);
-    }
-  }
+  ${({ variant }) => HashTagVariant[variant]};
 `;
+
+const HashTagVariant = {
+  active: css`
+    border: 1px solid var(--hashtag-color-active-border);
+
+    color: var(--hashtag-color-active-text);
+  `,
+  inactive: css`
+    border: 1px solid var(--hashtag-color-inactive-border);
+
+    color: var(--hashtag-color-inactive-text);
+  `,
+  neutral: css`
+    border: 1px solid var(--hashtag-color-neutral-border);
+
+    color: var(--hashtag-color-neutral-text);
+  `,
+};
 
 export default HashTag;
 export { Wrapper };
