@@ -11,11 +11,8 @@ const CircleXMarkSvg = () => {
 };
 
 const SvgIcon = styled.span`
-  svg {
-    width: var(--svg-width-md);
-    height: var(--svg-height-md);
-    cursor: pointer;
-  }
+  display: flex;
+  margin-left: 2px;
 `;
 
 export default CircleXMarkSvg;
