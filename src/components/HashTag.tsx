@@ -48,6 +48,11 @@ const Wrapper = styled.span<{ variant: Variant; isDeletable?: boolean }>`
   ${({ variant }) => HashTagVariant[variant]};
 
   cursor: pointer;
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19px;
 `;
 
 const HashTagVariant = {
