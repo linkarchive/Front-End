@@ -58,7 +58,6 @@ const Wrapper = styled.div`
     flex-direction: row;
     justify-content: space-between;
 
-    padding: 0 29px;
     margin-bottom: 30px;
 
     .contents {
@@ -101,15 +100,9 @@ const Wrapper = styled.div`
     }
   }
 
-  .tag-list {
-    padding: 0 29px;
-  }
-
   .utils {
     display: flex;
     justify-content: flex-end;
-
-    padding: 0 29px;
 
     .read,
     .mark {

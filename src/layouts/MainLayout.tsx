@@ -34,7 +34,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
 export default MainLayout;
 
 const Main = styled.main`
-  padding-bottom: ${BottomNavHight};
+  padding: 0 29px ${BottomNavHight} 26px;
 `;
 
 const WaterMark = () => {

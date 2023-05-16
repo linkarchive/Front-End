@@ -3,6 +3,7 @@ import { routerSlice } from '@/store/slices/routerSlice';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import PhotoSvgIcon from 'public/assets/svg/photo.svg';
 
 type ProfileInputProps = {
   label: string;
@@ -60,6 +61,9 @@ const Profile = () => {
       <ImgWrapper>
         <ImgContent>
           <Image src='/blanc.jpeg' alt='cat' fill />
+          <SvgIcon>
+            <PhotoSvgIcon />
+          </SvgIcon>
         </ImgContent>
       </ImgWrapper>
       <ProfileInput label='name' id='name' {...state.name} onChange={handleChange} />
@@ -106,11 +110,26 @@ const ImgContent = styled.span`
 
 const InputWrapper = styled.input<{ isChanged: boolean }>`
   border: none;
-  border-bottom: 2px solid black;
+  border-bottom: 1px solid black;
 
-  color: var(--font-color-mediumgray);
+  color: var(--font-color-darkgray);
   border-color: ${({ isChanged }) =>
     isChanged ? `var(--border-color-primary)` : `var(--border-color-gray)`};
+`;
+
+const SvgIcon = styled.span`
+  svg {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    width: var(--svg-width-xxl);
+    height: var(--svg-height-xxl);
+    cursor: pointer;
+
+    &:hover {
+      fill: var(--svg-color-hover);
+    }
+  }
 `;
 
 export default Profile;
