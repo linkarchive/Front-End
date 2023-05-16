@@ -72,6 +72,9 @@ const theme = {
     textColor: palette.mediumGray,
     borderColor: palette.mediumGray,
     borderHoverColor: palette.primary,
+    activeColor: palette.primary,
+    inactiveColor: palette.lightGray,
+    neutralColor: palette.mediumGray,
   },
 };
 
