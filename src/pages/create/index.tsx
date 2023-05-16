@@ -168,7 +168,7 @@ const Wrapper = styled.form`
 `;
 
 const InputBlock = styled.div`
-  padding: 0 34px;
+  padding: 0 5px;
   margin-bottom: 24px;
 `;
 
