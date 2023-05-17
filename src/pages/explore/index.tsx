@@ -1,3 +1,4 @@
+import { LinkItemWithProfile } from '@/components/LinkItem';
 import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
 import React, { useEffect } from 'react';
@@ -9,7 +10,15 @@ const Explore = () => {
     dispatch(routerSlice.actions.loadExplorePage());
   }, [dispatch]);
 
-  return <div>Explore</div>;
+  return (
+    <>
+      <LinkItemWithProfile />
+      <LinkItemWithProfile />
+      <LinkItemWithProfile />
+      <LinkItemWithProfile />
+      <LinkItemWithProfile />
+    </>
+  );
 };
 
 export default Explore;
