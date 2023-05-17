@@ -6,17 +6,13 @@ const KakaoAuth = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const currentUrl = new URL(window.location.href);
-    currentUrl.pathname = '';
-    currentUrl.search = '';
-
     const handleKakaoLogin = async () => {
       if (router.query.code) {
         const code = router.query.code as string;
         const response = await API.kakaoLogin({ code });
         const token = response.data.accessToken;
         localStorage.setItem('accessToken', token);
-        router.push(currentUrl.toString());
+        router.back();
       }
     };
 
