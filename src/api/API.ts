@@ -51,6 +51,18 @@ const API = {
     const response = await defaultInstance.get(`tags/userId${userId}`);
     return response;
   },
+
+  uploadImage: async (file: File): Promise<AxiosResponse> => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await defaultInstance.post(`profileImage`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response;
+  },
 };
 
 export default API;
