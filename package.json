@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "sh init-https.sh && node server.js",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
