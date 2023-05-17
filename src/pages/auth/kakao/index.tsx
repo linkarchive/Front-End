@@ -9,7 +9,9 @@ const KakaoAuth = () => {
     const handleKakaoLogin = async () => {
       if (router.query.code) {
         const code = router.query.code as string;
-        await API.kakaoLogin({ code });
+        const response = await API.kakaoLogin({ code });
+        const token = response.data.accessToken;
+        localStorage.setItem('accessToken', token);
       }
     };
 
