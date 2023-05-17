@@ -2,7 +2,6 @@ import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
 import Link from 'next/link';
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
 
 const userId = 1;
 
