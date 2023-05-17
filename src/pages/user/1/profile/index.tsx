@@ -4,9 +4,10 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import PhotoSvgIcon from 'public/assets/svg/photo.svg';
+import { useImage } from '@/hooks/useImage';
 
 type ProfileInputProps = {
-  label: string;
+  title: string;
   id: string;
   value: string;
   initialValue: string;
@@ -23,9 +24,13 @@ const initialState = {
   intro: { value: '', initialValue: '' },
 };
 
-const ProfileInput = ({ label, id, value, initialValue, onChange }: ProfileInputProps) => (
-  <Wrapper>
-    <label htmlFor={id}>{label}</label>
+const initialImage = '/blanc.jpeg';
+
+const ProfileInput = ({ title, id, value, initialValue, onChange }: ProfileInputProps) => (
+  <ProfileInputWrapper>
+    <label htmlFor={id}>
+      <h3>{title}</h3>
+    </label>
     <InputWrapper
       type='text'
       id={id}
@@ -33,12 +38,13 @@ const ProfileInput = ({ label, id, value, initialValue, onChange }: ProfileInput
       isChanged={value !== initialValue}
       onChange={onChange}
     />
-  </Wrapper>
+  </ProfileInputWrapper>
 );
 
 const Profile = () => {
   const dispatch = useAppDispatch();
   const [state, setState] = useState(initialState);
+  const { image, onImageChange } = useImage(initialImage); // 이미지 상태와 변경 함수를 가져옵니다.
 
   useEffect(() => {
     setState({
@@ -59,15 +65,24 @@ const Profile = () => {
   return (
     <FormWrapper>
       <ImgWrapper>
-        <ImgContent>
-          <Image src='/blanc.jpeg' alt='cat' fill />
-          <SvgIcon>
+        <ImgContainer>
+          <ImgContent>
+            <Image src={image} alt='cat' fill />
+            <input
+              type='file'
+              accept='image/*'
+              style={{ display: 'none' }}
+              id='imageInput'
+              onChange={onImageChange}
+            />
+          </ImgContent>
+          <SvgIcon onClick={() => document.getElementById('imageInput').click()}>
             <PhotoSvgIcon />
           </SvgIcon>
-        </ImgContent>
+        </ImgContainer>
       </ImgWrapper>
-      <ProfileInput label='name' id='name' {...state.name} onChange={handleChange} />
-      <ProfileInput label='intro' id='intro' {...state.intro} onChange={handleChange} />
+      <ProfileInput title='이름' id='name' {...state.name} onChange={handleChange} />
+      <ProfileInput title='자기소개' id='intro' {...state.intro} onChange={handleChange} />
     </FormWrapper>
   );
 };
@@ -89,10 +104,15 @@ const ImgWrapper = styled.div`
   align-items: center;
 `;
 
-const Wrapper = styled.div`
+const ProfileInputWrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: 100px;
+  margin-bottom: 10px;
+`;
+
+const ImgContainer = styled.span`
+  position: relative;
 `;
 
 const ImgContent = styled.span`
@@ -111,6 +131,7 @@ const ImgContent = styled.span`
 const InputWrapper = styled.input<{ isChanged: boolean }>`
   border: none;
   border-bottom: 1px solid black;
+  padding-bottom: 10px;
 
   color: var(--font-color-darkgray);
   border-color: ${({ isChanged }) =>
@@ -118,17 +139,26 @@ const InputWrapper = styled.input<{ isChanged: boolean }>`
 `;
 
 const SvgIcon = styled.span`
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  border-radius: 100%;
+  padding: 6px;
+
+  background-color: var(--border-color-darkgray);
+  cursor: pointer;
+
   svg {
     display: flex;
     justify-content: center;
     margin: auto;
-    width: var(--svg-width-xxl);
-    height: var(--svg-height-xxl);
-    cursor: pointer;
+    width: var(--svg-width-sm);
+    height: var(--svg-height-sm);
+    fill: var(--svg-color-lightGray);
+  }
 
-    &:hover {
-      fill: var(--svg-color-hover);
-    }
+  &:hover svg {
+    fill: var(--svg-color-hover);
   }
 `;
 
