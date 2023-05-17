@@ -63,6 +63,11 @@ const API = {
     });
     return response;
   },
+
+  getUserProfile: async (userId: number) => {
+    const response = await defaultInstance.get(`user/${userId}`);
+    return response;
+  },
 };
 
 export default API;

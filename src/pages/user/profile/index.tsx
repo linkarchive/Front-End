@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import PhotoSvgIcon from 'public/assets/svg/photo.svg';
 import { useImage } from '@/hooks/useImage';
+import API from '@/api/API';
 
 type ProfileInputProps = {
   title: string;
@@ -24,8 +25,19 @@ const initialState = {
   intro: { value: '', initialValue: '' },
 };
 
-const initialImage = '/blanc.jpeg';
+export async function getServerSideProps(context) {
+  // id를 URL 파라미터에서 가져옵니다
+  const { id } = context.query;
 
+  // 데이터를 서버에서 불러옵니다. 실제로는 API 요청을 사용해야 합니다.
+  const userData = await API.getUserProfile(id);
+
+  // 불러온 데이터를 props로 반환합니다
+  return { props: { userData } };
+}
+
+const initialImage = '/blanc.jpeg';
+// FIXME: userData로 변경해야함.. id를 파라미터에서 어떻게 가지고 올까?
 const ProfileInput = ({ title, id, value, initialValue, onChange }: ProfileInputProps) => (
   <ProfileInputWrapper>
     <label htmlFor={id}>
@@ -44,7 +56,7 @@ const ProfileInput = ({ title, id, value, initialValue, onChange }: ProfileInput
 const Profile = () => {
   const dispatch = useAppDispatch();
   const [state, setState] = useState(initialState);
-  const { image, onImageChange } = useImage(initialImage); // 이미지 상태와 변경 함수를 가져옵니다.
+  const { image, onImageChange } = useImage(initialImage);
 
   useEffect(() => {
     setState({
