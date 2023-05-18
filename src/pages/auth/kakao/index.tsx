@@ -23,7 +23,8 @@ const KakaoAuth = () => {
             router.push('/');
           },
           onError: (error) => {
-            console.error('Login failed:', error);
+            alert(error.response.data.message);
+            // console.error('Login failed:', error);
 
             router.push('/');
           },
