@@ -1,27 +1,58 @@
 import API from '@/api/API';
+import Spinner from '@/components/Spinner';
+import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
+import styled from 'styled-components';
 
 const KakaoAuth = () => {
   const router = useRouter();
 
-  useEffect(() => {
-    const handleKakaoLogin = async () => {
-      if (router.query.code) {
-        const code = router.query.code as string;
-        await API.kakaoLogin({ code });
-      }
-    };
+  const loginMutation = useMutation({ mutationFn: API.kakaoLogin });
 
+  const handleKakaoLogin = useCallback(() => {
+    if (router.query.code) {
+      const code = router.query.code as string;
+      loginMutation.mutate(
+        { code },
+        {
+          onSuccess: (response) => {
+            const { accessToken } = response.data;
+            localStorage.setItem('accessToken', accessToken);
+
+            router.push('/');
+          },
+          onError: (error) => {
+            console.error('Login failed:', error);
+
+            router.push('/');
+          },
+        }
+      );
+    }
+    // FIXME: loginMutation을 의존성 배열에 추가하면 무한루프가 걸려버림
+  }, [router]);
+
+  useEffect(() => {
     handleKakaoLogin();
-  }, [router.query]);
+  }, [handleKakaoLogin]);
 
   return (
-    <>
-      <span>{router.query.code}</span>
-      <button type='button'>클릭</button>
-    </>
+    <Wrapper>
+      <h2>로그인 중...</h2>
+      <Spinner />
+    </Wrapper>
   );
 };
+
+const Wrapper = styled.div`
+  display: flex;
+  position: absolute;
+  inset: 0 0 20%;
+  margin: auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 
 export default KakaoAuth;
