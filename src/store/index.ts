@@ -8,6 +8,7 @@ const makeStore = () => {
   const store = configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
+    devTools: process.env.NODE_ENV === 'development',
   });
   return store;
 };
