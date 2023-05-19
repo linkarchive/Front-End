@@ -17,13 +17,13 @@ const setInterceptors = (instance: AxiosInstance, token?: string) => {
       return Promise.reject(error);
     }
   );
-
   instance.interceptors.request.use(
     (config) => {
       console.log('interceptor > request', config);
       config.headers.Authorization = `Bearer ${token}`;
       return config;
     },
+
     (error) => {
       console.log('interceptor > error', error);
       return Promise.reject(error);
@@ -35,7 +35,9 @@ const createInstance = (token?: string, headers?: any) => {
   const instance = axios.create({
     baseURL: API_BASE_URL,
     timeout: 2000,
-    headers,
+    headers: headers && {
+      Authorization: `Bearer ${accessToken}`,
+    },
   });
   if (token) {
     setInterceptors(instance, token);
