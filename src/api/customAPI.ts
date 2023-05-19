@@ -6,6 +6,12 @@ import axios, { AxiosInstance } from 'axios';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const accessToken = getCookie('accessToken');
 
+let accessToken;
+// 브라우저에서만 사용할 수 있도록 하였음 next.config.js의 이슈
+if (typeof window !== 'undefined') {
+  accessToken = localStorage.getItem('accessToken');
+}
+
 const setInterceptors = (instance: AxiosInstance, token?: string) => {
   instance.interceptors.response.use(
     (response) => {
@@ -20,7 +26,7 @@ const setInterceptors = (instance: AxiosInstance, token?: string) => {
   instance.interceptors.request.use(
     (config) => {
       console.log('interceptor > request', config);
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${accessToken}`;
       return config;
     },
 
