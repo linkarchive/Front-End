@@ -6,12 +6,6 @@ import axios, { AxiosInstance } from 'axios';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const accessToken = getCookie('accessToken');
 
-let accessToken;
-
-if (typeof window !== 'undefined') {
-  accessToken = localStorage.getItem('accessToken');
-}
-
 const setInterceptors = (instance: AxiosInstance, token?: string) => {
   instance.interceptors.response.use(
     (response) => {
