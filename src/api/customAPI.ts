@@ -6,7 +6,7 @@ import axios, { AxiosInstance } from 'axios';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const accessToken = getCookie('accessToken');
 
-const setInterceptors = (instance: AxiosInstance) => {
+const setInterceptors = (instance: AxiosInstance, token?: string) => {
   instance.interceptors.response.use(
     (response) => {
       console.log('interceptor > response', response);
@@ -20,7 +20,7 @@ const setInterceptors = (instance: AxiosInstance) => {
   instance.interceptors.request.use(
     (config) => {
       console.log('interceptor > request', config);
-      config.headers.Authorization = `Bearer ${accessToken}`;
+      config.headers.Authorization = `Bearer ${token}`;
       return config;
     },
 
@@ -51,14 +51,14 @@ const axiosApi = () => {
   return createInstance();
 };
 
-const axiosAuthApi = () => {
-  return createInstance({ accessToken });
+const axiosAuthApi = (token: string) => {
+  return createInstance(token);
 };
 
-const axiosFormDataApi = () => {
-  return createInstance({ accessToken, 'Content-Type': 'multipart/form-data' });
+const axiosFormDataApi = (token: string) => {
+  return createInstance(token, { 'Content-Type': 'multipart/form-data' });
 };
 
 export const defaultInstance = axiosApi();
-export const authInstance = axiosAuthApi();
-export const authFormDataInstance = axiosFormDataApi();
+export const authInstance = axiosAuthApi(accessToken);
+export const authFormDataInstance = axiosFormDataApi(accessToken);
