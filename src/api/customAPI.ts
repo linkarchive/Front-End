@@ -6,7 +6,13 @@ import axios, { AxiosInstance } from 'axios';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const accessToken = getCookie('accessToken');
 
-const setInterceptors = (instance: AxiosInstance, token?: string) => {
+let accessToken;
+// 브라우저에서만 사용할 수 있도록 하였음 next.config.js의 이슈
+if (typeof window !== 'undefined') {
+  accessToken = localStorage.getItem('accessToken');
+}
+
+const setInterceptors = (instance: AxiosInstance) => {
   instance.interceptors.response.use(
     (response) => {
       console.log('interceptor > response', response);
@@ -51,12 +57,12 @@ const axiosApi = () => {
   return createInstance();
 };
 
-const axiosAuthApi = (token: string) => {
-  return createInstance(token);
+const axiosAuthApi = () => {
+  return createInstance({ accessToken });
 };
 
-const axiosFormDataApi = (token: string) => {
-  return createInstance(token, { 'Content-Type': 'multipart/form-data' });
+const axiosFormDataApi = () => {
+  return createInstance({ accessToken, 'Content-Type': 'multipart/form-data' });
 };
 
 export const defaultInstance = axiosApi();
