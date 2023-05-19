@@ -51,12 +51,12 @@ const axiosApi = () => {
   return createInstance();
 };
 
-const axiosAuthApi = (token: string) => {
-  return createInstance(token);
+const axiosAuthApi = () => {
+  return createInstance({ token });
 };
 
-const axiosFormDataApi = (token: string) => {
-  return createInstance(token, { 'Content-Type': 'multipart/form-data' });
+const axiosFormDataApi = () => {
+  return createInstance({ token, 'Content-Type': 'multipart/form-data' });
 };
 
 export const defaultInstance = axiosApi();
