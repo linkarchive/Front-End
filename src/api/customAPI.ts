@@ -26,7 +26,7 @@ const setInterceptors = (instance: AxiosInstance, token?: string) => {
   instance.interceptors.request.use(
     (config) => {
       console.log('interceptor > request', config);
-      config.headers.Authorization = `Bearer ${accessToken}`;
+      config.headers.Authorization = `Bearer ${token}`;
       return config;
     },
 
