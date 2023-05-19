@@ -6,7 +6,7 @@ import axios, { AxiosInstance } from 'axios';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const accessToken = getCookie('accessToken');
 
-const setInterceptors = (instance: AxiosInstance, token?: string) => {
+const setInterceptors = (instance: AxiosInstance) => {
   instance.interceptors.response.use(
     (response) => {
       console.log('interceptor > response', response);
@@ -20,7 +20,7 @@ const setInterceptors = (instance: AxiosInstance, token?: string) => {
   instance.interceptors.request.use(
     (config) => {
       console.log('interceptor > request', config);
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${accessToken}`;
       return config;
     },
 
@@ -52,11 +52,11 @@ const axiosApi = () => {
 };
 
 const axiosAuthApi = () => {
-  return createInstance(accessToken);
+  return createInstance({ accessToken });
 };
 
 const axiosFormDataApi = () => {
-  return createInstance(accessToken, { 'Content-Type': 'multipart/form-data' });
+  return createInstance({ accessToken, 'Content-Type': 'multipart/form-data' });
 };
 
 export const defaultInstance = axiosApi();
