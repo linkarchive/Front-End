@@ -18,19 +18,19 @@ const KakaoAuth = () => {
         {
           onSuccess: (response) => {
             const { accessToken } = response.data;
-            localStorage.setItem('accessToken', accessToken);
+
+            const expires = new Date();
+            expires.setHours(expires.getHours() + 1); // 1시간 후에 만료
+            document.cookie = `accessToken=${accessToken}; expires=${expires.toUTCString()}; path=/; secure`;
 
             router.push('/');
           },
           onError: (error) => {
-            // console.error('Login failed:', error);
-
             router.push('/');
           },
         }
       );
     }
-    // FIXME: loginMutation을 의존성 배열에 추가하면 무한루프가 걸려버림
   }, [router]);
 
   useEffect(() => {
