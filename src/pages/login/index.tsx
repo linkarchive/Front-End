@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { KakaoAuthUrl } from '../../constants';
 import Link from 'next/link';
 import Image from 'next/image';
 import styled from 'styled-components';
+import { routerSlice } from '@/store/slices/routerSlice';
+import { useAppDispatch } from '@/store';
 
 const Login = () => {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(routerSlice.actions.loadLoginPage());
+  }, [dispatch]);
+
   return (
     <Wrapper>
       <h2>로그인 해주세요.</h2>
