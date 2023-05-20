@@ -31,7 +31,7 @@ const setInterceptors = (instance: AxiosInstance, token?: string) => {
   );
 };
 
-const createInstance = (token?: string, headers?: any) => {
+export const createInstance = (token?: string, headers?: any) => {
   const instance = axios.create({
     baseURL: API_BASE_URL,
     timeout: 2000,
