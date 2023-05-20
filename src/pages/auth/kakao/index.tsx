@@ -1,5 +1,6 @@
 import API from '@/api/API';
 import Spinner from '@/components/Spinner';
+import { setCookie } from '@/utils';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect } from 'react';
@@ -18,10 +19,7 @@ const KakaoAuth = () => {
         {
           onSuccess: (response) => {
             const { accessToken } = response.data;
-
-            const expires = new Date();
-            expires.setHours(expires.getHours() + 1); // 1시간 후에 만료
-            document.cookie = `accessToken=${accessToken}; expires=${expires.toUTCString()}; path=/; secure`;
+            setCookie('accessToken', accessToken);
 
             router.push('/');
           },
