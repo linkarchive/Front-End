@@ -1,14 +1,10 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { getCookie } from '@/utils';
 import axios, { AxiosInstance } from 'axios';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-
-let accessToken;
-
-if (typeof window !== 'undefined') {
-  accessToken = localStorage.getItem('accessToken');
-}
+const accessToken = getCookie('accessToken');
 
 const setInterceptors = (instance: AxiosInstance, token?: string) => {
   instance.interceptors.response.use(
