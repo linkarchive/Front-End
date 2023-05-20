@@ -31,7 +31,7 @@ const setInterceptors = (instance: AxiosInstance, token?: string) => {
   );
 };
 
-export const createInstance = (token?: string, headers?: any) => {
+const createInstance = (token?: string, headers?: any) => {
   const instance = axios.create({
     baseURL: API_BASE_URL,
     timeout: 2000,
@@ -51,12 +51,12 @@ const axiosApi = () => {
   return createInstance();
 };
 
-const axiosAuthApi = () => {
-  return createInstance({ accessToken });
+const axiosAuthApi = (token: string) => {
+  return createInstance(token);
 };
 
-const axiosFormDataApi = () => {
-  return createInstance({ accessToken, 'Content-Type': 'multipart/form-data' });
+const axiosFormDataApi = (token: string) => {
+  return createInstance(token, { 'Content-Type': 'multipart/form-data' });
 };
 
 export const defaultInstance = axiosApi();
