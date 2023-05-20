@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { authInstance, defaultInstance } from './customAPI';
+import { authInstance, createInstance, defaultInstance } from './customAPI';
 import { KakaoType } from './types';
 
 const API = {
@@ -64,8 +64,28 @@ const API = {
     return response;
   },
 
-  getUserProfile: async (userId: number) => {
-    const response = await defaultInstance.get(`user/${userId}`);
+  getUserProfile: async (token?: string, userId?: string) => {
+    let instance;
+    if (token) {
+      // 서버사이드에서 토큰을 직접 사용
+      instance = createInstance(token);
+    } else {
+      // 클라이언트사이드에서는 인터셉터가 토큰을 설정
+      instance = authInstance;
+    }
+
+    // userId 값에 따라 endpoint를 다르게 설정
+    const endpoint = userId ? `user/${userId}` : 'user';
+    const response = await instance.get(endpoint);
+
+    return response;
+  },
+
+  updateUserProfile: async (name: string, intro: string) => {
+    const response = await authInstance.patch('user', {
+      name,
+      intro,
+    });
     return response;
   },
 };
