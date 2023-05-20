@@ -15,29 +15,35 @@ type ProfileInputProps = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const dummyData = {
-  name: '오징어게임 기훈이형',
-  intro: '기훈이 형!!',
+interface ProfileProps {
+  userData: UserData;
+}
+
+type UserData = {
+  userId: number;
+  name: string;
+  intro: string;
+  profileImage: string;
 };
 
 const initialState = {
+  userId: 0,
   name: { value: '', initialValue: '' },
   intro: { value: '', initialValue: '' },
+  profileImage: '',
 };
 
+const initialImage = '/blanc.jpeg';
+
 export async function getServerSideProps(context) {
-  // id를 URL 파라미터에서 가져옵니다
-  const { id } = context.query;
+  const { req } = context;
+  const token = req.cookies.accessToken;
 
-  // 데이터를 서버에서 불러옵니다. 실제로는 API 요청을 사용해야 합니다.
-  const userData = await API.getUserProfile(id);
+  const userData = await API.getUserProfile(token);
 
-  // 불러온 데이터를 props로 반환합니다
-  return { props: { userData } };
+  return { props: { userData: userData.data } };
 }
 
-const initialImage = '/blanc.jpeg';
-// FIXME: userData로 변경해야함.. id를 파라미터에서 어떻게 가지고 올까?
 const ProfileInput = ({ title, id, value, initialValue, onChange }: ProfileInputProps) => (
   <ProfileInputWrapper>
     <label htmlFor={id}>
@@ -53,18 +59,20 @@ const ProfileInput = ({ title, id, value, initialValue, onChange }: ProfileInput
   </ProfileInputWrapper>
 );
 
-const Profile = () => {
+const Profile = ({ userData }: ProfileProps) => {
   const dispatch = useAppDispatch();
   const [state, setState] = useState(initialState);
   const { image, onImageChange } = useImage(initialImage);
 
   useEffect(() => {
     setState({
-      name: { value: dummyData.name, initialValue: dummyData.name },
-      intro: { value: dummyData.intro, initialValue: dummyData.intro },
+      ...state,
+      userId: userData.userId,
+      name: { value: userData.name, initialValue: userData.name },
+      // intro: { value: userData.intro, initialValue: userData.intro },
     });
     dispatch(routerSlice.actions.loadProfileDetailPage());
-  }, [dispatch]);
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
