@@ -62,12 +62,12 @@ const ProfileInput = ({ title, id, value, initialValue, onChange }: ProfileInput
 
 const Profile = ({ userData }: ProfileProps) => {
   const dispatch = useAppDispatch();
-  const [state, setState] = useState(initialState);
+  const [profile, setProfile] = useState(initialState);
   const { image, onImageChange } = useImage(initialImage);
 
   useEffect(() => {
-    setState({
-      ...state,
+    setProfile({
+      ...profile,
       userId: userData.userId,
       name: { value: userData.name, initialValue: userData.name },
       intro: { value: userData.intro, initialValue: userData.intro },
@@ -77,7 +77,7 @@ const Profile = ({ userData }: ProfileProps) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
-    setState((prevState) => ({
+    setProfile((prevState) => ({
       ...prevState,
       [id]: { ...prevState[id], value },
     }));
@@ -102,8 +102,8 @@ const Profile = ({ userData }: ProfileProps) => {
           </SvgIcon>
         </ImgContainer>
       </ImgWrapper>
-      <ProfileInput title='이름' id='name' {...state.name} onChange={handleChange} />
-      <ProfileInput title='자기소개' id='intro' {...state.intro} onChange={handleChange} />
+      <ProfileInput title='이름' id='name' {...profile.name} onChange={handleChange} />
+      <ProfileInput title='자기소개' id='intro' {...profile.intro} onChange={handleChange} />
     </FormWrapper>
   );
 };
