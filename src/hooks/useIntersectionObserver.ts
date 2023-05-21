@@ -6,7 +6,7 @@ const useIntersectionObserver = ({
   options,
   enabled,
 }: {
-  target: RefObject<HTMLDivElement>;
+  target: RefObject<HTMLElement>;
   onIntersection: (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => void;
   options?: IntersectionObserverInit;
   enabled?: boolean;
