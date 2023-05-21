@@ -54,13 +54,9 @@ const API = {
 
   uploadImage: async (file: File): Promise<AxiosResponse> => {
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('image', file);
 
-    const response = await defaultInstance.post(`profileImage`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    const response = await authInstance.patch(`profile-image`, formData);
     return response;
   },
 
