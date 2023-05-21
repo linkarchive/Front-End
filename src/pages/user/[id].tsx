@@ -22,14 +22,14 @@ interface ProfileProps {
 type UserData = {
   userId: number;
   name: string;
-  intro: string;
+  introduce: string;
   profileImage: string;
 };
 
 const initialState = {
   userId: 0,
   name: { value: '', initialValue: '' },
-  intro: { value: '', initialValue: '' },
+  introduce: { value: '', initialValue: '' },
   profileImage: '',
 };
 
@@ -70,7 +70,7 @@ const Profile = ({ userData }: ProfileProps) => {
       ...profile,
       userId: userData.userId,
       name: { value: userData.name, initialValue: userData.name },
-      intro: { value: userData.intro, initialValue: userData.intro },
+      introduce: { value: userData.introduce, initialValue: userData.introduce },
     });
     dispatch(routerSlice.actions.loadProfileDetailPage());
   }, []);
@@ -103,7 +103,12 @@ const Profile = ({ userData }: ProfileProps) => {
         </ImgContainer>
       </ImgWrapper>
       <ProfileInput title='이름' id='name' {...profile.name} onChange={handleChange} />
-      <ProfileInput title='자기소개' id='intro' {...profile.intro} onChange={handleChange} />
+      <ProfileInput
+        title='자기소개'
+        id='introduce'
+        {...profile.introduce}
+        onChange={handleChange}
+      />
     </FormWrapper>
   );
 };
