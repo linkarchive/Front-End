@@ -1,9 +1,9 @@
 import React from 'react';
-import BottomNav, { BottomNavHight } from '@/components/BottomNav';
+import BottomNav, { BottomNavHight } from '@/components/BottomNav/BottomNav';
 import styled from 'styled-components';
 import HomeHeader from '@/components/Home/HomeHeader';
-import Header from '@/components/Header';
 import { useSelector } from 'react-redux';
+import Header from '@/components/Header/Header';
 import { RootState } from '@/store';
 import ExploreHeader from '@/components/Explore/ExploreHeader';
 import ProfileHeader from '@/components/Profile/ProfileHeader';
