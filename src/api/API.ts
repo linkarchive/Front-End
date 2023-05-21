@@ -64,7 +64,7 @@ const API = {
     return response;
   },
 
-  getUserProfile: async (token?: string, userId?: string) => {
+  getUserProfile: async (userId: string, token?: string) => {
     let instance;
     if (token) {
       // 서버사이드에서 토큰을 직접 사용
@@ -73,11 +73,7 @@ const API = {
       // 클라이언트사이드에서는 인터셉터가 토큰을 설정
       instance = authInstance;
     }
-
-    // userId 값에 따라 endpoint를 다르게 설정
-    const endpoint = userId ? `user/${userId}` : 'user';
-    const response = await instance.get(endpoint);
-
+    const response = await instance.get(`user/${userId}`);
     return response;
   },
 
