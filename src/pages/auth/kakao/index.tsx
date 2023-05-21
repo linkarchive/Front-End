@@ -24,14 +24,11 @@ const KakaoAuth = () => {
             router.push('/');
           },
           onError: (error) => {
-            // console.error('Login failed:', error);
-
             router.push('/');
           },
         }
       );
     }
-    // FIXME: loginMutation을 의존성 배열에 추가하면 무한루프가 걸려버림
   }, [router]);
 
   useEffect(() => {
