@@ -11,7 +11,7 @@ const LinkWithProfile = ({ userId, name, profileImage, ...props }: LinkWithProfi
         <Profile>
           <Link href={href}>
             <div className='profile'>
-              <Image src='/test.png' alt='profile' fill />
+              <img src={profileImage} alt='profile' />
             </div>
           </Link>
           <Link className='name' href={href}>

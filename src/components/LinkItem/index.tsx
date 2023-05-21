@@ -19,7 +19,7 @@ const LinkItem = ({ Header, ...props }: LinkItemProps) => {
           </div>
           <div className='thumb'>
             <a href='/' target='_blank' rel='noreferrer noopener'>
-              <Image src='/test.png' alt='' fill />
+              <img src={thumbnail} alt={title} />
             </a>
           </div>
         </div>
