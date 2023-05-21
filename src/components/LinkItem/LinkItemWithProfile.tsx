@@ -1,11 +1,10 @@
 import Image from 'next/image';
-import LinkItem from '@/components/LinkItem';
+import LinkItem, { LinkWithProfileProps } from '@/components/LinkItem';
 import styled from 'styled-components';
 import Link from 'next/link';
 
-const LinkWithProfile = () => {
-  const id = 1;
-  const href = `/explore/user/${id}`;
+const LinkWithProfile = ({ userId, name, profileImage, ...props }: LinkWithProfileProps) => {
+  const href = `/explore/user/${userId}`;
   return (
     <LinkItem
       Header={
@@ -16,10 +15,11 @@ const LinkWithProfile = () => {
             </div>
           </Link>
           <Link className='name' href={href}>
-            닉네임
+            {name}
           </Link>
         </Profile>
       }
+      {...props}
     />
   );
 };
