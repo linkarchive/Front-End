@@ -10,7 +10,7 @@ type UserBtnProps = {
 const UserBtn = ({ activeItem }: UserBtnProps) => {
   return (
     <SvgWrapper>
-      <Link href='/user'>
+      <Link href='/user/profile'>
         <SvgIcon isActive={activeItem === 'user'}>
           <UserSvgIcon />
         </SvgIcon>

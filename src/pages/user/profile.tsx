@@ -4,6 +4,8 @@ import Link from 'next/link';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
+const Nickname = '1yoouoo';
+
 const User = () => {
   const dispatch = useAppDispatch();
 
@@ -13,7 +15,7 @@ const User = () => {
 
   return (
     <>
-      <Link href='user/profile'>
+      <Link href={`${Nickname}`}>
         <h3>프로필</h3>
       </Link>
       <Link href=''>
