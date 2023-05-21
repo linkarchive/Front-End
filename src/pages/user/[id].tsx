@@ -38,8 +38,9 @@ const initialImage = '/blanc.jpeg';
 export async function getServerSideProps(context) {
   const { req } = context;
   const token = req.cookies.accessToken;
+  const userId = context.params.id;
 
-  const userData = await API.getUserProfile(token);
+  const userData = await API.getUserProfile(userId, token);
 
   return { props: { userData: userData.data } };
 }
@@ -69,7 +70,7 @@ const Profile = ({ userData }: ProfileProps) => {
       ...state,
       userId: userData.userId,
       name: { value: userData.name, initialValue: userData.name },
-      // intro: { value: userData.intro, initialValue: userData.intro },
+      intro: { value: userData.intro, initialValue: userData.intro },
     });
     dispatch(routerSlice.actions.loadProfileDetailPage());
   }, []);
