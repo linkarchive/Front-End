@@ -4,7 +4,7 @@ import Link from 'next/link';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
-const Nickname = '1yoouoo';
+const Nickname = '11';
 
 const User = () => {
   const dispatch = useAppDispatch();
