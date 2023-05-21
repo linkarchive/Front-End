@@ -1,5 +1,6 @@
 import API from '@/api/API';
 import Spinner from '@/components/Spinner';
+import { ACCESS_TOKEN } from '@/constants';
 import { setCookie } from '@/utils';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
@@ -19,7 +20,7 @@ const KakaoAuth = () => {
         {
           onSuccess: (response) => {
             const { accessToken } = response.data;
-            setCookie('accessToken', accessToken);
+            setCookie(ACCESS_TOKEN, accessToken);
 
             router.push('/');
           },

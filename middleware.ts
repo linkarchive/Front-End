@@ -1,8 +1,9 @@
+import { ACCESS_TOKEN } from '@/constants';
 import { NextRequest, NextResponse } from 'next/server';
 
 export function middleware(request: NextRequest) {
   console.log('Middleware is running');
-  const accessToken = request.cookies.get('accessToken');
+  const accessToken = request.cookies.get(ACCESS_TOKEN);
   // home 페이지는 토큰이 없어도 접근 가능
   if (request.nextUrl.pathname.startsWith('/')) {
     return NextResponse.next();
