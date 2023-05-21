@@ -16,7 +16,7 @@ const User = () => {
 
   return (
     <>
-      <Link href={userId}>
+      <Link href={`/user/${userId}`}>
         <h3>프로필</h3>
       </Link>
       <Link href=''>
