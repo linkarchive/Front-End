@@ -6,7 +6,7 @@ const ProfileHeader = () => {
   return (
     <Wrapper>
       <nav>
-        <Link href='/user'>
+        <Link href='/user/profile'>
           <Title>My</Title>
         </Link>
       </nav>
