@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import HomeSvgIcon from 'public/assets/svg/home.svg';
-import { SvgIcon, SvgWrapper } from './SvgStyle.styled';
+import { SvgIcon, SvgWrapper } from '../SvgStyle.styled';
 
 type HomeBtnProps = {
   activeItem: string;

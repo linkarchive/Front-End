@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import styled from 'styled-components';
 import API from '@/api/API';
-import { BottomNavHight } from '@/components/BottomNav';
+import { BottomNavHight } from '@/components/BottomNav/BottomNav';
 import Input, { InputWithButton } from '@/components/Input';
 import LinkInfo from '@/components/Create/LinkInfo';
 import HashTagList from '@/components/Create/HashTagList';
