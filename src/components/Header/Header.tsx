@@ -1,4 +1,4 @@
-import GoBackBtn from '@/components/GoBackBtn';
+import GoBackBtn from '@/components/Header/GoBackBtn';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
@@ -9,7 +9,7 @@ const Header = () => {
   return (
     <Wrapper>
       <nav>
-        {/* FIXME 뒤로가기 버튼 크기 조정 */}
+        {/* FIXME: 뒤로가기 버튼 크기 조정 */}
         <GoBackBtn />
         <Title>{name}</Title>
       </nav>

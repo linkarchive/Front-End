@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import UserSvgIcon from 'public/assets/svg/user.svg';
-import { SvgIcon, SvgWrapper } from './SvgStyle.styled';
+import { SvgIcon, SvgWrapper } from '../SvgStyle.styled';
 
 type UserBtnProps = {
   activeItem: string;

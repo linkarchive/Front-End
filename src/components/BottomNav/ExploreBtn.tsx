@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import SearchSvgIcon from 'public/assets/svg/search.svg';
-import { SvgIcon, SvgWrapper } from './SvgStyle.styled';
+import { SvgIcon, SvgWrapper } from '../SvgStyle.styled';
 
 type ExploreBtnProps = {
   activeItem: string;

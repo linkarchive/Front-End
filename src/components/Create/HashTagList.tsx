@@ -1,4 +1,4 @@
-import HashTag from '@/components/HashTag';
+import HashTag from '@/components/HashTag/HashTag';
 import styled from 'styled-components';
 
 const HashTagList = ({

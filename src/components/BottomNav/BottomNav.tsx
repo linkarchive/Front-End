@@ -1,9 +1,9 @@
-import HomeBtn from './HomeBtn';
-import ExploreBtn from '@/components/ExploreBtn';
-import UserBtn from '@/components/UserBtn';
+import ExploreBtn from '@/components/BottomNav/ExploreBtn';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
+import HomeBtn from './HomeBtn';
+import UserBtn from './UserBtn';
 
 const BottomNavHight = '70px';
 
