@@ -1,5 +1,5 @@
-import axios, { AxiosResponse } from 'axios';
-import { defaultInstance } from './customAPI';
+import { AxiosResponse } from 'axios';
+import { authInstance, defaultInstance } from './customAPI';
 import { KakaoType } from './types';
 
 const API = {
@@ -20,7 +20,7 @@ const API = {
   },
 
   getUrlMetadata: async (url: string) => {
-    const response = await defaultInstance.get(`link/metadata`, {
+    const response = await authInstance.get(`link/metadata`, {
       params: {
         url,
       },

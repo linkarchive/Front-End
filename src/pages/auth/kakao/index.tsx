@@ -1,47 +1,56 @@
 import API from '@/api/API';
+import Spinner from '@/components/Spinner';
+import { setCookie } from '@/utils';
+import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
+import styled from 'styled-components';
 
 const KakaoAuth = () => {
   const router = useRouter();
 
-  useEffect(() => {
-    const handleKakaoLogin = async () => {
-      if (router.query.code) {
-        const code = router.query.code as string;
-        const response = await API.kakaoLogin({ code });
-        const token = response.data.accessToken;
+  const loginMutation = useMutation({ mutationFn: API.kakaoLogin });
 
-        // localStorage에 토큰을 저장하는 Promise 생성
-        const storagePromise = new Promise((resolve, reject) => {
-          localStorage.setItem('accessToken', token);
-          if (localStorage.getItem('accessToken')) {
-            resolve(true);
-          } else {
-            reject(new Error('토큰 저장 실패'));
-          }
-        });
+  const handleKakaoLogin = useCallback(() => {
+    if (router.query.code) {
+      const code = router.query.code as string;
+      loginMutation.mutate(
+        { code },
+        {
+          onSuccess: (response) => {
+            const { accessToken } = response.data;
+            setCookie('accessToken', accessToken);
 
-        // 토큰 저장이 완료되면 이전 페이지로 이동
-        storagePromise
-          .then(() => {
-            router.back();
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      }
-    };
-
-    handleKakaoLogin();
+            router.push('/');
+          },
+          onError: (error) => {
+            router.push('/');
+          },
+        }
+      );
+    }
   }, [router]);
 
+  useEffect(() => {
+    handleKakaoLogin();
+  }, [handleKakaoLogin]);
+
   return (
-    <>
-      <span>{router.query.code}</span>
-      <button type='button'>클릭</button>
-    </>
+    <Wrapper>
+      <h2>로그인 중...</h2>
+      <Spinner />
+    </Wrapper>
   );
 };
+
+const Wrapper = styled.div`
+  display: flex;
+  position: absolute;
+  inset: 0 0 20%;
+  margin: auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 
 export default KakaoAuth;

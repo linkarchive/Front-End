@@ -32,6 +32,10 @@ export const routerSlice = createSlice({
       state.status = 'OTHER';
       state.name = '링크 추가';
     },
+    loadLoginPage(state) {
+      state.status = 'OTHER';
+      state.name = '로그인';
+    },
     // 페이지 추가시 reducer추가
   },
 });
