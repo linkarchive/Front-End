@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { defaultInstance } from './customAPI';
 import { KakaoType } from './types';
 
@@ -49,6 +49,11 @@ const API = {
 
   getTagsByUserId: async (userId: string) => {
     const response = await defaultInstance.get(`tags/userId${userId}`);
+    return response;
+  },
+
+  getLinksArchive: async (urlId?: string) => {
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_DOMAIN}/api/links/${urlId}`); // TODO 목업 API  /** 실제 리소스 ?urlId=${urlId} */
     return response;
   },
 };
