@@ -1,13 +1,14 @@
+import { USER_ID } from '@/constants';
 import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
+import { getCookie } from '@/utils';
 import Link from 'next/link';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
-const Nickname = '11';
-
 const User = () => {
   const dispatch = useAppDispatch();
+  const userId = getCookie(USER_ID);
 
   useEffect(() => {
     dispatch(routerSlice.actions.loadProfilePage());
@@ -15,7 +16,7 @@ const User = () => {
 
   return (
     <>
-      <Link href={`${Nickname}`}>
+      <Link href={userId}>
         <h3>프로필</h3>
       </Link>
       <Link href=''>
