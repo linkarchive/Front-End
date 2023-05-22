@@ -41,7 +41,7 @@ const API = {
   },
 
   getLinksArchive: async (linkId?: string) => {
-    const response = await authInstance.get(`links/archive`, { params: { linkId } });
+    const response = await authInstance.get(`links/archive?linkId=${linkId}`); // await axios.get(`${process.env.NEXT_PUBLIC_DOMAIN}/api/links/${urlId}`); // TODO 목업 API  /** 실제 리소스 ?urlId=${urlId} */
     return response;
   },
 
