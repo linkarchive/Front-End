@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-const Tag = () => {
-  return <Wrapper>태그</Wrapper>;
+const Tag = ({ text }: { text: string }) => {
+  return <Wrapper>{text}</Wrapper>;
 };
 
 export default Tag;

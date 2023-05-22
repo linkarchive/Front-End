@@ -2,30 +2,29 @@ import styled from 'styled-components';
 import Image from 'next/image';
 import LinkItemWithProfile from '@/components/LinkItem/LinkItemWithProfile';
 import TagLabelList from '@/components/LinkItem/TagLabelList';
+import { LinkItemProps, LinkWithProfileProps, Tag } from './LinkItem.type';
 
-const LinkItem = ({ Header }: { Header?: JSX.Element }) => {
+const LinkItem = ({ Header, ...props }: LinkItemProps) => {
+  const { urlId, link, title, description, thumbnail, bookMarkCount, tagList } = props;
+
   return (
     <Wrapper>
       <article>
         {Header}
         <div className='info'>
           <div className='contents'>
-            <h1 className='title'>제목</h1>
-            <p className='domain'>http:werwe</p>
-            <p className='desc'>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint itaque magnam laborum,
-              voluptatibus consequuntur ducimus doloribus est, aut laboriosam atque ipsam blanditiis
-              nam vitae aspernatur reiciendis fugit iure, assumenda dolore.
-            </p>
+            <h1 className='title'>{title}</h1>
+            <p className='domain'>{link}</p>
+            <p className='desc'>{description}</p>
           </div>
           <div className='thumb'>
             <a href='/' target='_blank' rel='noreferrer noopener'>
-              <Image src='/test.png' alt='' fill />
+              <img src={thumbnail} alt={title} />
             </a>
           </div>
         </div>
 
-        <TagLabelList className='tag-list' />
+        <TagLabelList className='tag-list' tags={tagList} />
 
         <div className='utils'>
           <div className='read'>
@@ -38,7 +37,7 @@ const LinkItem = ({ Header }: { Header?: JSX.Element }) => {
             <div className='icon'>
               <Image src='/assets/svg/link.svg' alt='' fill />
             </div>
-            32
+            {bookMarkCount}
           </button>
         </div>
       </article>
@@ -48,6 +47,7 @@ const LinkItem = ({ Header }: { Header?: JSX.Element }) => {
 
 export default LinkItem;
 export { LinkItem, LinkItemWithProfile };
+export type { LinkItemProps, LinkWithProfileProps, Tag };
 
 const Wrapper = styled.div`
   padding: 24px 0 16px;

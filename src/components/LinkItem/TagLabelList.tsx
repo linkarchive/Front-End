@@ -1,15 +1,22 @@
 import TagLabel from '@/components/LinkItem/TagLabel';
 import styled from 'styled-components';
+import { Tag } from '@/components/LinkItem/';
 
-const TagLabelList = ({ className }: { className?: string }) => {
+const TagLabelList = ({ className, tags }: { className?: string; tags: Tag[] }) => {
+  const tagList = tags
+    ? (tags.reduce((arr: unknown[], item) => {
+        arr.push(Object.values(item)[0]);
+        return arr;
+      }, []) as string[])
+    : [];
+
   return (
     <Wrapper className={className}>
-      <li>
-        <TagLabel />
-      </li>
-      <li>
-        <TagLabel />
-      </li>
+      {tagList.map((tag, id) => (
+        <li key={`${tag}${id}`}>
+          <TagLabel text={tag as string} />
+        </li>
+      ))}
     </Wrapper>
   );
 };

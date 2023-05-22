@@ -40,6 +40,11 @@ const API = {
     return response;
   },
 
+  getLinksArchive: async (linkId?: string) => {
+    const response = await authInstance.get(`links/archive`, { params: { linkId } });
+    return response;
+  },
+
   createTag: async (tag: string) => {
     const response = await defaultInstance.post(`tag`, {
       tag,
