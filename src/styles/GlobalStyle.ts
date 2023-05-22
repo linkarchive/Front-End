@@ -37,6 +37,7 @@ const GlobalStyle = createGlobalStyle`
     --border-color-gray: ${theme.borderColor.mediumGray};
     --border-color-lightgray: ${theme.borderColor.lightGray};
     --border-color-lighter-gray: ${theme.borderColor.lighterGray};
+    --border-color-primary: ${theme.borderColor.primary};
 
     --default-width: ${theme.default.width};
 
@@ -44,7 +45,11 @@ const GlobalStyle = createGlobalStyle`
     --svg-height-xxl: ${theme.SvgIconSize.xxl};
     --svg-width-md: ${theme.SvgIconSize.md};
     --svg-height-md: ${theme.SvgIconSize.md};
+    --svg-width-sm: ${theme.SvgIconSize.sm};
+    --svg-height-sm: ${theme.SvgIconSize.sm};
     --svg-color-default: ${theme.SvgIconColor.default};
+    --svg-color-white: ${theme.SvgIconColor.white};
+    --svg-color-lightGray: ${theme.SvgIconColor.lightGray};
     --svg-color-hover: ${theme.SvgIconColor.hover};
     --svg-color-click: ${theme.SvgIconColor.click};
     --svg-color-active: ${theme.SvgIconColor.active};

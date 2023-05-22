@@ -9,6 +9,12 @@ import styled from 'styled-components';
 
 const Explore = () => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const onClick = () => {
+    dispatch(userSlice.actions.getSelectedUserData(dummyData));
+    router.push(`/user/${dummyData.id}`);
+  };
 
   useEffect(() => {
     dispatch(routerSlice.actions.loadExplorePage());

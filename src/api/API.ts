@@ -1,5 +1,5 @@
-import axios, { AxiosResponse } from 'axios';
-import { authInstance, defaultInstance } from './customAPI';
+import { AxiosResponse } from 'axios';
+import { authInstance, createInstance, defaultInstance } from './customAPI';
 import { KakaoType } from './types';
 
 const API = {
@@ -52,8 +52,32 @@ const API = {
     return response;
   },
 
-  getLinksArchive: async (linkId?: string) => {
-    const response = await authInstance.get(`links/archive?linkId=${linkId}`);
+  uploadImage: async (file: File): Promise<AxiosResponse> => {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const response = await authInstance.patch(`profile-image`, formData);
+    return response;
+  },
+
+  getUserProfile: async (userId: string, token?: string) => {
+    let instance;
+    if (token) {
+      // 서버사이드에서 토큰을 직접 사용
+      instance = createInstance(token);
+    } else {
+      // 클라이언트사이드에서는 인터셉터가 토큰을 설정
+      instance = authInstance;
+    }
+    const response = await instance.get(`user/${userId}`);
+    return response;
+  },
+
+  updateUserProfile: async (name: string, intro: string) => {
+    const response = await authInstance.patch('user', {
+      name,
+      intro,
+    });
     return response;
   },
 };
