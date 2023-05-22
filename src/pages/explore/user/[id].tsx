@@ -16,11 +16,6 @@ const User = () => {
     <>
       <Profile />
       <Nav />
-      <LinkItem />
-      <LinkItem />
-      <LinkItem />
-      <LinkItem />
-      <LinkItem />
     </>
   );
 };
