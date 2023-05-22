@@ -39,7 +39,7 @@ const Create = () => {
     } = useQuery(['freqTagList'], { queryFn: () => API.tagsByUserId(''), enabled: false });
   */
   const getURLMetadata = useQuery(['metadata', urlInput.current], {
-    queryFn: () => API.getUrlMetadata(encodeURIComponent(urlInput.current)),
+    queryFn: () => API.getUrlMetadata(urlInput.current),
     enabled: isValid,
     retry: false,
   });
