@@ -14,12 +14,6 @@ const Home = () => {
   return (
     <div>
       <CreateBtn />
-
-      <LinkItem />
-      <LinkItem />
-      <LinkItem />
-      <LinkItem />
-      <LinkItem />
     </div>
   );
 };
