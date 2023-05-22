@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { authInstance, defaultInstance } from './customAPI';
 import { KakaoType } from './types';
 
