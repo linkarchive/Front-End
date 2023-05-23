@@ -3,15 +3,15 @@ import Link from 'next/link';
 import SearchSvgIcon from 'public/assets/svg/search.svg';
 import { SvgIcon, SvgWrapper } from '../SvgStyle.styled';
 
-type ExploreBtnProps = {
+type ArchiveBtnProps = {
   activeItem: string;
 };
 
-const ExploreBtn = ({ activeItem }: ExploreBtnProps) => {
+const ArchiveBtn = ({ activeItem }: ArchiveBtnProps) => {
   return (
     <SvgWrapper>
-      <Link href='/explore'>
-        <SvgIcon isActive={activeItem === 'explore'}>
+      <Link href='/archive'>
+        <SvgIcon isActive={activeItem === 'archive'}>
           <SearchSvgIcon />
         </SvgIcon>
       </Link>
@@ -19,4 +19,4 @@ const ExploreBtn = ({ activeItem }: ExploreBtnProps) => {
   );
 };
 
-export default ExploreBtn;
+export default ArchiveBtn;

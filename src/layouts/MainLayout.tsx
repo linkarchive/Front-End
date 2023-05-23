@@ -5,15 +5,15 @@ import HomeHeader from '@/components/Home/HomeHeader';
 import { useSelector } from 'react-redux';
 import Header from '@/components/Header/Header';
 import { RootState } from '@/store';
-import ExploreHeader from '@/components/Explore/ExploreHeader';
-import ProfileHeader from '@/components/Profile/ProfileHeader';
+import ArchiveHeader from '@/components/Archive/ArchiveHeader';
+import SettingsHeader from '@/components/Settings/SettingsHeader';
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const { status, current } = useSelector((state: RootState) => state.router);
   const main = status === 'MAIN';
   const home = current === 'HOME';
-  const explore = current === 'EXPLORE';
-  const profile = current === 'PROFILE';
+  const Archive = current === 'ARCHIVE';
+  const settings = current === 'SETTINGS';
   return (
     <>
       <WaterMark />
@@ -21,8 +21,8 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
       {main && (
         <>
           {home && <HomeHeader />}
-          {explore && <ExploreHeader />}
-          {profile && <ProfileHeader />}
+          {Archive && <ArchiveHeader />}
+          {settings && <SettingsHeader />}
         </>
       )}
       <Main>{children}</Main>

@@ -1,6 +1,6 @@
 import LinkItem from '@/components/LinkItem';
-import Nav from '@/components/Explore/User/Nav';
-import Profile from '@/components/Explore/User/Profile';
+import Nav from '@/components/Archive/User/Nav';
+import Profile from '@/components/Archive/User/Profile';
 import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
 import React, { useEffect } from 'react';
