@@ -65,23 +65,20 @@ const API = {
     return response;
   },
 
-  getUserProfile: async (userId: string, token?: string) => {
-    let instance;
-    if (token) {
-      // 서버사이드에서 토큰을 직접 사용
-      instance = createInstance(token);
-    } else {
-      // 클라이언트사이드에서는 인터셉터가 토큰을 설정
-      instance = authInstance;
-    }
-    const response = await instance.get(`user/${userId}`);
+  getMyProfile: async () => {
+    const response = await authInstance.get(`user`);
     return response;
   },
 
-  updateUserProfile: async (name: string, intro: string) => {
+  getUserProfile: async (userId: number) => {
+    const response = await defaultInstance.get(`user/${userId}`);
+    return response;
+  },
+
+  updateUserProfile: async (name: string, introduce: string) => {
     const response = await authInstance.patch('user', {
       name,
-      intro,
+      introduce,
     });
     return response;
   },
