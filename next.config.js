@@ -7,4 +7,7 @@ module.exports = {
     });
     return config;
   },
+  images: {
+    domains: ['linkarchive-profile.s3.ap-northeast-2.amazonaws.com'],
+  },
 };

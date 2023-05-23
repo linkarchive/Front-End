@@ -27,5 +27,9 @@ export const useImage = (initialImage: string) => {
     }
   };
 
-  return { image, imageUrl, onImageChange };
+  const updateImage = (newImage: string) => {
+    setImage(newImage);
+  };
+
+  return { image, imageUrl, onImageChange, updateImage };
 };
