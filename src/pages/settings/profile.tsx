@@ -22,14 +22,14 @@ type ValueWithInitial = {
 
 type UserData = {
   userId: number;
-  name: ValueWithInitial;
+  nickname: ValueWithInitial;
   introduce: ValueWithInitial;
   profileImage: string;
 };
 
 const initialState: UserData = {
   userId: 0,
-  name: { value: '', initialValue: '' },
+  nickname: { value: '', initialValue: '' },
   introduce: { value: '', initialValue: '' },
   profileImage: '/blanc.jpeg',
 };
@@ -60,22 +60,22 @@ const Profile = () => {
     return response.data;
   };
 
+  const setMyProfile = async () => {
+    const data = await getMyProfile();
+
+    setProfile({
+      userId: data.id,
+      nickname: { value: data.nickname, initialValue: data.nickname },
+      introduce: { value: data.introduce, initialValue: data.introduce },
+      profileImage: data.profileImage,
+    });
+
+    updateImage(data.profileImage);
+  };
   useEffect(() => {
-    const setMyProfile = async () => {
-      const data = await getMyProfile();
-
-      setProfile({
-        userId: data.id,
-        name: { value: data.name, initialValue: data.name },
-        introduce: { value: data.introduce, initialValue: data.introduce },
-        profileImage: data.profileImage,
-      });
-
-      updateImage(data.profileImage);
-    };
+    dispatch(routerSlice.actions.loadProfileDetailPage());
 
     setMyProfile();
-    dispatch(routerSlice.actions.loadProfileDetailPage());
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -105,7 +105,7 @@ const Profile = () => {
           </SvgIcon>
         </ImgContainer>
       </ImgWrapper>
-      <ProfileInput title='이름' id='name' {...profile.name} onChange={handleChange} />
+      <ProfileInput title='아이디' id='nickname' {...profile.nickname} onChange={handleChange} />
       <ProfileInput
         title='자기소개'
         id='introduce'

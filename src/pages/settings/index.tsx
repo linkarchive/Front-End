@@ -1,14 +1,11 @@
-import { USER_ID } from '@/constants';
 import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
-import { getCookie } from '@/utils';
 import Link from 'next/link';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
-const User = () => {
+const Settings = () => {
   const dispatch = useAppDispatch();
-  const userId = getCookie(USER_ID);
 
   useEffect(() => {
     dispatch(routerSlice.actions.loadProfilePage());
@@ -16,7 +13,7 @@ const User = () => {
 
   return (
     <>
-      <Link href={`/user/${userId}`}>
+      <Link href='/settings/profile'>
         <h3>프로필</h3>
       </Link>
       <Link href=''>
@@ -35,4 +32,4 @@ const LogoutHeading = styled.h3`
   cursor: pointer;
 `;
 
-export default User;
+export default Settings;

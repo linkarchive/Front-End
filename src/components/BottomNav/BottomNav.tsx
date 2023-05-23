@@ -1,9 +1,9 @@
-import ExploreBtn from '@/components/BottomNav/ExploreBtn';
+import ArchiveBtn from '@/components/BottomNav/ArchiveBtn';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import HomeBtn from './HomeBtn';
-import UserBtn from './UserBtn';
+import SettingsBtn from './SettingsBtn';
 
 const BottomNavHight = '70px';
 
@@ -15,8 +15,8 @@ const BottomNav = () => {
     const path = router.pathname;
     const getActiveItem = () => {
       if (path === '/') return 'home';
-      if (path.startsWith('/explore')) return 'explore';
-      if (path.startsWith('/user')) return 'user';
+      if (path.startsWith('/archive')) return 'archive';
+      if (path.startsWith('/settings')) return 'settings';
       return 'home';
     };
     setActiveItem(getActiveItem());
@@ -26,8 +26,8 @@ const BottomNav = () => {
     <FooterWrapper>
       <Nav>
         <HomeBtn activeItem={activeItem} />
-        <ExploreBtn activeItem={activeItem} />
-        <UserBtn activeItem={activeItem} />
+        <ArchiveBtn activeItem={activeItem} />
+        <SettingsBtn activeItem={activeItem} />
       </Nav>
     </FooterWrapper>
   );
