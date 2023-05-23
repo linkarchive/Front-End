@@ -15,35 +15,24 @@ type ProfileInputProps = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-interface ProfileProps {
-  userData: UserData;
-}
+type ValueWithInitial = {
+  value: string;
+  initialValue: string;
+};
 
 type UserData = {
   userId: number;
-  name: string;
-  introduce: string;
+  name: ValueWithInitial;
+  introduce: ValueWithInitial;
   profileImage: string;
 };
 
-const initialState = {
+const initialState: UserData = {
   userId: 0,
   name: { value: '', initialValue: '' },
   introduce: { value: '', initialValue: '' },
-  profileImage: '',
+  profileImage: '/blanc.jpeg',
 };
-
-const initialImage = '/blanc.jpeg';
-
-export async function getServerSideProps(context) {
-  const { req } = context;
-  const token = req.cookies.accessToken;
-  const userId = context.params.id;
-
-  const userData = await API.getUserProfile(userId, token);
-
-  return { props: { userData: userData.data } };
-}
 
 const ProfileInput = ({ title, id, value, initialValue, onChange }: ProfileInputProps) => (
   <ProfileInputWrapper>
@@ -60,18 +49,32 @@ const ProfileInput = ({ title, id, value, initialValue, onChange }: ProfileInput
   </ProfileInputWrapper>
 );
 
-const Profile = ({ userData }: ProfileProps) => {
+const Profile = () => {
   const dispatch = useAppDispatch();
-  const [profile, setProfile] = useState(initialState);
-  const { image, onImageChange } = useImage(initialImage);
+  const [profile, setProfile] = useState<UserData>(initialState);
+  const { image, onImageChange, updateImage } = useImage(profile.profileImage);
+
+  const getMyProfile = async () => {
+    const response = await API.getMyProfile();
+
+    return response.data;
+  };
 
   useEffect(() => {
-    setProfile({
-      ...profile,
-      userId: userData.userId,
-      name: { value: userData.name, initialValue: userData.name },
-      introduce: { value: userData.introduce, initialValue: userData.introduce },
-    });
+    const setMyProfile = async () => {
+      const data = await getMyProfile();
+
+      setProfile({
+        userId: data.id,
+        name: { value: data.name, initialValue: data.name },
+        introduce: { value: data.introduce, initialValue: data.introduce },
+        profileImage: data.profileImage,
+      });
+
+      updateImage(data.profileImage);
+    };
+
+    setMyProfile();
     dispatch(routerSlice.actions.loadProfileDetailPage());
   }, []);
 
@@ -91,7 +94,7 @@ const Profile = ({ userData }: ProfileProps) => {
             <Image src={image} alt='cat' fill />
             <input
               type='file'
-              accept='image/*'
+              accept='image/png'
               style={{ display: 'none' }}
               id='imageInput'
               onChange={onImageChange}
