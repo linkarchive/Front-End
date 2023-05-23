@@ -21,7 +21,9 @@ const setInterceptors = (instance: AxiosInstance, token?: string) => {
   instance.interceptors.request.use(
     (config) => {
       console.log('interceptor > request', config);
-      config.headers.Authorization = `Bearer ${token}`;
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
       return config;
     },
 
@@ -32,13 +34,10 @@ const setInterceptors = (instance: AxiosInstance, token?: string) => {
   );
 };
 
-export const createInstance = (token?: string, headers?: any) => {
+export const createInstance = (token?: string) => {
   const instance = axios.create({
     baseURL: API_BASE_URL,
     timeout: 2000,
-    headers: headers && {
-      Authorization: `Bearer ${accessToken}`,
-    },
   });
   if (token) {
     setInterceptors(instance, token);
@@ -56,10 +55,5 @@ const axiosAuthApi = (token: string) => {
   return createInstance(token);
 };
 
-const axiosFormDataApi = (token: string) => {
-  return createInstance(token, { 'Content-Type': 'multipart/form-data' });
-};
-
 export const defaultInstance = axiosApi();
 export const authInstance = axiosAuthApi(accessToken);
-export const authFormDataInstance = axiosFormDataApi(accessToken);
