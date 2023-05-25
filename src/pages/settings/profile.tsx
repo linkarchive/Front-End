@@ -24,15 +24,15 @@ type UserData = {
   userId: number;
   nickname: ValueWithInitial;
   introduce: ValueWithInitial;
-  profileImage: string;
 };
 
 const initialState: UserData = {
   userId: 0,
   nickname: { value: '', initialValue: '' },
   introduce: { value: '', initialValue: '' },
-  profileImage: '/blanc.jpeg',
 };
+
+const initialImage = '/blanc.jpeg'; // 이미지 초기 url
 
 const ProfileInput = ({ title, id, value, initialValue, onChange }: ProfileInputProps) => (
   <ProfileInputWrapper>
@@ -52,7 +52,15 @@ const ProfileInput = ({ title, id, value, initialValue, onChange }: ProfileInput
 const Profile = () => {
   const dispatch = useAppDispatch();
   const [profile, setProfile] = useState<UserData>(initialState);
-  const { image, onImageChange, updateImage } = useImage(profile.profileImage);
+  const { imageUrl, setImageUrl, onImageChange } = useImage(initialImage);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setProfile((prevState) => ({
+      ...prevState,
+      [id]: { ...prevState[id], value },
+    }));
+  };
 
   const getMyProfile = async () => {
     const response = await API.getMyProfile();
@@ -67,31 +75,23 @@ const Profile = () => {
       userId: data.id,
       nickname: { value: data.nickname, initialValue: data.nickname },
       introduce: { value: data.introduce, initialValue: data.introduce },
-      profileImage: data.profileImage,
     });
 
-    updateImage(data.profileImage);
+    setImageUrl(data.profileImageFileName);
   };
+
   useEffect(() => {
     dispatch(routerSlice.actions.loadProfileDetailPage());
 
     setMyProfile();
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    setProfile((prevState) => ({
-      ...prevState,
-      [id]: { ...prevState[id], value },
-    }));
-  };
-
   return (
     <FormWrapper>
       <ImgWrapper>
         <ImgContainer>
           <ImgContent>
-            <Image src={image} alt='cat' fill />
+            <Image src={imageUrl} alt='cat' fill />
             <input
               type='file'
               accept='image/png'

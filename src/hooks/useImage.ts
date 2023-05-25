@@ -1,35 +1,25 @@
 import API from '@/api/API';
 import { useState, ChangeEvent } from 'react';
+import { useMutation } from '@tanstack/react-query';
 
-export const useImage = (initialImage: string) => {
-  const [image, setImage] = useState<string>(initialImage);
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+export const useImage = (initialImageUrl: string) => {
+  const [imageUrl, setImageUrl] = useState<string | null>(initialImageUrl);
 
-  const onImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
+  const uploadImageMutation = useMutation({ mutationFn: API.uploadImage });
+
+  const onImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     const file = e.target.files[0];
-    const reader = new FileReader();
 
-    reader.onloadend = async () => {
-      // type narrowing으로 타입 에러 방지
-      if (typeof reader.result === 'string') {
-        setImage(reader.result);
-      }
-
-      const response = await API.uploadImage(file);
-      setImageUrl(response.data.url);
-    };
-
-    if (file) {
-      reader.readAsDataURL(file);
-    } else {
-      setImage(initialImage);
-    }
+    uploadImageMutation.mutate(file, {
+      onSuccess: (response) => {
+        setImageUrl(response.data.profileImageFileName);
+      },
+      onError: () => {
+        console.error('이미지 업로드에 실패했습니다.');
+      },
+    });
   };
 
-  const updateImage = (newImage: string) => {
-    setImage(newImage);
-  };
-
-  return { image, imageUrl, onImageChange, updateImage };
+  return { imageUrl, setImageUrl, onImageChange };
 };
