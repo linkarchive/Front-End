@@ -1,26 +1,26 @@
 import styled from 'styled-components';
-import Image from 'next/image';
 
-const LinkInfo = () => {
+interface MetaData {
+  title: string;
+  thumbnail: string;
+  description: string;
+}
+
+const LinkInfo = ({ title, thumbnail, description }: MetaData) => {
   return (
     <Wrapper>
       <div className='thumb'>
-        <a href='/' target='_blank' rel='noreferrer noopener'>
-          <Image src='/test.png' alt='' fill />
-        </a>
+        <img src={thumbnail} alt='thumb' />
       </div>
       <div className='contents'>
-        <p className='desc'>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint itaque magnam laborum,
-          voluptatibus consequuntur ducimus doloribus est, aut laboriosam atque ipsam blanditiis nam
-          vitae aspernatur reiciendis fugit iure, assumenda dolore.
-        </p>
+        <p className='desc'>{description}</p>
       </div>
     </Wrapper>
   );
 };
 
 export default LinkInfo;
+export type { MetaData };
 
 const Wrapper = styled.div`
   display: flex;
@@ -28,7 +28,9 @@ const Wrapper = styled.div`
   align-items: center;
 
   .thumb {
-    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     width: 84px;
     height: 84px;
