@@ -7,7 +7,8 @@ import styled from 'styled-components';
 import API from '@/api/API';
 import { BottomNavHight } from '@/components/BottomNav/BottomNav';
 import Input, { InputWithButton } from '@/components/Input';
-import LinkInfo, { MetaData } from '@/components/Create/LinkInfo';
+import LinkInfo from '@/components/Create/LinkInfo';
+import { MetaData } from '@/components/LinkItem';
 // import HashTagList from '@/components/Create/HashTagList'; TODO mvp 이후 개발 */
 
 const Create = () => {

@@ -1,9 +1,11 @@
-interface LinkItem {
+interface MetaData {
+  title: string;
+  thumbnail: string;
+  description: string;
+}
+interface LinkItem extends MetaData {
   urlId: number;
   link: string;
-  title: string;
-  description: string;
-  thumbnail: string;
   bookMarkCount: number;
   tagList: Tag[];
 }
@@ -22,4 +24,4 @@ interface LinkWithProfileProps extends LinkItemProps {
   profileImage: string;
 }
 
-export type { LinkItemProps, LinkWithProfileProps, Tag };
+export type { LinkItemProps, LinkWithProfileProps, Tag, MetaData };
