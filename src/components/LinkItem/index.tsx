@@ -2,7 +2,8 @@ import styled from 'styled-components';
 import Image from 'next/image';
 import LinkItemWithProfile from '@/components/LinkItem/LinkItemWithProfile';
 import TagLabelList from '@/components/LinkItem/TagLabelList';
-import { LinkItemProps, LinkWithProfileProps, Tag } from './LinkItem.type';
+import LinkInfo from '@/components/LinkItem/LinkInfo';
+import { MetaData, LinkItemProps, LinkWithProfileProps, Tag } from './LinkItem.type';
 
 const LinkItem = ({ Header, ...props }: LinkItemProps) => {
   const { urlId, link, title, description, thumbnail, bookMarkCount, tagList } = props;
@@ -46,8 +47,8 @@ const LinkItem = ({ Header, ...props }: LinkItemProps) => {
 };
 
 export default LinkItem;
-export { LinkItem, LinkItemWithProfile };
-export type { LinkItemProps, LinkWithProfileProps, Tag };
+export { LinkItem, LinkItemWithProfile, LinkInfo };
+export type { MetaData, LinkItemProps, LinkWithProfileProps, Tag };
 
 const Wrapper = styled.div`
   padding: 24px 0 16px;

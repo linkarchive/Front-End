@@ -8,7 +8,8 @@ import API from '@/api/API';
 import { BottomNavHight } from '@/components/BottomNav/BottomNav';
 import Input, { InputWithButton } from '@/components/Input';
 import LinkInfo from '@/components/Create/LinkInfo';
-import HashTagList from '@/components/Create/HashTagList';
+import { MetaData } from '@/components/LinkItem';
+// import HashTagList from '@/components/Create/HashTagList'; TODO mvp 이후 개발 */
 
 const Create = () => {
   const dispatch = useAppDispatch();
@@ -21,8 +22,10 @@ const Create = () => {
 
   const urlInput = useRef('');
   const [title, setTitle] = useState('');
+  /**  // TODO mvp 이후 개발
   const [hashtagInput, setHashTagInput] = useState('');
   const [hashtags, setHashtags] = useState<string[]>([]);
+  */
   const [errorMessages, setErrorMessages] = useState({
     url: '',
     title: '',
@@ -38,8 +41,18 @@ const Create = () => {
       isError,
     } = useQuery(['freqTagList'], { queryFn: () => API.tagsByUserId(''), enabled: false });
   */
-  const getURLMetadata = useQuery(['metadata', urlInput.current], {
-    queryFn: () => API.getUrlMetadata(encodeURIComponent(urlInput.current)),
+  const {
+    data: metaData,
+    isLoading,
+    isError,
+    isSuccess,
+  } = useQuery(['metadata', urlInput.current], {
+    queryFn: () => API.getLinkMetadata(urlInput.current),
+    // TODO any 타입 개선
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onSuccess: ({ data }: any) => {
+      setTitle(data?.title);
+    },
     enabled: isValid,
     retry: false,
   });
@@ -53,6 +66,8 @@ const Create = () => {
     }
   };
 
+  /** 
+   * // TODO mvp 이후 개발
   const handleAddTags = (text) => {
     let message = '';
     if (hashtags.length === 5) {
@@ -68,14 +83,19 @@ const Create = () => {
     setHashtags((prev) => [...prev, text]);
     initErrorMessage({ key: 'hashtag' });
   };
+  */
 
   const handleCreate = () => {
     if (createLink.isLoading) return;
 
-    const [link, thumbnail] = ['', ''];
-    const tagList = [...hashtags];
+    const [url, thumbnail, description] = [
+      urlInput.current,
+      metaData?.data.thumbnail,
+      metaData?.data.description,
+    ];
+    const tag = []; //  [...hashtags];
     createLink.mutate(
-      { title, link, thumbnail, tagList },
+      { url, title, description, thumbnail, tag },
       {
         onSuccess: () => router.push('/'),
       }
@@ -120,9 +140,10 @@ const Create = () => {
         />
         <Bottom>
           <p className='info'>미리보기</p>
-          <LinkInfo />
+          <LinkInfo {...(metaData?.data as MetaData)} />
         </Bottom>
       </InputBlock>
+      {/** 
       <InputBlock>
         <InputWithButton
           label='해시태그'
@@ -143,17 +164,19 @@ const Create = () => {
           }}
         />
         <Bottom>
-          {/* // TODO MVP 제외
+           // TODO MVP 제외
             <p className='info'>자주 사용하는 태그</p>
-            <TagLabelList /> */}
+            <TagLabelList /> 
           <HashTagList
             tags={hashtags}
             handleDelete={(value) => setHashtags((prev) => prev.filter((v) => v !== value))}
           />
         </Bottom>
       </InputBlock>
+    */}
+
       <ButtonBlock>
-        <Button type='submit' disabled={!getURLMetadata.isSuccess}>
+        <Button type='submit' disabled={!isSuccess}>
           추가하기
         </Button>
       </ButtonBlock>
