@@ -8,7 +8,7 @@ import API from '@/api/API';
 import { BottomNavHight } from '@/components/BottomNav/BottomNav';
 import Input, { InputWithButton } from '@/components/Input';
 import LinkInfo, { MetaData } from '@/components/Create/LinkInfo';
-import HashTagList from '@/components/Create/HashTagList';
+// import HashTagList from '@/components/Create/HashTagList'; TODO mvp 이후 개발 */
 
 const Create = () => {
   const dispatch = useAppDispatch();
@@ -21,8 +21,10 @@ const Create = () => {
 
   const urlInput = useRef('');
   const [title, setTitle] = useState('');
+  /**  // TODO mvp 이후 개발
   const [hashtagInput, setHashTagInput] = useState('');
   const [hashtags, setHashtags] = useState<string[]>([]);
+  */
   const [errorMessages, setErrorMessages] = useState({
     url: '',
     title: '',
@@ -62,7 +64,8 @@ const Create = () => {
     }
   };
 
-  /**  
+  /** 
+   * // TODO mvp 이후 개발
   const handleAddTags = (text) => {
     let message = '';
     if (hashtags.length === 5) {
