@@ -46,7 +46,8 @@ const Create = () => {
     isError,
     isSuccess,
   } = useQuery(['metadata', urlInput.current], {
-    queryFn: () => API.getUrlMetadata(urlInput.current),
+    queryFn: () => API.getLinkMetadata(urlInput.current),
+    // TODO any 타입 개선
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onSuccess: ({ data }: any) => {
       setTitle(data?.title);
