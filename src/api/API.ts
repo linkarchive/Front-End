@@ -19,23 +19,24 @@ const API = {
     return response;
   },
 
-  getUrlMetadata: async (url: string) => {
+  getUrlMetadata: async (link: string) => {
     const response = await authInstance.get(`link/metadata`, {
       params: {
-        url,
+        link,
       },
     });
     return response;
   },
 
   createLink: async (data: {
+    url: string;
     title: string;
-    link: string;
+    description: string;
     thumbnail: string;
-    tagList: string[];
+    tag: string[];
   }) => {
-    const response = await defaultInstance.post(`link/metadata`, {
-      data,
+    const response = await authInstance.post(`link`, {
+      ...data,
     });
     return response;
   },
