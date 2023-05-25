@@ -2,16 +2,16 @@ import Link from 'next/link';
 import Title from '@/components/Title.styled';
 import { Wrapper } from '../Home/HomeHeader';
 
-const ProfileHeader = () => {
+const SettingsHeader = () => {
   return (
     <Wrapper>
       <nav>
-        <Link href='/user/profile'>
-          <Title>My</Title>
+        <Link href='/settings/profile'>
+          <Title>Settings</Title>
         </Link>
       </nav>
     </Wrapper>
   );
 };
 
-export default ProfileHeader;
+export default SettingsHeader;

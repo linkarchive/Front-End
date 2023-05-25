@@ -2,11 +2,11 @@ import Link from 'next/link';
 import Title from '@/components/Title.styled';
 import { Wrapper } from '../Home/HomeHeader';
 
-const ExploreHeader = () => {
+const ArchiveHeader = () => {
   return (
     <Wrapper>
       <nav>
-        <Link href='/explore'>
+        <Link href='/Archive'>
           <Title>둘러보기</Title>
         </Link>
       </nav>
@@ -14,4 +14,4 @@ const ExploreHeader = () => {
   );
 };
 
-export default ExploreHeader;
+export default ArchiveHeader;

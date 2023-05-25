@@ -23,7 +23,7 @@ const KakaoAuth = () => {
             setCookie(ACCESS_TOKEN, accessToken);
             setCookie(USER_ID, userId);
 
-            router.push('/');
+            router.push('/login/refresh');
           },
           onError: (error) => {
             router.push('/');

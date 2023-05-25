@@ -3,15 +3,15 @@ import Link from 'next/link';
 import UserSvgIcon from 'public/assets/svg/user.svg';
 import { SvgIcon, SvgWrapper } from '../SvgStyle.styled';
 
-type UserBtnProps = {
+type SettingsBtnProps = {
   activeItem: string;
 };
 
-const UserBtn = ({ activeItem }: UserBtnProps) => {
+const SettingsBtn = ({ activeItem }: SettingsBtnProps) => {
   return (
     <SvgWrapper>
-      <Link href='/user/profile'>
-        <SvgIcon isActive={activeItem === 'user'}>
+      <Link href='/settings'>
+        <SvgIcon isActive={activeItem === 'settings'}>
           <UserSvgIcon />
         </SvgIcon>
       </Link>
@@ -19,4 +19,4 @@ const UserBtn = ({ activeItem }: UserBtnProps) => {
   );
 };
 
-export default UserBtn;
+export default SettingsBtn;
