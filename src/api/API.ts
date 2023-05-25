@@ -19,7 +19,7 @@ const API = {
     return response;
   },
 
-  getLinkMetadata: async (link: string) => {
+  getUrlMetadata: async (link: string) => {
     const response = await authInstance.get(`link/metadata`, {
       params: {
         link,
@@ -36,8 +36,8 @@ const API = {
     thumbnail: string;
     tag: string[];
   }) => {
-    const response = await authInstance.post(`link/metadata`, {
-      data,
+    const response = await authInstance.post(`link`, {
+      ...data,
     });
     return response;
   },
