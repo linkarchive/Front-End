@@ -35,7 +35,7 @@ const setInterceptors = (instance: AxiosInstance, token?: string) => {
 export const createInstance = (token?: string, headers?: any) => {
   const instance = axios.create({
     baseURL: API_BASE_URL,
-    timeout: 2000,
+    timeout: 5000, // TODO timeout 조정 필요
     headers: headers && {
       Authorization: `Bearer ${accessToken}`,
     },
