@@ -1,5 +1,5 @@
 import API from '@/api/API';
-import LinkItemList from '@/components/LinkItem/LinkItemLits';
+import { LinkItemWithProfileList } from '@/components/LinkItem';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
@@ -14,23 +14,26 @@ const Explore = () => {
     dispatch(routerSlice.actions.loadExplorePage());
   }, [dispatch]);
 
+  const isUser = false;
+  const fetchLinksFn = isUser ? API.getAuthLinksArchive : API.getLinksArchive;
   const target = useRef(null);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ['archive'],
     queryFn: ({ pageParam }) => {
-      return API.getLinksArchive(pageParam);
+      return fetchLinksFn(pageParam || '');
     },
     getNextPageParam: (lastPage_) => {
-      const lastPage = lastPage_.data; // lastPage_.data.result.linkArchive; /** 실제 리소스 */
-      const lastItem = lastPage[lastPage.length - 1].urlId; // lastPage[lastPage.length - 1].urlId; /** 실제 리소스 */
-      const isNextPage = true; // TODO 불러올 데이터 유무 추가
+      const lastPage = lastPage_.data?.linkArchive;
+      const lastItem = lastPage[lastPage.length - 1].urlId;
+      const hasNext = lastPage_?.data?.hasNext;
 
-      return isNextPage ? lastItem : undefined;
+      return hasNext ? lastItem : undefined;
     },
     retry: 1,
   });
-  const linkList = data?.pages || []; // data?.pages[0].data.result?.linkArchive || [];  /** 실제 리소스 */
+
+  const pages = data?.pages || [];
 
   const handleIntersection = useCallback(
     (entries) => {
@@ -46,11 +49,11 @@ const Explore = () => {
 
   return (
     <Wrapper>
-      {linkList.map(({ data: items }) => (
-        <LinkItemList key={items[0].urlId} linkList={items} />
+      {pages.map(({ data: { linkArchive } }) => (
+        <LinkItemWithProfileList linkList={linkArchive} key='' />
       ))}
       {isFetchingNextPage && <div>로딩중...</div>}
-      <div ref={target}>마지막</div>
+      <div ref={target} />
     </Wrapper>
   );
 };
