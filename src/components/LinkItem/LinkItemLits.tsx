@@ -1,8 +1,17 @@
-import LinkItemWithProfile from './LinkItemWithProfile';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import LinkItem, { LinkItemWithProfile } from '@/components/LinkItem';
 
-// TODO any 타입 개선
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const LinkItemList = ({ linkList }: { linkList: any }) => {
+const LinkItemList = ({ linkList }: { linkList: any[] }) => {
+  return (
+    <>
+      {linkList.map((linkItem, idx) => (
+        <LinkItem key={idx} {...linkItem} />
+      ))}
+    </>
+  );
+};
+
+const LinkItemWithProfileList = ({ linkList }: { linkList: any[] }) => {
   return (
     <>
       {linkList.map((linkItem, idx) => (
@@ -11,4 +20,34 @@ const LinkItemList = ({ linkList }: { linkList: any }) => {
     </>
   );
 };
-export default LinkItemList;
+
+export { LinkItemList, LinkItemWithProfileList };
+
+/** 
+ // TODO HOC 개선 
+import { ComponentType } from 'react';
+
+interface LinkItemProps {
+  [key: string]: string;
+}
+interface LinkItemListProps {
+  linkList: LinkItemProps[];
+}
+
+const withLinkItemList = <P extends object>(
+  WrappedComponent: ComponentType<P & LinkItemListProps>
+): React.FC<LinkItemListProps & P> => {
+  // eslint-disable-next-line react/display-name, @typescript-eslint/no-explicit-any, react/prop-types
+  return ({ linkList, ...props }) => {
+    return (
+      <>
+        {linkList.map((linkItem, idx) => (
+          <WrappedComponent {...linkItem} {...props} key={idx} />
+        ))}
+      </>
+    );
+  };
+};
+
+export default withLinkItemList;
+*/
