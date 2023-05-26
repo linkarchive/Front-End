@@ -19,10 +19,10 @@ interface LinkItemProps extends LinkItem {
   Header?: JSX.Element;
 }
 
-interface LinkWithProfileProps extends LinkItemProps {
+interface LinkItemWithProfileProps extends LinkItemProps {
   userId: number;
   nickname: string;
   profileImage: string;
 }
 
-export type { LinkItemProps, LinkWithProfileProps, Tag, MetaData };
+export type { LinkItemProps, LinkItemWithProfileProps, Tag, MetaData };
