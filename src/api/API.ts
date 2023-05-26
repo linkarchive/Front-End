@@ -43,7 +43,12 @@ const API = {
   },
 
   getLinksArchive: async (linkId?: string) => {
-    const response = await authInstance.get(`links/archive?linkId=${linkId}`);
+    const response = await defaultInstance.get(`links/archive/public?linkId=${linkId}`);
+    return response;
+  },
+
+  getAuthLinksArchive: async (linkId?: string) => {
+    const response = await authInstance.get(`links/archive/authentication?linkId=${linkId}`);
     return response;
   },
 
