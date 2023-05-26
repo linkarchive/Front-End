@@ -22,7 +22,7 @@ interface LinkItemProps extends LinkItem {
 interface LinkWithProfileProps extends LinkItemProps {
   userId: number;
   nickname: string;
-  profile_image: string;
+  profileImage: string;
 }
 
 export type { LinkItemProps, LinkWithProfileProps, Tag, MetaData };
