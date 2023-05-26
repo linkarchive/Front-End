@@ -11,7 +11,9 @@ interface LinkItem extends MetaData {
   tagList: Tag[];
 }
 
-type Tag = string;
+interface Tag {
+  tag: string;
+}
 
 interface LinkItemProps extends LinkItem {
   Header?: JSX.Element;
