@@ -3,12 +3,7 @@ import LinkItem, { LinkWithProfileProps } from '@/components/LinkItem';
 import styled from 'styled-components';
 import Link from 'next/link';
 
-const LinkWithProfile = ({
-  userId,
-  nickname,
-  profile_image: profileImage,
-  ...props
-}: LinkWithProfileProps) => {
+const LinkWithProfile = ({ userId, nickname, profileImage, ...props }: LinkWithProfileProps) => {
   const href = `/explore/user/${userId}`;
   return (
     <LinkItem
