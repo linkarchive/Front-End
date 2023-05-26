@@ -6,7 +6,7 @@ import LinkInfo from '@/components/LinkItem/LinkInfo';
 import { MetaData, LinkItemProps, LinkWithProfileProps, Tag } from './LinkItem.type';
 
 const LinkItem = ({ Header, ...props }: LinkItemProps) => {
-  const { urlId, link, title, description, thumbnail, bookMarkCount, tagList } = props;
+  const { linkId, url, title, description, thumbnail, bookMarkCount, tagList } = props;
 
   return (
     <Wrapper>
@@ -15,7 +15,7 @@ const LinkItem = ({ Header, ...props }: LinkItemProps) => {
         <div className='info'>
           <div className='contents'>
             <h1 className='title'>{title}</h1>
-            <p className='domain'>{link}</p>
+            <p className='domain'>{url}</p>
             <p className='desc'>{description}</p>
           </div>
           <div className='thumb'>
