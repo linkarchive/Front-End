@@ -1,4 +1,5 @@
 import CreateBtn from '@/components/Home/CreateBtn';
+import NicknameInputPopup from '@/components/NicknameInputPopup';
 import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
 import { useRouter } from 'next/router';
@@ -19,6 +20,7 @@ const Home = () => {
     <div>
       {NICKNAME}의 홈입니다.
       <CreateBtn />
+      <NicknameInputPopup />
     </div>
   );
 };
