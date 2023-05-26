@@ -36,8 +36,8 @@ const API = {
     thumbnail: string;
     tag: string[];
   }) => {
-    const response = await authInstance.post(`link`, {
-      ...data,
+    const response = await authInstance.post(`link/metadata`, {
+      data,
     });
     return response;
   },
