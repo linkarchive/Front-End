@@ -5,6 +5,7 @@ const palette = {
   mediumGray: '#858585',
   darkGray: '#3A3A3A',
   lightBlack: '#F0F0F0',
+  transBlack: '#3e3e3e99',
   black: '#000000',
   lightPrimary: '#78D389',
   primary: '#4DAA7F',
@@ -40,10 +41,11 @@ const theme = {
     default: palette.lightGray,
     hover: palette.primary,
     click: palette.lightPrimary,
+    cancel: palette.lightGray,
   },
   backgroundColor: {
     default: palette.white,
-    popup: palette.lightBlack,
+    popup: palette.transBlack,
   },
   borderColor: {
     black: palette.black,
