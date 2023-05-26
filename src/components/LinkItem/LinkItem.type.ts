@@ -4,15 +4,14 @@ interface MetaData {
   description: string;
 }
 interface LinkItem extends MetaData {
-  urlId: number;
-  link: string;
+  linkId: number;
+  url: string;
   bookMarkCount: number;
+  isRead: boolean;
   tagList: Tag[];
 }
 
-interface Tag {
-  tag: unknown; // TODO 개선필요
-}
+type Tag = string;
 
 interface LinkItemProps extends LinkItem {
   Header?: JSX.Element;
@@ -20,8 +19,8 @@ interface LinkItemProps extends LinkItem {
 
 interface LinkWithProfileProps extends LinkItemProps {
   userId: number;
-  name: string;
-  profileImage: string;
+  nickname: string;
+  profile_image: string;
 }
 
 export type { LinkItemProps, LinkWithProfileProps, Tag, MetaData };
