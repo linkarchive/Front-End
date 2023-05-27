@@ -1,28 +1,27 @@
-interface MetaData {
+interface ILinkItem {
   title: string;
   thumbnail: string;
   description: string;
-}
-interface LinkItem extends MetaData {
   linkId: number;
   url: string;
   bookMarkCount: number;
   isRead: boolean;
   tagList: Tag[];
+  userId?: number;
+  nickname?: string;
+  profileImage?: string;
 }
+
+type MetaData = Pick<ILinkItem, 'title' | 'thumbnail' | 'description'>;
 
 interface Tag {
   tag: string;
 }
 
-interface LinkItemProps extends LinkItem {
+interface LinkItemProps extends ILinkItem {
   Header?: JSX.Element;
 }
 
-interface LinkItemWithProfileProps extends LinkItemProps {
-  userId: number;
-  nickname: string;
-  profileImage: string;
-}
+interface LinkItemWithProfileProps extends LinkItemProps {}
 
-export type { LinkItemProps, LinkItemWithProfileProps, Tag, MetaData };
+export type { LinkItemProps, LinkItemWithProfileProps, Tag, MetaData, ILinkItem };

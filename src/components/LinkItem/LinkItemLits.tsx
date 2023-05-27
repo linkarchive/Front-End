@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import LinkItem, { LinkItemWithProfile } from '@/components/LinkItem';
+import LinkItem, { LinkItemWithProfile, ILinkItem } from '@/components/LinkItem';
 
-const LinkItemList = ({ linkList }: { linkList: any[] }) => {
+const LinkItemList = ({ linkList }: { linkList: ILinkItem[] }) => {
   return (
     <>
       {linkList.map((linkItem, idx) => (
@@ -11,7 +10,7 @@ const LinkItemList = ({ linkList }: { linkList: any[] }) => {
   );
 };
 
-const LinkItemWithProfileList = ({ linkList }: { linkList: any[] }) => {
+const LinkItemWithProfileList = ({ linkList }: { linkList: ILinkItem[] }) => {
   return (
     <>
       {linkList.map((linkItem, idx) => (
