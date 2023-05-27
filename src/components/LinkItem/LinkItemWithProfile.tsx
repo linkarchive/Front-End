@@ -1,17 +1,22 @@
 import Image from 'next/image';
-import LinkItem, { LinkWithProfileProps } from '@/components/LinkItem';
+import LinkItem, { LinkItemWithProfileProps } from '@/components/LinkItem';
 import styled from 'styled-components';
 import Link from 'next/link';
 
-const LinkWithProfile = ({ userId, nickname, profileImage, ...props }: LinkWithProfileProps) => {
-  const href = `/explore/user/${userId}`;
+const LinkWithProfile = ({
+  userId,
+  nickname,
+  profileImage,
+  ...props
+}: LinkItemWithProfileProps) => {
+  const href = `/archive/user/${userId}`;
   return (
     <LinkItem
       Header={
         <Profile>
           <Link href={href}>
             <div className='profile'>
-              <Image src={profileImage} alt='profile' />
+              {/* <Image src={profileImage} alt='profile' fill /> // TODO */}
             </div>
           </Link>
           <Link className='name' href={href}>

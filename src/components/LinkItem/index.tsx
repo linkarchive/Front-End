@@ -3,10 +3,11 @@ import Image from 'next/image';
 import LinkItemWithProfile from '@/components/LinkItem/LinkItemWithProfile';
 import TagLabelList from '@/components/LinkItem/TagLabelList';
 import LinkInfo from '@/components/LinkItem/LinkInfo';
-import { MetaData, LinkItemProps, LinkWithProfileProps, Tag } from './LinkItem.type';
+import { LinkItemList, LinkItemWithProfileList } from '@/components/LinkItem/LinkItemLits';
+import { MetaData, LinkItemProps, LinkItemWithProfileProps, Tag, ILinkItem } from './LinkItem.type';
 
 const LinkItem = ({ Header, ...props }: LinkItemProps) => {
-  const { linkId, url, title, description, thumbnail, bookMarkCount, tagList } = props;
+  const { linkId, url, title, description, thumbnail, isRead, bookMarkCount, tagList } = props;
 
   return (
     <Wrapper>
@@ -28,12 +29,14 @@ const LinkItem = ({ Header, ...props }: LinkItemProps) => {
         <TagLabelList className='tag-list' tags={tagList} />
 
         <div className='utils'>
-          <div className='read'>
-            <div className='icon'>
-              <Image src='/assets/svg/check-green.svg' alt='' fill />
+          {isRead && (
+            <div className='read'>
+              <div className='icon'>
+                <Image src='/assets/svg/check-green.svg' alt='' fill />
+              </div>
+              읽음
             </div>
-            읽음
-          </div>
+          )}
           <button className='mark' type='button'>
             <div className='icon'>
               <Image src='/assets/svg/link.svg' alt='' fill />
@@ -47,8 +50,8 @@ const LinkItem = ({ Header, ...props }: LinkItemProps) => {
 };
 
 export default LinkItem;
-export { LinkItem, LinkItemWithProfile, LinkInfo };
-export type { MetaData, LinkItemProps, LinkWithProfileProps, Tag };
+export { LinkItem, LinkItemWithProfile, LinkInfo, LinkItemList, LinkItemWithProfileList };
+export type { MetaData, LinkItemProps, LinkItemWithProfileProps, Tag, ILinkItem };
 
 const Wrapper = styled.div`
   padding: 24px 0 16px;
