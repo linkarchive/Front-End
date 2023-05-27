@@ -4,7 +4,7 @@ import LinkItemWithProfile from '@/components/LinkItem/LinkItemWithProfile';
 import TagLabelList from '@/components/LinkItem/TagLabelList';
 import LinkInfo from '@/components/LinkItem/LinkInfo';
 import { LinkItemList, LinkItemWithProfileList } from '@/components/LinkItem/LinkItemLits';
-import { MetaData, LinkItemProps, LinkItemWithProfileProps, Tag } from './LinkItem.type';
+import { MetaData, LinkItemProps, LinkItemWithProfileProps, Tag, ILinkItem } from './LinkItem.type';
 
 const LinkItem = ({ Header, ...props }: LinkItemProps) => {
   const { linkId, url, title, description, thumbnail, isRead, bookMarkCount, tagList } = props;
@@ -51,7 +51,7 @@ const LinkItem = ({ Header, ...props }: LinkItemProps) => {
 
 export default LinkItem;
 export { LinkItem, LinkItemWithProfile, LinkInfo, LinkItemList, LinkItemWithProfileList };
-export type { MetaData, LinkItemProps, LinkItemWithProfileProps, Tag };
+export type { MetaData, LinkItemProps, LinkItemWithProfileProps, Tag, ILinkItem };
 
 const Wrapper = styled.div`
   padding: 24px 0 16px;
