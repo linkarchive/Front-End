@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { authInstance, createInstance, defaultInstance } from './customAPI';
+import { authInstance, defaultInstance } from './customAPI';
 import { KakaoType } from './types';
 
 const API = {
@@ -86,6 +86,20 @@ const API = {
     const response = await authInstance.patch('user', {
       name,
       introduce,
+    });
+    return response;
+  },
+
+  updateNickname: async (nickname: string, userId: string) => {
+    const response = await authInstance.patch(`/user/${userId}/nickname`, {
+      nickname,
+    });
+    return response;
+  },
+
+  validateNickname: async (nickname: string) => {
+    const response = await defaultInstance.post(`/nickname`, {
+      nickname,
     });
     return response;
   },

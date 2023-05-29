@@ -28,6 +28,7 @@ const GlobalStyle = createGlobalStyle`
     --button-color-disabled: ${theme.buttonColor.default};
     --button-color-hover: ${theme.buttonColor.hover};
     --button-color-click: ${theme.buttonColor.click};
+    --button-color-cancel: ${theme.buttonColor.cancel};
 
     --background-color-default: ${theme.backgroundColor.default};
     --background-color-popup: ${theme.backgroundColor.popup};
