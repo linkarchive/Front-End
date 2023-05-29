@@ -1,15 +1,18 @@
 import styled from 'styled-components';
 import Image from 'next/image';
+import { User } from '@/components/Archive/User/User.type';
 
-const Profile = () => {
+interface ProfileProps extends User {}
+
+const Profile = ({ id, nickname, introduce, profileImageFileName }: ProfileProps) => {
   return (
     <Wrapper>
       <div className='profile-image'>
-        <Image alt='' src='/test.png' fill />
+        <Image alt='' src={profileImageFileName} fill />
       </div>
       <div className='info'>
-        <div className='name'>우ㅇ삼이</div>
-        <div className='desc'>안녕하세요</div>
+        <div className='nickname'>{nickname}</div>
+        <div className='introduce'>{introduce}</div>
       </div>
     </Wrapper>
   );
@@ -35,7 +38,7 @@ const Wrapper = styled.div`
     border-radius: 100%;
   }
 
-  .name {
+  .nickname {
     margin-bottom: 4px;
 
     font-weight: 700;
@@ -43,7 +46,7 @@ const Wrapper = styled.div`
     line-height: 14px;
   }
 
-  .desc {
+  .introduce {
     font-weight: 400;
     font-size: 12px;
     line-height: 14px;
