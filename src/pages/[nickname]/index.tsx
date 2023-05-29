@@ -20,7 +20,6 @@ const Home = () => {
     <div>
       {NICKNAME}의 홈입니다.
       <CreateBtn />
-      <NicknameInputPopup />
     </div>
   );
 };
