@@ -1,9 +1,13 @@
-import LinkItem from '@/components/LinkItem';
+import { LinkItemList } from '@/components/LinkItem';
 import Nav from '@/components/Archive/User/Nav';
 import Profile from '@/components/Archive/User/Profile';
 import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import API from '@/api/API';
+import { useRouter } from 'next/router';
+import useInfinityScroll from '@/hooks/useInfinityScroll';
 
 const User = () => {
   const dispatch = useAppDispatch();
@@ -12,12 +16,50 @@ const User = () => {
     dispatch(routerSlice.actions.loadProfilePage());
   }, [dispatch]);
 
+  const router = useRouter();
+  const { id } = router.query;
+  const userId = id as string;
+  const [item, setItem] = useState<'link' | 'mark'>('link');
+
+  const { data: profile } = useQuery({
+    queryKey: ['user', userId],
+    queryFn: () => API.getUserProfile(parseInt(userId, 10)),
+    enabled: !!userId,
+  });
+
+  const isUser = false;
+  const fetchLinksFn = setFetchLinksFn(isUser, item);
+
+  const { pages, target, isFetchingNextPage } = useInfinityScroll({
+    fetchFn: (linkId: string) => fetchLinksFn({ userId, linkId }),
+    queryKey: ['linkList', item, userId],
+    getNextPageParam: (lastPage_) => {
+      const lastPage = lastPage_.data?.linkList;
+      const lastItem = lastPage[lastPage.length - 1].urlId;
+      const hasNext = lastPage_?.data?.hasNext;
+
+      return hasNext ? lastItem : undefined;
+    },
+  });
+
   return (
     <>
-      <Profile />
-      <Nav />
+      <Profile {...profile?.data} />
+      <Nav handleClick={(v) => setItem(v)} />
+      <LinkItemList data={pages} />
+      {isFetchingNextPage && <div>로딩중...</div>}
+      <div ref={target} />
     </>
   );
 };
 
 export default User;
+
+const setFetchLinksFn = (isUser, item) => {
+  if (isUser) {
+    if (item === 'link') return API.getAuthLinksArchiveByUserId;
+    return API.getAuthMarksArchiveByUserId;
+  }
+  if (item === 'link') return API.getLinksArchiveByUserId;
+  return API.getMarksArchiveByUserId;
+};

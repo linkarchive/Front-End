@@ -1,21 +1,40 @@
 import LinkItem, { LinkItemWithProfile, ILinkItem } from '@/components/LinkItem';
 
-const LinkItemList = ({ linkList }: { linkList: ILinkItem[] }) => {
+interface IData {
+  data: {
+    linkList?: ILinkItem[];
+    linkArchive?: ILinkItem[];
+  };
+}
+
+const LinkItemList = ({ data }: { data: IData[] }) => {
   return (
     <>
-      {linkList.map((linkItem, idx) => (
-        <LinkItem key={idx} {...linkItem} />
-      ))}
+      {data.length <= 0 && <div>데이터가 없습니다.</div>}
+      {data.length > 0 &&
+        data.map(({ data: { linkList: linkArchive } }) => (
+          <>
+            {linkArchive.map((linkItem) => (
+              <LinkItem key={linkItem.linkId} {...linkItem} />
+            ))}
+          </>
+        ))}
     </>
   );
 };
 
-const LinkItemWithProfileList = ({ linkList }: { linkList: ILinkItem[] }) => {
+const LinkItemWithProfileList = ({ data }: { data: IData[] }) => {
   return (
     <>
-      {linkList.map((linkItem, idx) => (
-        <LinkItemWithProfile key={idx} {...linkItem} />
-      ))}
+      {data.length <= 0 && <div>데이터가 없습니다.</div>}
+      {data.length > 0 &&
+        data.map(({ data: { linkArchive } }) => (
+          <>
+            {linkArchive.map((linkItem) => (
+              <LinkItemWithProfile key={linkItem.linkId} {...linkItem} />
+            ))}
+          </>
+        ))}
     </>
   );
 };
