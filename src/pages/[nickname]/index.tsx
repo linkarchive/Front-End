@@ -1,5 +1,4 @@
 import CreateBtn from '@/components/Home/CreateBtn';
-import NicknameInputPopup from '@/components/NicknameInputPopup';
 import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
 import { useRouter } from 'next/router';
