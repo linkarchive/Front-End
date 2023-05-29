@@ -1,11 +1,30 @@
+import { useState } from 'react';
 import styled, { css } from 'styled-components';
 
-const Nav = () => {
+const Nav = ({ handleClick }: { handleClick: (item) => void }) => {
+  const [isLink, setIsLink] = useState(true);
+
   return (
     <Wrapper>
       <ul className='nav'>
-        <Item isActive>링크</Item>
-        <Item>마크</Item>
+        <Item
+          isActive={isLink}
+          onClick={() => {
+            setIsLink(true);
+            handleClick('link');
+          }}
+        >
+          링크
+        </Item>
+        <Item
+          isActive={!isLink}
+          onClick={() => {
+            setIsLink(false);
+            handleClick('mark');
+          }}
+        >
+          마크
+        </Item>
       </ul>
     </Wrapper>
   );
