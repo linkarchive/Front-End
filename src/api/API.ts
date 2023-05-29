@@ -42,13 +42,38 @@ const API = {
     return response;
   },
 
+  /** 링크 둘러보기 */
   getLinksArchive: async (linkId?: string) => {
     const response = await defaultInstance.get(`links/archive/public?linkId=${linkId}`);
     return response;
   },
 
   getAuthLinksArchive: async (linkId?: string) => {
-    const response = await authInstance.get(`links/archive/authentication?linkId=${linkId}`);
+    const response = await authInstance.get(`links/authentication?linkId=${linkId}`);
+    return response;
+  },
+
+  /** 사용자별 링크 둘러보기 */
+  getLinksArchiveByUserId: async ({ userId, linkId }: { userId: string; linkId?: string }) => {
+    const response = await defaultInstance.get(`links/public/user/${userId}?linkId=${linkId}`);
+    return response;
+  },
+
+  getAuthLinksArchiveByUserId: async ({ userId, linkId }: { userId: string; linkId?: string }) => {
+    const response = await authInstance.get(`links/authentication/user/${userId}?linkId=${linkId}`);
+    return response;
+  },
+
+  /** 사용자별 북마크 둘러보기 */
+  getMarksArchiveByUserId: async ({ userId, linkId }: { userId: string; linkId?: string }) => {
+    const response = await defaultInstance.get(`mark/links/public/user/${userId}?linkId=${linkId}`);
+    return response;
+  },
+
+  getAuthMarksArchiveByUserId: async ({ userId, linkId }: { userId: string; linkId?: string }) => {
+    const response = await authInstance.get(
+      `mark/links/authentication/user/${userId}?linkId=${linkId}`
+    );
     return response;
   },
 
