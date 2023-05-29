@@ -4,7 +4,7 @@ import { createWrapper } from 'next-redux-wrapper';
 import { useDispatch } from 'react-redux';
 import rootReducer from './reducer';
 import { persistReducer, persistStore } from 'redux-persist';
-import { thunk } from './thunk';
+import { thunk } from './middleware/thunk';
 
 const persistConfig = {
   key: 'root',

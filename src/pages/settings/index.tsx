@@ -1,11 +1,19 @@
 import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
+import { deleteAllCookies } from '@/utils';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 const Settings = () => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const Logout = () => {
+    deleteAllCookies();
+    router.push('/');
+  };
 
   useEffect(() => {
     dispatch(routerSlice.actions.loadProfilePage());
@@ -22,7 +30,7 @@ const Settings = () => {
       <Link href=''>
         <h3>계정</h3>
       </Link>
-      <LogoutHeading onClick={() => console.log('logout!')}>로그아웃</LogoutHeading>
+      <LogoutHeading onClick={Logout}>로그아웃</LogoutHeading>
     </>
   );
 };
