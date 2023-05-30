@@ -93,9 +93,9 @@ const Create = () => {
       metaData?.data.metaThumbnail,
       metaData?.data.metaDescription,
     ];
-    const tag = []; //  [...hashtags];
+    const tags = []; //  [...hashtags];
     createLink.mutate(
-      { url, title, description, thumbnail, tag },
+      { url, title, description, thumbnail, tags },
       {
         onSuccess: () => router.push('/'),
       }

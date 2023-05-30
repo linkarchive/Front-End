@@ -34,7 +34,7 @@ const API = {
     title: string;
     description: string;
     thumbnail: string;
-    tag: string[];
+    tags: string[];
   }) => {
     const response = await instance.post(`link`, {
       ...data,
