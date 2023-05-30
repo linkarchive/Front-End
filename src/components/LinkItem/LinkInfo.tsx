@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { MetaData } from '@/components/LinkItem';
 
-const LinkInfo = ({ thumbnail, description }: MetaData) => {
+const LinkInfo = ({ metaThumbnail: thumbnail, metaDescription: description }: MetaData) => {
   return (
     <Wrapper>
       <div className='thumb' style={{ background: !thumbnail && '#D9D9D9' }}>

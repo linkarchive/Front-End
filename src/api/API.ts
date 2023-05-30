@@ -19,10 +19,10 @@ const API = {
     return response;
   },
 
-  getLinkMetadata: async (link: string) => {
+  getLinkMetadata: async (url: string) => {
     const response = await instance.get(`link/metadata`, {
       params: {
-        link,
+        url,
       },
       timeout: 5000,
     });
@@ -77,6 +77,18 @@ const API = {
     const response = await instance.get(
       `mark/links/authentication/user/${userId}?linkId=${linkId}`
     );
+    return response;
+  },
+
+  /** 내 링크 둘러보기 */
+  getUserLinksArchive: async (linkId?: string) => {
+    const response = await instance.get(`links/user?linkId=${linkId}`);
+    return response;
+  },
+
+  /** 내 마크 둘러보기 */
+  getUserMarksArchive: async (linkId?: string) => {
+    const response = await instance.get(`mark/links/user?linkId=${linkId}`);
     return response;
   },
 

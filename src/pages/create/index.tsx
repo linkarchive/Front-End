@@ -51,7 +51,7 @@ const Create = () => {
     // TODO any 타입 개선
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onSuccess: ({ data }: any) => {
-      setTitle(data?.title);
+      setTitle(data?.metaTitle || data?.titleText);
     },
     enabled: isValid,
     retry: false,
@@ -90,8 +90,8 @@ const Create = () => {
 
     const [url, thumbnail, description] = [
       urlInput.current,
-      metaData?.data.thumbnail,
-      metaData?.data.description,
+      metaData?.data.metaThumbnail,
+      metaData?.data.metaDescription,
     ];
     const tag = []; //  [...hashtags];
     createLink.mutate(

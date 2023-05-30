@@ -12,7 +12,12 @@ interface ILinkItem {
   profileImage?: string;
 }
 
-type MetaData = Pick<ILinkItem, 'title' | 'thumbnail' | 'description'>;
+interface MetaData {
+  metaDescription: string;
+  metaThumbnail: string;
+  metaTitle: string;
+  titleText: string;
+}
 
 interface Tag {
   tag: string;
