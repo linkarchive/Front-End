@@ -87,6 +87,7 @@ const Create = () => {
 
   const handleCreate = () => {
     if (createLink.isLoading) return;
+    if (!title.trim()) return; // TODO err msg 추가
 
     const [url, thumbnail, description] = [
       urlInput.current,
