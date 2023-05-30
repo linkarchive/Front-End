@@ -1,29 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { BottomNavHight } from '../BottomNav/BottomNav';
 import useDebounce from '@/hooks/useDebounce';
-import { DEBOUNCED_DELAY } from '@/constants';
+import { DEBOUNCED_DELAY, NICKNAME, USER_ID } from '@/constants';
 import CheckGreenSvg from 'public/assets/svg/check-green.svg';
 import XMark from 'public/assets/svg/XMark-red.svg';
 import API from '@/api/API';
-import Spinner from '../Spinner';
 import { useMutation } from '@tanstack/react-query';
-
-const USER_ID = '11'; // FIXME: Redux-perist 도입 이후 수정
+import Spinner from '@/components/Spinner';
+import { BottomNavHight } from '@/components/BottomNav/BottomNav';
+import { deleteAllCookies, getCookie, setCookie } from '@/utils';
+import { useRouter } from 'next/router';
 
 interface MessageWrapperProps {
   isValid: boolean;
 }
 
-const NicknameInputPopup = () => {
+const SetNickname = () => {
+  const router = useRouter();
   const [nickname, setNickname] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isValid, setIsValid] = useState<boolean | null>(null);
   const [message, setMessage] = useState<string | null>(null);
-
+  const userId = getCookie(USER_ID);
   const debouncedNickname = useDebounce(nickname, DEBOUNCED_DELAY);
   const isVerified = !isLoading && isValid;
   const isInvalid = !isLoading && !isValid;
+  const updateNicknameMutation = useMutation({ mutationFn: API.updateNickname });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
@@ -32,17 +34,30 @@ const NicknameInputPopup = () => {
   const handleInputSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (debouncedNickname.trim() !== '') {
-      API.updateNickname(debouncedNickname, USER_ID);
+      updateNicknameMutation.mutate(
+        { nickname: debouncedNickname, userId },
+        {
+          onSuccess: () => {
+            setCookie(NICKNAME, debouncedNickname, 30);
+            router.push('/');
+          },
+          onError: () => {
+            // API 호출이 에러로 끝났을 때 실행할 코드
+            // 필요에 따라 추가 구현
+          },
+        }
+      );
     }
   };
 
   const Logout = () => {
-    console.log('Logout!');
+    deleteAllCookies();
+    router.push('/');
   };
 
   const validateNicknameMutation = useMutation(API.validateNickname, {
-    onSuccess: (data) => {
-      if (data.status === 200) {
+    onSuccess: (response) => {
+      if (response.data.status === 200) {
         setIsValid(true);
         setMessage('사용 가능한 아이디 입니다.');
       } else {
@@ -219,4 +234,4 @@ const MessageWrapper = styled.div<MessageWrapperProps>`
   font-size: var(--font-size-sm);
 `;
 
-export default NicknameInputPopup;
+export default SetNickname;

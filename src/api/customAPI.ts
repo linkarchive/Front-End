@@ -5,9 +5,8 @@ import { getCookie } from '@/utils';
 import axios, { AxiosInstance } from 'axios';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-const accessToken = getCookie(ACCESS_TOKEN);
 
-const setInterceptors = (instance: AxiosInstance, token?: string) => {
+const setInterceptors = (instance: AxiosInstance) => {
   instance.interceptors.response.use(
     (response) => {
       console.log('interceptor > response', response);
@@ -20,9 +19,10 @@ const setInterceptors = (instance: AxiosInstance, token?: string) => {
   );
   instance.interceptors.request.use(
     (config) => {
+      const accessToken = getCookie(ACCESS_TOKEN);
       console.log('interceptor > request', config);
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+      if (accessToken) {
+        config.headers.Authorization = `Bearer ${accessToken}`;
       }
       return config;
     },
@@ -34,26 +34,13 @@ const setInterceptors = (instance: AxiosInstance, token?: string) => {
   );
 };
 
-export const createInstance = (token?: string) => {
+export const createInstance = () => {
   const instance = axios.create({
     baseURL: API_BASE_URL,
     timeout: 2000,
   });
-  if (token) {
-    setInterceptors(instance, token);
-  } else {
-    setInterceptors(instance);
-  }
+  setInterceptors(instance);
   return instance;
 };
 
-const axiosApi = () => {
-  return createInstance();
-};
-
-const axiosAuthApi = (token: string) => {
-  return createInstance(token);
-};
-
-export const defaultInstance = axiosApi();
-export const authInstance = axiosAuthApi(accessToken);
+export const instance = createInstance();

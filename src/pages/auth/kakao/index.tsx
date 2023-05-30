@@ -1,7 +1,7 @@
 import API from '@/api/API';
 import Spinner from '@/components/Spinner';
-import { ACCESS_TOKEN, USER_ID } from '@/constants';
-import { setCookie } from '@/utils';
+import { ACCESS_TOKEN, HOURS_IN_DAY, NICKNAME, REFRESH_TOKEN, USER_ID } from '@/constants';
+import { setCookies } from '@/utils';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect } from 'react';
@@ -19,12 +19,18 @@ const KakaoAuth = () => {
         { code },
         {
           onSuccess: (response) => {
-            const { accessToken, userId } = response.data;
-            setCookie(ACCESS_TOKEN, accessToken);
-            setCookie(USER_ID, userId);
+            const { accessToken, refreshToken, userId, nickname } = response.data;
 
-            router.push('/login/refresh');
+            setCookies([
+              { name: ACCESS_TOKEN, value: accessToken, days: 2 / HOURS_IN_DAY },
+              { name: REFRESH_TOKEN, value: refreshToken, days: 30 },
+              { name: USER_ID, value: userId, days: 30 },
+              { name: NICKNAME, value: nickname, days: 30 },
+            ]);
+
+            router.push('/');
           },
+
           onError: (error) => {
             router.push('/');
           },
