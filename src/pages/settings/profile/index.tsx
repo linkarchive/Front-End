@@ -324,18 +324,22 @@ const IntroduceMessageWrapper = styled.div<MessageWrapperProps>`
   font-size: var(--font-size-sm);
 `;
 
-const Button = styled.button<{ disabled: boolean }>`
+const Button = styled.button`
   width: 70px;
   height: 30px;
   margin-top: 15px;
 
-  background: ${(props) =>
-    props.disabled ? 'var(--button-color-disabled)' : 'var(--button-color-primary)'};
+  background: var(--button-color-primary);
   border: none;
   border-radius: 4px;
-  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
 
   color: var(--font-color-white);
+  cursor: pointer;
+
+  &:disabled {
+    background: var(--button-color-disabled);
+    cursor: not-allowed;
+  }
 `;
 
 export default Profile;

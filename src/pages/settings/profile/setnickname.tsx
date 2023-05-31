@@ -118,7 +118,7 @@ const SetNickname = () => {
             <CancelButton type='button' onClick={Logout}>
               다음에 입력하기
             </CancelButton>
-            <AcceptButton type='submit' isAbled={isAbled}>
+            <AcceptButton type='submit' disabled={!isAbled}>
               입력 완료
             </AcceptButton>
           </ButtonWrapper>
@@ -205,12 +205,16 @@ const CancelButton = styled(Button)`
   color: var(--font-color-white);
 `;
 
-const AcceptButton = styled(Button)<{ isAbled: boolean }>`
-  background: ${(props) =>
-    props.isAbled ? 'var(--button-color-primary)' : 'var(--button-color-disabled)'};
+const AcceptButton = styled(Button)`
+  background: var(--button-color-disabled);
 
   color: var(--font-color-white);
-  cursor: ${(props) => (props.isAbled ? 'pointer' : 'not-allowed')};
+  cursor: not-allowed;
+
+  &:enabled {
+    background: var(--button-color-primary);
+    cursor: pointer;
+  }
 `;
 
 const ButtonWrapper = styled.div`
