@@ -82,7 +82,12 @@ const API = {
 
   /** 내 링크 둘러보기 */
   getUserLinksArchive: async (linkId?: string) => {
-    const response = await instance.get(`links/user?linkId=${linkId}`);
+    const response = await instance.get(`links/user`,{
+      params: {
+        linkId,
+      },
+    }
+    );
     return response;
   },
 
