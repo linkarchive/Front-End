@@ -34,11 +34,10 @@ const User = () => {
     fetchFn: (linkId: string) => fetchLinksFn({ userId, linkId }),
     queryKey: ['linkList', item, userId],
     getNextPageParam: (lastPage_) => {
+      if (!lastPage_?.data?.hasNext) return undefined;
       const lastPage = lastPage_.data?.linkList;
       const lastItem = lastPage[lastPage.length - 1].urlId;
-      const hasNext = lastPage_?.data?.hasNext;
-
-      return hasNext ? lastItem : undefined;
+      return lastItem;
     },
   });
 
