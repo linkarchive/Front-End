@@ -39,6 +39,7 @@ const theme = {
   buttonColor: {
     primary: palette.primary,
     default: palette.lightGray,
+    disabled: palette.red,
     hover: palette.primary,
     click: palette.lightPrimary,
     cancel: palette.lightGray,
