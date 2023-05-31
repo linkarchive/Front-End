@@ -51,49 +51,71 @@ const API = {
     });
     return response;
   },
+
   getAuthLinksArchive: async (linkId?: string) => {
-    const response = await instance.get(`links/authentication?linkId=${linkId}`);
+    const response = await instance.get(`links/authentication`, {
+      params: {
+        linkId,
+      },
+    });
     return response;
   },
 
   /** 사용자별 링크 둘러보기 */
   getLinksArchiveByUserId: async ({ userId, linkId }: { userId: string; linkId?: string }) => {
-    const response = await instance.get(`links/public/user/${userId}?linkId=${linkId}`);
+    const response = await instance.get(`links/public/user/${userId}`, {
+      params: {
+        linkId,
+      },
+    });
     return response;
   },
 
   getAuthLinksArchiveByUserId: async ({ userId, linkId }: { userId: string; linkId?: string }) => {
-    const response = await instance.get(`links/authentication/user/${userId}?linkId=${linkId}`);
+    const response = await instance.get(`links/authentication/user/${userId}`, {
+      params: {
+        linkId,
+      },
+    });
     return response;
   },
 
   /** 사용자별 북마크 둘러보기 */
   getMarksArchiveByUserId: async ({ userId, linkId }: { userId: string; linkId?: string }) => {
-    const response = await instance.get(`mark/links/public/user/${userId}?linkId=${linkId}`);
+    const response = await instance.get(`mark/links/public/user/${userId}`, {
+      params: {
+        linkId,
+      },
+    });
     return response;
   },
 
   getAuthMarksArchiveByUserId: async ({ userId, linkId }: { userId: string; linkId?: string }) => {
-    const response = await instance.get(
-      `mark/links/authentication/user/${userId}?linkId=${linkId}`
-    );
+    const response = await instance.get(`mark/links/authentication/user/${userId}`, {
+      params: {
+        linkId,
+      },
+    });
     return response;
   },
 
   /** 내 링크 둘러보기 */
   getUserLinksArchive: async (linkId?: string) => {
-    const response = await instance.get(`links/user`,{
+    const response = await instance.get(`links/user`, {
       params: {
         linkId,
       },
-    }
-    );
+    });
     return response;
   },
 
   /** 내 마크 둘러보기 */
   getUserMarksArchive: async (linkId?: string) => {
-    const response = await instance.get(`mark/links/user?linkId=${linkId}`);
+    const response = await instance.get(`mark/links/user`, {
+      params: {
+        linkId,
+      },
+    });
     return response;
   },
 
