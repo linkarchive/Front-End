@@ -12,7 +12,7 @@ import { deleteAllCookies, getCookie, setCookie } from '@/utils';
 import { useRouter } from 'next/router';
 import { ENGLISH_ONLY_REGEX } from '@/utils/regex';
 
-interface MessageWrapperProps {
+export interface MessageWrapperProps {
   isValid: boolean;
 }
 
