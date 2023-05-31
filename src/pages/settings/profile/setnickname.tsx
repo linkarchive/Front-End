@@ -10,6 +10,7 @@ import Spinner from '@/components/Spinner';
 import { BottomNavHight } from '@/components/BottomNav/BottomNav';
 import { deleteAllCookies, getCookie, setCookie } from '@/utils';
 import { useRouter } from 'next/router';
+import { ENGLISH_ONLY_REGEX } from '@/utils/regex';
 
 interface MessageWrapperProps {
   isValid: boolean;
@@ -20,15 +21,20 @@ const SetNickname = () => {
   const [nickname, setNickname] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isValid, setIsValid] = useState<boolean | null>(null);
-  const [message, setMessage] = useState<string | null>(null);
+  const [message, setMessage] = useState<string>('영문, 2~16자');
   const userId = getCookie(USER_ID);
   const debouncedNickname = useDebounce(nickname, DEBOUNCED_DELAY);
   const isVerified = !isLoading && isValid;
   const isInvalid = !isLoading && !isValid;
+  const isAbled = isVerified;
   const updateNicknameMutation = useMutation({ mutationFn: API.updateNickname });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNickname(e.target.value);
+    const { value } = e.target;
+
+    if (ENGLISH_ONLY_REGEX.test(value)) {
+      setNickname(value);
+    }
   };
 
   const handleInputSubmit = (e: React.FormEvent) => {
@@ -40,10 +46,6 @@ const SetNickname = () => {
           onSuccess: () => {
             setCookie(NICKNAME, debouncedNickname, 30);
             router.push('/');
-          },
-          onError: () => {
-            // API 호출이 에러로 끝났을 때 실행할 코드
-            // 필요에 따라 추가 구현
           },
         }
       );
@@ -57,18 +59,9 @@ const SetNickname = () => {
 
   const validateNicknameMutation = useMutation(API.validateNickname, {
     onSuccess: (response) => {
-      if (response.data.status === 200) {
-        setIsValid(true);
-        setMessage('사용 가능한 아이디 입니다.');
-      } else {
-        setIsValid(false);
-        setMessage('중복된 아이디 입니다.');
-      }
+      setIsValid(true);
+      setMessage(response.message);
       setIsLoading(false);
-    },
-    onError: () => {
-      setIsLoading(false);
-      setMessage('오류가 발생했습니다. 다시 시도해주세요.');
     },
   });
 
@@ -77,12 +70,17 @@ const SetNickname = () => {
     setIsValid(false);
 
     if (debouncedNickname.length < 2 || debouncedNickname.length > 16) {
-      setMessage('2글자~16글자를 입력해주세요');
+      setMessage('2글자 ~ 16글자를 입력해주세요');
       setIsLoading(false);
       return;
     }
 
-    await validateNicknameMutation.mutateAsync(debouncedNickname);
+    try {
+      await validateNicknameMutation.mutateAsync(debouncedNickname);
+    } catch (error) {
+      setMessage(error.response.data.message);
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -90,9 +88,14 @@ const SetNickname = () => {
       validateNickname();
     } else {
       setIsValid(null);
-      setMessage(null);
     }
   }, [debouncedNickname]);
+
+  useEffect(() => {
+    if (!nickname) {
+      setMessage('영문, 2~16글자');
+    }
+  }, [nickname]);
 
   return (
     <Wrapper>
@@ -115,7 +118,9 @@ const SetNickname = () => {
             <CancelButton type='button' onClick={Logout}>
               다음에 입력하기
             </CancelButton>
-            <AcceptButton type='submit'>입력 완료</AcceptButton>
+            <AcceptButton type='submit' isAbled={isAbled}>
+              입력 완료
+            </AcceptButton>
           </ButtonWrapper>
         </Form>
       </Content>
@@ -200,10 +205,12 @@ const CancelButton = styled(Button)`
   color: var(--font-color-white);
 `;
 
-const AcceptButton = styled(Button)`
-  background: var(--button-color-primary);
+const AcceptButton = styled(Button)<{ isAbled: boolean }>`
+  background: ${(props) =>
+    props.isAbled ? 'var(--button-color-primary)' : 'var(--button-color-disabled)'};
 
   color: var(--font-color-white);
+  cursor: ${(props) => (props.isAbled ? 'pointer' : 'not-allowed')};
 `;
 
 const ButtonWrapper = styled.div`

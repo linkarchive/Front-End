@@ -102,7 +102,7 @@ const API = {
 
   getMyProfile: async () => {
     const response = await instance.get(`user`);
-    return response;
+    return response.data;
   },
 
   getUserProfile: async (userId: number) => {
@@ -110,12 +110,12 @@ const API = {
     return response;
   },
 
-  updateUserProfile: async (name: string, introduce: string) => {
+  updateUserProfile: async ({ nickname, introduce }: { nickname: string; introduce: string }) => {
     const response = await instance.patch('user', {
-      name,
+      nickname,
       introduce,
     });
-    return response;
+    return response.data;
   },
 
   updateNickname: async ({ nickname, userId }: { nickname: string; userId: string }) => {
@@ -129,7 +129,7 @@ const API = {
     const response = await instance.post(`/nickname`, {
       nickname,
     });
-    return response;
+    return response.data;
   },
 };
 
