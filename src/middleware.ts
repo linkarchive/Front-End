@@ -32,11 +32,10 @@ export function middleware(request: NextRequest) {
 
   // 홈으로 이동 시
   if (request.nextUrl.pathname === '/') {
-    // 토큰이 있다면 본인 계정의 홈으로 이동
-    if (accessToken) {
-      return NextResponse.redirect(`${request.nextUrl.origin}/${nickname}`);
+    // 토큰이 없다면 로그인 홈으로 이동
+    if (!accessToken) {
+      return NextResponse.redirect(`${request.nextUrl.origin}/login`);
     }
-    // 토큰이 없다면 비로그인 홈으로 이동
     return NextResponse.next();
   }
 
