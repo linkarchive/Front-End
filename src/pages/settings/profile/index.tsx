@@ -32,7 +32,7 @@ const initialState: UserData = {
   introduce: { value: '', initialValue: '' },
 };
 
-const initialImage = '/blanc.jpeg'; // 이미지 초기 url
+const initialImage = '/white.jpeg'; // 이미지 초기 url
 
 const ProfileInput = ({ title, id, value, initialValue, onChange }: ProfileInputProps) => (
   <ProfileInputWrapper>
