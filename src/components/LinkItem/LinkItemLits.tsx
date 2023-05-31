@@ -1,4 +1,5 @@
 import LinkItem, { LinkItemWithProfile, ILinkItem } from '@/components/LinkItem';
+import styled from 'styled-components';
 
 interface IData {
   data: {
@@ -10,15 +11,22 @@ interface IData {
 const LinkItemList = ({ data }: { data: IData[] }) => {
   return (
     <>
-      {data.length <= 0 && <div>데이터가 없습니다.</div>}
+      {(data[0]?.data?.linkArchive?.length <= 0 || data[0]?.data?.linkList?.length <= 0) && (
+        <Block>링크가 없습니다.</Block>
+      )}
+
       {data.length > 0 &&
-        data.map(({ data: { linkList: linkArchive } }) => (
-          <>
-            {linkArchive.map((linkItem) => (
-              <LinkItem key={linkItem.linkId} {...linkItem} />
-            ))}
-          </>
-        ))}
+        data.map(({ data: data_ }) => {
+          const linkList = data_.linkList || data_.linkArchive;
+
+          return (
+            <>
+              {linkList.map((linkItem) => (
+                <LinkItem key={linkItem.linkId} {...linkItem} />
+              ))}
+            </>
+          );
+        })}
     </>
   );
 };
@@ -26,7 +34,9 @@ const LinkItemList = ({ data }: { data: IData[] }) => {
 const LinkItemWithProfileList = ({ data }: { data: IData[] }) => {
   return (
     <>
-      {data.length <= 0 && <div>데이터가 없습니다.</div>}
+      {(data[0]?.data?.linkArchive?.length <= 0 || data[0]?.data?.linkList?.length <= 0) && (
+        <Block>링크가 없습니다.</Block>
+      )}
       {data.length > 0 &&
         data.map(({ data: { linkArchive } }) => (
           <>
@@ -40,6 +50,13 @@ const LinkItemWithProfileList = ({ data }: { data: IData[] }) => {
 };
 
 export { LinkItemList, LinkItemWithProfileList };
+
+const Block = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+`;
 
 /** 
  // TODO HOC 개선 
