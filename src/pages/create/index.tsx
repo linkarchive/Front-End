@@ -51,7 +51,7 @@ const Create = () => {
     // TODO any 타입 개선
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onSuccess: ({ data }: any) => {
-      setTitle(data?.title);
+      setTitle(data?.metaTitle || data?.titleText);
     },
     enabled: isValid,
     retry: false,
@@ -87,15 +87,16 @@ const Create = () => {
 
   const handleCreate = () => {
     if (createLink.isLoading) return;
+    if (!title.trim()) return; // TODO err msg 추가
 
     const [url, thumbnail, description] = [
       urlInput.current,
-      metaData?.data.thumbnail,
-      metaData?.data.description,
+      metaData?.data.metaThumbnail,
+      metaData?.data.metaDescription,
     ];
-    const tag = []; //  [...hashtags];
+    const tags = []; //  [...hashtags];
     createLink.mutate(
-      { url, title, description, thumbnail, tag },
+      { url, title, description, thumbnail, tags },
       {
         onSuccess: () => router.push('/'),
       }
