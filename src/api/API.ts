@@ -44,79 +44,91 @@ const API = {
 
   /** 링크 둘러보기 */
   getLinksArchive: async (linkId?: string) => {
-    const response = await instance.get(`links/archive/public`, {
+    const { data } = await instance.get(`links/archive/public`, {
       params: {
         linkId,
       },
     });
-    return response;
+    return data;
   },
 
   getAuthLinksArchive: async (linkId?: string) => {
-    const response = await instance.get(`links/authentication`, {
+    const { data } = await instance.get(`links/authentication`, {
       params: {
         linkId,
       },
     });
-    return response;
+    return data;
   },
 
   /** 사용자별 링크 둘러보기 */
-  getLinksArchiveByUserId: async ({ userId, linkId }: { userId: string; linkId?: string }) => {
-    const response = await instance.get(`links/public/user/${userId}`, {
+  getLinksArchiveByUserId: async ({ nickname, linkId }: { nickname: string; linkId?: string }) => {
+    const { data } = await instance.get(`links/public/user/${nickname}`, {
       params: {
         linkId,
       },
     });
-    return response;
+    return data;
   },
 
-  getAuthLinksArchiveByUserId: async ({ userId, linkId }: { userId: string; linkId?: string }) => {
-    const response = await instance.get(`links/authentication/user/${userId}`, {
+  getAuthLinksArchiveByUserId: async ({
+    nickname,
+    linkId,
+  }: {
+    nickname: string;
+    linkId?: string;
+  }) => {
+    const { data } = await instance.get(`links/authentication/user/${nickname}`, {
       params: {
         linkId,
       },
     });
-    return response;
+    return data;
   },
 
   /** 사용자별 북마크 둘러보기 */
-  getMarksArchiveByUserId: async ({ userId, linkId }: { userId: string; linkId?: string }) => {
-    const response = await instance.get(`mark/links/public/user/${userId}`, {
+  getMarksArchiveByUserId: async ({ nickname, linkId }: { nickname: string; linkId?: string }) => {
+    const { data } = await instance.get(`mark/links/public/user/${nickname}`, {
       params: {
         linkId,
       },
     });
-    return response;
+    return data;
   },
 
-  getAuthMarksArchiveByUserId: async ({ userId, linkId }: { userId: string; linkId?: string }) => {
-    const response = await instance.get(`mark/links/authentication/user/${userId}`, {
+  getAuthMarksArchiveByUserId: async ({
+    nickname,
+    linkId,
+  }: {
+    nickname: string;
+    linkId?: string;
+  }) => {
+    const { data } = await instance.get(`mark/links/authentication/user/${nickname}`, {
       params: {
         linkId,
       },
     });
-    return response;
+    return data;
   },
 
   /** 내 링크 둘러보기 */
   getUserLinksArchive: async (linkId?: string) => {
-    const response = await instance.get(`links/user`, {
+    const { data } = await instance.get(`links/user`, {
       params: {
         linkId,
       },
     });
-    return response;
+    return data;
   },
 
   /** 내 마크 둘러보기 */
   getUserMarksArchive: async (linkId?: string) => {
-    const response = await instance.get(`mark/links/user`, {
+    const { data } = await instance.get(`mark/links/user`, {
       params: {
         linkId,
       },
     });
-    return response;
+    return data;
   },
 
   createTag: async (tag: string) => {
@@ -144,9 +156,9 @@ const API = {
     return response.data;
   },
 
-  getUserProfile: async (userId: number) => {
-    const response = await instance.get(`user/${userId}`);
-    return response;
+  getUserProfile: async (nickname: string) => {
+    const { data } = await instance.get(`user/${nickname}`);
+    return data;
   },
 
   updateUserProfile: async ({ nickname, introduce }: { nickname: string; introduce: string }) => {
