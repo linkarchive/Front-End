@@ -7,7 +7,6 @@ interface ILinkItem {
   bookMarkCount: number;
   isRead: boolean;
   tagList: Tag[];
-  userId?: number;
   nickname?: string;
   profileImage?: string;
 }
@@ -20,7 +19,8 @@ interface MetaData {
 }
 
 interface Tag {
-  tag: string;
+  tagId: number;
+  tagName: string;
 }
 
 interface LinkItemProps extends ILinkItem {
