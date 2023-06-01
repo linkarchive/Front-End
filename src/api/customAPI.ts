@@ -6,7 +6,7 @@ import axios, { AxiosInstance } from 'axios';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-const setInterceptors = (instance: AxiosInstance) => {
+const setInterceptors = (instance: AxiosInstance, serverAccessToken?: string) => {
   instance.interceptors.response.use(
     (response) => {
       console.log('interceptor > response', response);
@@ -19,7 +19,7 @@ const setInterceptors = (instance: AxiosInstance) => {
   );
   instance.interceptors.request.use(
     (config) => {
-      const accessToken = getCookie(ACCESS_TOKEN);
+      const accessToken = serverAccessToken || getCookie(ACCESS_TOKEN);
       console.log('interceptor > request', config);
       if (accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;
@@ -34,12 +34,12 @@ const setInterceptors = (instance: AxiosInstance) => {
   );
 };
 
-export const createInstance = () => {
+export const createInstance = (serverAccessToken?: string) => {
   const instance = axios.create({
     baseURL: API_BASE_URL,
     timeout: 2000,
   });
-  setInterceptors(instance);
+  setInterceptors(instance, serverAccessToken);
   return instance;
 };
 

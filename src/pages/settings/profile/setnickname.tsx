@@ -29,7 +29,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return res;
   }, {} as any);
 
-  const userId = cookies?.USER_ID; // YOUR_COOKIE_KEY를 쿠키의 키로 변경해야 합니다.
+  const userId = cookies?.userId; // YOUR_COOKIE_KEY를 쿠키의 키로 변경해야 합니다.
 
   return {
     props: {
