@@ -1,6 +1,6 @@
 import API from '@/api/API';
 import CreateBtn from '@/components/Home/CreateBtn';
-import { LinkItemList } from '@/components/LinkItem';
+import { ILinkItem, ILinksResponse, LinkItemList } from '@/components/LinkItem';
 import useInfinityScroll from '@/hooks/useInfinityScroll';
 import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
@@ -14,7 +14,7 @@ const Home = () => {
     dispatch(routerSlice.actions.loadHomePage());
   }, [dispatch]);
 
-  const { pages, target, isFetchingNextPage } = useInfinityScroll({
+  const { pages, target, isFetchingNextPage } = useInfinityScroll<ILinksResponse>({
     fetchFn: (linkId: string) => API.getUserLinksArchive(linkId),
     queryKey: ['linkList', 'user', 'link'],
     getNextPageParam: (lastPage_) => {
