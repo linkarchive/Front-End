@@ -8,7 +8,7 @@ interface ILinkItem {
   bookMarkCount: number;
   isRead: boolean;
   tagList: Tag[];
-  userId?: string;
+  userId?: number;
   nickname?: string;
   profileImage?: string;
 }
