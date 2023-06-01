@@ -2,11 +2,13 @@ interface ILinkItem {
   title: string;
   thumbnail: string;
   description: string;
+  markId?: number;
   linkId: number;
   url: string;
   bookMarkCount: number;
   isRead: boolean;
   tagList: Tag[];
+  userId?: string;
   nickname?: string;
   profileImage?: string;
 }
@@ -29,4 +31,18 @@ interface LinkItemProps extends ILinkItem {
 
 interface LinkItemWithProfileProps extends LinkItemProps {}
 
-export type { LinkItemProps, LinkItemWithProfileProps, Tag, MetaData, ILinkItem };
+type ILinksResponse = Record<string, ILinkItem[]>;
+
+interface LinkItemListProps {
+  data: ILinksResponse[];
+}
+
+export type {
+  LinkItemProps,
+  LinkItemWithProfileProps,
+  Tag,
+  MetaData,
+  ILinkItem,
+  LinkItemListProps,
+  ILinksResponse,
+};
