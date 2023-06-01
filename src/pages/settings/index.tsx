@@ -1,6 +1,5 @@
 import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
-import { deleteAllCookies } from '@/utils';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
@@ -11,7 +10,6 @@ const Settings = () => {
   const router = useRouter();
 
   const Logout = () => {
-    deleteAllCookies();
     router.push('/');
   };
 
