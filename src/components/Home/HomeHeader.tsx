@@ -20,7 +20,7 @@ const HomeHeader = () => {
       <nav>
         {navLinks.map(({ path, name }) => (
           <Link href={path} key={path}>
-            <Title color={!(path === pathname) && '#D9D9D9'}>{name}</Title>
+            <Title color={!(path === pathname) ? '#D9D9D9' : ''}>{name}</Title>
           </Link>
         ))}
       </nav>
