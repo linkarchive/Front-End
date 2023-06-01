@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import useDebounce from '@/hooks/useDebounce';
@@ -11,18 +12,38 @@ import { BottomNavHight } from '@/components/BottomNav/BottomNav';
 import { deleteAllCookies, getCookie, setCookie } from '@/utils';
 import { useRouter } from 'next/router';
 import { ENGLISH_ONLY_REGEX } from '@/utils/regex';
+import { GetServerSideProps } from 'next';
 
 export interface MessageWrapperProps {
   isValid: boolean;
 }
 
-const SetNickname = () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { req } = context;
+  const { cookie } = req.headers;
+
+  // 쿠키 파싱
+  const cookies = cookie?.split(';').reduce((res, item) => {
+    const [key, value] = item.split('=');
+    res[key.trim()] = value;
+    return res;
+  }, {} as any);
+
+  const userId = cookies?.USER_ID; // YOUR_COOKIE_KEY를 쿠키의 키로 변경해야 합니다.
+
+  return {
+    props: {
+      userId: userId || null,
+    },
+  };
+};
+
+const SetNickname = ({ userId }: any) => {
   const router = useRouter();
   const [nickname, setNickname] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isValid, setIsValid] = useState<boolean | null>(null);
   const [message, setMessage] = useState<string>('영문, 2~16자');
-  const userId = getCookie(USER_ID);
   const debouncedNickname = useDebounce(nickname, DEBOUNCED_DELAY);
   const isVerified = !isLoading && isValid;
   const isInvalid = !isLoading && !isValid;
@@ -43,9 +64,16 @@ const SetNickname = () => {
       updateNicknameMutation.mutate(
         { nickname: debouncedNickname, userId },
         {
-          onSuccess: () => {
-            setCookie(NICKNAME, debouncedNickname, 30);
-            router.push(`${domain}/`);
+          onSuccess: async () => {
+            await fetch('/api/set-nickname', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ nickname }),
+            });
+
+            router.push('/');
           },
         }
       );
@@ -53,8 +81,8 @@ const SetNickname = () => {
   };
 
   const Logout = () => {
-    deleteAllCookies();
-    router.push('/');
+    console.log('hi');
+    router.push(`/`);
   };
 
   const validateNicknameMutation = useMutation(API.validateNickname, {
