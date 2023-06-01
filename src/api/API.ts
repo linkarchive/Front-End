@@ -146,7 +146,7 @@ const API = {
     return response.data;
   },
 
-  getUserProfile: async (userId: string) => {
+  getUserProfile: async (userId: number) => {
     const response = await clientInstance.get(`user/${userId}`);
     return response;
   },
