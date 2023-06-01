@@ -13,6 +13,7 @@ const SECONDS_IN_MINUTE = 60;
 const MILLISECONDS_IN_SECOND = 1000;
 
 export {
+  domain,
   KakaoAuthUrl,
   ACCESS_TOKEN,
   REFRESH_TOKEN,

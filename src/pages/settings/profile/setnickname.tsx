@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import useDebounce from '@/hooks/useDebounce';
-import { DEBOUNCED_DELAY, NICKNAME, USER_ID } from '@/constants';
+import { DEBOUNCED_DELAY, NICKNAME, USER_ID, domain } from '@/constants';
 import CheckGreenSvg from 'public/assets/svg/check-green.svg';
 import XMark from 'public/assets/svg/XMark-red.svg';
 import API from '@/api/API';
@@ -45,7 +45,7 @@ const SetNickname = () => {
         {
           onSuccess: () => {
             setCookie(NICKNAME, debouncedNickname, 30);
-            router.push('/');
+            router.push(`${domain}/`);
           },
         }
       );
