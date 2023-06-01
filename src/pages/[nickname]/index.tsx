@@ -1,26 +1,63 @@
-import CreateBtn from '@/components/Home/CreateBtn';
+import { ILinkItem, ILinksResponse, LinkItemList } from '@/components/LinkItem';
+import Nav from '@/components/Archive/User/Nav';
+import Profile from '@/components/Archive/User/Profile';
 import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
+import React, { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import API from '@/api/API';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import useInfinityScroll from '@/hooks/useInfinityScroll';
 
-// 로그인된 사용자 홈페이지
-const Home = () => {
+const User = () => {
   const dispatch = useAppDispatch();
-  const router = useRouter();
-
-  const NICKNAME = router.query.nickname as string;
 
   useEffect(() => {
-    dispatch(routerSlice.actions.loadHomePage());
+    dispatch(routerSlice.actions.loadProfilePage());
   }, [dispatch]);
 
+  const router = useRouter();
+  const nickname = (router.query.nickname as string) || '';
+  const [item, setItem] = useState<'link' | 'mark'>('link');
+
+  const { data: profile } = useQuery({
+    queryKey: ['user', nickname],
+    queryFn: () => API.getUserProfile(nickname),
+    enabled: !!nickname,
+  });
+
+  const isUser = false;
+  const fetchLinksFn = setFetchLinksFn(isUser, item);
+
+  const { pages, target, isFetchingNextPage } = useInfinityScroll<ILinksResponse>({
+    fetchFn: (linkId: string) => fetchLinksFn({ nickname, linkId }),
+    queryKey: ['linkList', item, nickname],
+    getNextPageParam: (lastPage_) => {
+      if (!lastPage_?.data?.hasNext) return undefined;
+      const lastPage = lastPage_.data?.linkList;
+      const lastItem = lastPage[lastPage.length - 1].urlId;
+      return lastItem;
+    },
+  });
+
   return (
-    <div>
-      {NICKNAME}의 홈입니다.
-      <CreateBtn />
-    </div>
+    <>
+      <Profile {...profile} />
+      <Nav handleClick={(v) => setItem(v)} />
+      <LinkItemList data={pages} />
+      {isFetchingNextPage && <div>로딩중...</div>}
+      <div ref={target} />
+    </>
   );
 };
 
-export default Home;
+export default User;
+
+const setFetchLinksFn = (isUser, item) => {
+  if (isUser) {
+    if (item === 'link') return API.getAuthLinksArchiveByUserId;
+    return API.getAuthMarksArchiveByUserId;
+  }
+  if (item === 'link') return API.getLinksArchiveByUserId;
+  return API.getMarksArchiveByUserId;
+};
