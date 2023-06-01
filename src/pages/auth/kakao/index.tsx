@@ -1,15 +1,12 @@
 import API from '@/api/API';
 import Spinner from '@/components/Spinner';
-import { ACCESS_TOKEN, HOURS_IN_DAY, NICKNAME, REFRESH_TOKEN, USER_ID } from '@/constants';
 import { useMutation } from '@tanstack/react-query';
-import { cookies } from 'next/dist/client/components/headers';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 
 const KakaoAuth = () => {
   const router = useRouter();
-
   const loginMutation = useMutation({ mutationFn: API.kakaoLogin });
 
   const handleKakaoLogin = useCallback(() => {

@@ -11,6 +11,8 @@ import { DEBOUNCED_DELAY } from '@/constants';
 import { useMutation } from '@tanstack/react-query';
 import { MessageWrapperProps } from './setnickname';
 import { AxiosError } from 'axios';
+import { GetServerSideProps } from 'next';
+import { parseCookies } from '@/utils';
 
 interface ErrorMessage {
   message: string;
@@ -41,6 +43,16 @@ const initialState: UserData = {
 
 const initialImage = '/white.jpeg';
 
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const { accessToken } = parseCookies(req.headers.cookie);
+
+  return {
+    props: {
+      accessToken: accessToken || null,
+    },
+  };
+};
+
 const ProfileInput = ({ title, id, value, initialValue, onChange }: ProfileInputProps) => (
   <ProfileInputWrapper>
     <label htmlFor={id}>
@@ -56,7 +68,7 @@ const ProfileInput = ({ title, id, value, initialValue, onChange }: ProfileInput
   </ProfileInputWrapper>
 );
 
-const Profile = () => {
+const Profile = ({ accessToken }: { accessToken: string }) => {
   const dispatch = useAppDispatch();
   const [profile, setProfile] = useState<UserData>(initialState);
   const { imageUrl, setImageUrl, onImageChange } = useImage(initialImage);
@@ -109,7 +121,7 @@ const Profile = () => {
   };
 
   const getMyProfile = async () => {
-    const response = await API.getMyProfile();
+    const response = await API.getMyProfile({ accessToken });
 
     return response;
   };

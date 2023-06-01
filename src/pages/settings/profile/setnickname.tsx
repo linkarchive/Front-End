@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import useDebounce from '@/hooks/useDebounce';
@@ -9,36 +8,27 @@ import API from '@/api/API';
 import { useMutation } from '@tanstack/react-query';
 import Spinner from '@/components/Spinner';
 import { BottomNavHight } from '@/components/BottomNav/BottomNav';
-import { deleteAllCookies, getCookie, setCookie } from '@/utils';
 import { useRouter } from 'next/router';
 import { ENGLISH_ONLY_REGEX } from '@/utils/regex';
 import { GetServerSideProps } from 'next';
+import { parseCookies } from '@/utils';
 
 export interface MessageWrapperProps {
   isValid: boolean;
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { req } = context;
-  const { cookie } = req.headers;
-
-  // 쿠키 파싱
-  const cookies = cookie?.split(';').reduce((res, item) => {
-    const [key, value] = item.split('=');
-    res[key.trim()] = value;
-    return res;
-  }, {} as any);
-
-  const userId = cookies?.userId; // YOUR_COOKIE_KEY를 쿠키의 키로 변경해야 합니다.
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const { userId, accessToken } = parseCookies(req.headers.cookie);
 
   return {
     props: {
       userId: userId || null,
+      accessToken: accessToken || null,
     },
   };
 };
 
-const SetNickname = ({ userId }: any) => {
+const SetNickname = ({ userId, accessToken }: { userId: string; accessToken: string }) => {
   const router = useRouter();
   const [nickname, setNickname] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -56,13 +46,14 @@ const SetNickname = ({ userId }: any) => {
     if (ENGLISH_ONLY_REGEX.test(value)) {
       setNickname(value);
     }
+    console.log(accessToken);
   };
 
   const handleInputSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (debouncedNickname.trim() !== '') {
       updateNicknameMutation.mutate(
-        { nickname: debouncedNickname, userId },
+        { nickname: debouncedNickname, userId, accessToken },
         {
           onSuccess: async () => {
             await fetch('/api/set-nickname', {

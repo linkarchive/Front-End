@@ -1,17 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AxiosResponse } from 'axios';
-import { createInstance, instance } from './customAPI';
+import { createInstance, clientInstance } from './customAPI';
 import { KakaoType } from './types';
 
 const API = {
   sample: async (params: string): Promise<AxiosResponse> => {
-    const response = await instance.get(`sample`, {
+    const response = await clientInstance.get(`sample`, {
       params,
     });
     return response;
   },
 
   kakaoLogin: async ({ code }: KakaoType): Promise<AxiosResponse> => {
-    const response = await instance.post(`auth/kakao`, null, {
+    const response = await clientInstance.post(`auth/kakao`, null, {
       params: {
         code,
       },
@@ -20,7 +21,7 @@ const API = {
   },
 
   getLinkMetadata: async (url: string) => {
-    const response = await instance.get(`link/metadata`, {
+    const response = await clientInstance.get(`link/metadata`, {
       params: {
         url,
       },
@@ -36,7 +37,7 @@ const API = {
     thumbnail: string;
     tags: string[];
   }) => {
-    const response = await instance.post(`link`, {
+    const response = await clientInstance.post(`link`, {
       ...data,
     });
     return response;
@@ -44,7 +45,7 @@ const API = {
 
   /** 링크 둘러보기 */
   getLinksArchive: async (linkId?: string) => {
-    const response = await instance.get(`links/archive/public`, {
+    const response = await clientInstance.get(`links/archive/public`, {
       params: {
         linkId,
       },
@@ -53,7 +54,7 @@ const API = {
   },
 
   getAuthLinksArchive: async (linkId?: string) => {
-    const response = await instance.get(`links/authentication`, {
+    const response = await clientInstance.get(`links/authentication`, {
       params: {
         linkId,
       },
@@ -63,7 +64,7 @@ const API = {
 
   /** 사용자별 링크 둘러보기 */
   getLinksArchiveByUserId: async ({ userId, linkId }: { userId: string; linkId?: string }) => {
-    const response = await instance.get(`links/public/user/${userId}`, {
+    const response = await clientInstance.get(`links/public/user/${userId}`, {
       params: {
         linkId,
       },
@@ -72,7 +73,7 @@ const API = {
   },
 
   getAuthLinksArchiveByUserId: async ({ userId, linkId }: { userId: string; linkId?: string }) => {
-    const response = await instance.get(`links/authentication/user/${userId}`, {
+    const response = await clientInstance.get(`links/authentication/user/${userId}`, {
       params: {
         linkId,
       },
@@ -82,7 +83,7 @@ const API = {
 
   /** 사용자별 북마크 둘러보기 */
   getMarksArchiveByUserId: async ({ userId, linkId }: { userId: string; linkId?: string }) => {
-    const response = await instance.get(`mark/links/public/user/${userId}`, {
+    const response = await clientInstance.get(`mark/links/public/user/${userId}`, {
       params: {
         linkId,
       },
@@ -91,7 +92,7 @@ const API = {
   },
 
   getAuthMarksArchiveByUserId: async ({ userId, linkId }: { userId: string; linkId?: string }) => {
-    const response = await instance.get(`mark/links/authentication/user/${userId}`, {
+    const response = await clientInstance.get(`mark/links/authentication/user/${userId}`, {
       params: {
         linkId,
       },
@@ -101,7 +102,7 @@ const API = {
 
   /** 내 링크 둘러보기 */
   getUserLinksArchive: async (linkId?: string) => {
-    const response = await instance.get(`links/user`, {
+    const response = await clientInstance.get(`links/user`, {
       params: {
         linkId,
       },
@@ -111,7 +112,7 @@ const API = {
 
   /** 내 마크 둘러보기 */
   getUserMarksArchive: async (linkId?: string) => {
-    const response = await instance.get(`mark/links/user`, {
+    const response = await clientInstance.get(`mark/links/user`, {
       params: {
         linkId,
       },
@@ -120,14 +121,14 @@ const API = {
   },
 
   createTag: async (tag: string) => {
-    const response = await instance.post(`tag`, {
+    const response = await clientInstance.post(`tag`, {
       tag,
     });
     return response;
   },
 
   getTagsByUserId: async (userId: string) => {
-    const response = await instance.get(`tags/userId${userId}`);
+    const response = await clientInstance.get(`tags/userId${userId}`);
     return response;
   },
 
@@ -135,22 +136,23 @@ const API = {
     const formData = new FormData();
     formData.append('image', file);
 
-    const response = await instance.patch(`profile-image`, formData);
+    const response = await clientInstance.patch(`profile-image`, formData);
     return response;
   },
 
-  getMyProfile: async () => {
-    const response = await instance.get(`user`);
+  getMyProfile: async ({ accessToken }: { accessToken: string }) => {
+    const serverInstance = createInstance(accessToken);
+    const response = await serverInstance.get(`user`);
     return response.data;
   },
 
-  getUserProfile: async (userId: number) => {
-    const response = await instance.get(`user/${userId}`);
+  getUserProfile: async (userId: string) => {
+    const response = await clientInstance.get(`user/${userId}`);
     return response;
   },
 
   updateUserProfile: async ({ nickname, introduce }: { nickname: string; introduce: string }) => {
-    const response = await instance.patch('user', {
+    const response = await clientInstance.patch('user', {
       nickname,
       introduce,
     });
@@ -164,15 +166,17 @@ const API = {
   }: {
     nickname: string;
     userId: string;
-    accessToken?: string;
+    accessToken: string;
   }) => {
-    const api = accessToken ? createInstance(accessToken) : instance;
-    const response = await api.patch(`/user/${userId}/nickname`, { nickname });
+    const serverInstance = createInstance(accessToken);
+    const response = await serverInstance.patch(`/user/${userId}/nickname`, {
+      nickname,
+    });
     return response;
   },
 
   validateNickname: async (nickname: string) => {
-    const response = await instance.post(`/nickname`, {
+    const response = await clientInstance.post(`/nickname`, {
       nickname,
     });
     return response.data;
