@@ -11,7 +11,7 @@ interface IuseInfinityScroll {
   getNextPageParam?: (lastPage: any, pages: any) => any;
 }
 
-const useInfinityScroll = ({ queryKey, fetchFn, getNextPageParam }: IuseInfinityScroll) => {
+const useInfinityScroll = <TPage>({ queryKey, fetchFn, getNextPageParam }: IuseInfinityScroll) => {
   const target = useRef(null);
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey,
@@ -22,7 +22,7 @@ const useInfinityScroll = ({ queryKey, fetchFn, getNextPageParam }: IuseInfinity
     retry: 1,
   });
 
-  const pages = data?.pages || [];
+  const pages = (data?.pages as TPage[]) || [];
 
   const handleIntersection = useCallback(
     (entries) => {
