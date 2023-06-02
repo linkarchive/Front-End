@@ -22,6 +22,7 @@ const KakaoAuth = () => {
               headers: {
                 'Content-Type': 'application/json',
               },
+              credentials: 'include', // 쿠키를 포함시키는 옵션
               body: JSON.stringify({ accessToken, refreshToken, userId, nickname }),
             });
 
