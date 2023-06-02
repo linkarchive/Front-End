@@ -26,7 +26,7 @@ const KakaoAuth = () => {
               body: JSON.stringify({ accessToken, refreshToken, userId, nickname }),
             });
 
-            router.push('/');
+            window.location.href = '/';
           },
 
           onError: (error) => {
