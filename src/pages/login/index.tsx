@@ -11,6 +11,16 @@ import { GetServerSideProps } from 'next';
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const { accessToken } = parseCookies(req.headers.cookie);
 
+  // 토큰이 존재하면 홈페이지로 리다이렉트
+  if (accessToken) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: {
       accessToken: accessToken || null,
@@ -18,12 +28,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   };
 };
 
-const Login = ({ accessToken }: { accessToken: string }) => {
+const Login = () => {
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    console.log(accessToken);
-  }, []);
 
   useEffect(() => {
     dispatch(routerSlice.actions.loadLoginPage());
