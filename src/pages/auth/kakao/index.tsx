@@ -1,11 +1,23 @@
 import API from '@/api/API';
 import Spinner from '@/components/Spinner';
+import { parseCookies } from '@/utils';
 import { useMutation } from '@tanstack/react-query';
+import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 
-const KakaoAuth = () => {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const { accessToken } = parseCookies(req.headers.cookie);
+
+  return {
+    props: {
+      accessToken: accessToken || null,
+    },
+  };
+};
+
+const KakaoAuth = ({ accessToken: token }: { accessToken: string }) => {
   const router = useRouter();
   const loginMutation = useMutation({ mutationFn: API.kakaoLogin });
 
@@ -37,6 +49,9 @@ const KakaoAuth = () => {
   }, [router]);
 
   useEffect(() => {
+    if (token) {
+      console.log(token);
+    }
     handleKakaoLogin();
   }, [handleKakaoLogin]);
 
