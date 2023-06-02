@@ -1,13 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AxiosResponse } from 'axios';
-import { createInstance, clientInstance } from './customAPI';
+import { createInstance, clientInstance, nextInstance } from './customAPI';
 import { KakaoType } from './types';
 
 const API = {
-  sample: async (params: string): Promise<AxiosResponse> => {
-    const response = await clientInstance.get(`sample`, {
-      params,
-    });
+  /** NEXT api 쿠키 저장, 삭제 */
+  setAllCookies: async (data): Promise<AxiosResponse> => {
+    const response = await nextInstance.post(`set-all-cookies`, data);
+    return response;
+  },
+
+  setCookie: async (name: string, value: string): Promise<AxiosResponse> => {
+    const response = await nextInstance.post(`set-cookie`, { name, value });
+    return response;
+  },
+
+  deleteAllCookies: async (): Promise<AxiosResponse> => {
+    const response = await nextInstance.post(`delete-all-cookies`);
     return response;
   },
 
@@ -20,8 +29,9 @@ const API = {
     return response;
   },
 
-  getLinkMetadata: async (url: string) => {
-    const response = await clientInstance.get(`link/metadata`, {
+  getLinkMetadata: async ({ accessToken, url }: { accessToken: string; url: string }) => {
+    const serverInstance = createInstance(accessToken);
+    const response = await serverInstance.get(`link/metadata`, {
       params: {
         url,
       },
@@ -116,11 +126,6 @@ const API = {
     });
     return response;
   },
-  // getMyProfile: async ({ accessToken }: { accessToken: string }) => {
-  //   const serverInstance = createInstance(accessToken);
-  //   const response = await serverInstance.get(`user`);
-  //   return response.data;
-  // },
 
   /** 내 마크 둘러보기 */
   getUserMarksArchive: async (linkId?: string) => {

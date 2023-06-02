@@ -9,9 +9,21 @@ import { BottomNavHight } from '@/components/BottomNav/BottomNav';
 import Input, { InputWithButton } from '@/components/Input';
 import LinkInfo from '@/components/Create/LinkInfo';
 import { MetaData } from '@/components/LinkItem';
+import { parseCookies } from '@/utils';
+import { GetServerSideProps } from 'next';
 // import HashTagList from '@/components/Create/HashTagList'; TODO mvp 이후 개발 */
 
-const Create = () => {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const { accessToken } = parseCookies(req.headers.cookie);
+
+  return {
+    props: {
+      accessToken: accessToken || null,
+    },
+  };
+};
+
+const Create = ({ accessToken }: { accessToken: string }) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -47,7 +59,7 @@ const Create = () => {
     isError,
     isSuccess,
   } = useQuery(['metadata', urlInput.current], {
-    queryFn: () => API.getLinkMetadata(urlInput.current),
+    queryFn: () => API.getLinkMetadata({ accessToken, url: urlInput.current }),
     // TODO any 타입 개선
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onSuccess: ({ data }: any) => {

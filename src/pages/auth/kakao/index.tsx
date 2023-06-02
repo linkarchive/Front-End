@@ -17,14 +17,7 @@ const KakaoAuth = () => {
         {
           onSuccess: async (response) => {
             const { accessToken, refreshToken, userId, nickname } = response.data;
-            await fetch('/api/set-all-cookies', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              credentials: 'include', // 쿠키를 포함시키는 옵션
-              body: JSON.stringify({ accessToken, refreshToken, userId, nickname }),
-            });
+            await API.setAllCookies({ accessToken, refreshToken, userId, nickname });
 
             window.location.href = '/';
           },

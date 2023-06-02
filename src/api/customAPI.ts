@@ -32,4 +32,16 @@ export const createInstance = (accessToken?: string) => {
   return instance;
 };
 
+export const createNextInstance = () => {
+  const instance = axios.create({
+    baseURL: '/api/',
+    timeout: 2000,
+  });
+
+  setInterceptors(instance);
+
+  return instance;
+};
+
 export const clientInstance = createInstance();
+export const nextInstance = createNextInstance();

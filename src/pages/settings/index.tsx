@@ -1,3 +1,4 @@
+import API from '@/api/API';
 import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
 import Link from 'next/link';
@@ -9,8 +10,13 @@ const Settings = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const Logout = () => {
-    router.push('/');
+  const Logout = async () => {
+    try {
+      await API.deleteAllCookies();
+      router.push('/');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
