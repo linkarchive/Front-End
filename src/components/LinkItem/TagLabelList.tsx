@@ -5,9 +5,9 @@ import { Tag } from '@/components/LinkItem/';
 const TagLabelList = ({ className, tags }: { className?: string; tags: Tag[] }) => {
   return (
     <Wrapper className={className}>
-      {tags.map(({ tag }) => (
-        <li key={tag}>
-          <TagLabel text={tag} />
+      {tags.map(({ tagId, tagName }) => (
+        <li key={tagId}>
+          <TagLabel text={tagName} />
         </li>
       ))}
     </Wrapper>

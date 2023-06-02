@@ -1,50 +1,56 @@
-import LinkItem, { LinkItemWithProfile, ILinkItem } from '@/components/LinkItem';
+import { LinkItemWithProfile, LinkItemListProps } from '@/components/LinkItem';
+import React from 'react';
 import styled from 'styled-components';
 
-interface IData {
-  data: {
-    linkList?: ILinkItem[];
-    linkArchive?: ILinkItem[];
-  };
-}
+const LinkItemList = ({ data }: LinkItemListProps) => {
+  const isEmpty =
+    data[0]?.linkArchive?.length <= 0 ||
+    data[0]?.linkList?.length <= 0 ||
+    data[0]?.markList?.length <= 0;
 
-const LinkItemList = ({ data }: { data: IData[] }) => {
+  if (isEmpty) {
+    return <Block>링크가 없습니다.</Block>;
+  }
+
   return (
     <>
-      {(data[0]?.data?.linkArchive?.length <= 0 || data[0]?.data?.linkList?.length <= 0) && (
-        <Block>링크가 없습니다.</Block>
-      )}
+      {data.map((data_) => {
+        const linkList = data_.linkList || data_.linkArchive || data_.markList;
 
-      {data.length > 0 &&
-        data.map(({ data: data_ }) => {
-          const linkList = data_.linkList || data_.linkArchive;
-
-          return (
-            <>
-              {linkList.map((linkItem) => (
-                <LinkItem key={linkItem.linkId} {...linkItem} />
-              ))}
-            </>
-          );
-        })}
+        return (
+          <>
+            {linkList.map((linkItem) => (
+              <LinkItemWithProfile key={linkItem.linkId} {...linkItem} />
+            ))}
+          </>
+        );
+      })}
     </>
   );
 };
 
-const LinkItemWithProfileList = ({ data }: { data: IData[] }) => {
+const LinkItemWithProfileList = ({ data }: LinkItemListProps) => {
+  const isEmpty =
+    data[0]?.linkArchive?.length <= 0 ||
+    data[0]?.linkList?.length <= 0 ||
+    data[0]?.markList?.length <= 0;
+
+  if (isEmpty) {
+    return <Block>링크가 없습니다.</Block>;
+  }
   return (
     <>
-      {(data[0]?.data?.linkArchive?.length <= 0 || data[0]?.data?.linkList?.length <= 0) && (
-        <Block>링크가 없습니다.</Block>
-      )}
-      {data.length > 0 &&
-        data.map(({ data: { linkArchive } }) => (
+      {data.map((data_) => {
+        const linkList = data_.linkList || data_.linkArchive || data_.markList;
+
+        return (
           <>
-            {linkArchive.map((linkItem) => (
+            {linkList.map((linkItem) => (
               <LinkItemWithProfile key={linkItem.linkId} {...linkItem} />
             ))}
           </>
-        ))}
+        );
+      })}
     </>
   );
 };

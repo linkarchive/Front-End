@@ -9,7 +9,7 @@ const LinkWithProfile = ({
   profileImage,
   ...props
 }: LinkItemWithProfileProps) => {
-  const href = `/archive/user/${userId}`;
+  const href = `/${nickname}`;
   return (
     <LinkItem
       Header={

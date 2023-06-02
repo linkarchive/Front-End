@@ -1,5 +1,5 @@
 import API from '@/api/API';
-import { LinkItemWithProfileList } from '@/components/LinkItem';
+import { ILinksResponse, LinkItemWithProfileList } from '@/components/LinkItem';
 import useInfinityScroll from '@/hooks/useInfinityScroll';
 import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
@@ -16,15 +16,16 @@ const Explore = () => {
   const isUser = false;
   const fetchLinksFn = isUser ? API.getAuthLinksArchive : API.getLinksArchive;
 
-  const { pages, target, isFetchingNextPage } = useInfinityScroll({
+  const { pages, target, isFetchingNextPage } = useInfinityScroll<ILinksResponse>({
     fetchFn: fetchLinksFn,
     queryKey: ['archive'],
     getNextPageParam: (lastPage_) => {
-      const lastPage = lastPage_.data?.linkArchive;
-      const lastItem = lastPage[lastPage.length - 1].urlId;
-      const hasNext = lastPage_?.data?.hasNext;
+      const hasNext = lastPage_?.hasNext;
+      if (!hasNext) return undefined;
+      const lastPage = lastPage_?.linkArchive;
+      const lastItem = lastPage[lastPage.length - 1].linkId;
 
-      return hasNext ? lastItem : undefined;
+      return lastItem;
     },
   });
 
