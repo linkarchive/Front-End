@@ -4,6 +4,7 @@ import { ACCESS_TOKEN, NICKNAME } from './constants';
 export function middleware(request: NextRequest) {
   const isLoggedIn = request.cookies.get(ACCESS_TOKEN)?.value;
   const nickname = request.cookies.get(NICKNAME)?.value || '';
+  console.log(`Access Token: ${isLoggedIn}`); // 로그 출력
 
   if (isLoggedIn) {
     // 닉네임 설정 페이지로 이동 허용
