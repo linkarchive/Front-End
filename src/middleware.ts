@@ -22,7 +22,7 @@ export function middleware(request: NextRequest) {
   if (request.nextUrl.pathname === '/login') {
     // 토큰이 있다면 본인 계정의 홈으로 이동
     if (accessToken) {
-      return NextResponse.redirect(`${request.nextUrl.origin}/${nickname}`);
+      return NextResponse.redirect(`${request.nextUrl.origin}/123`);
     }
     // 토큰이 없다면 로그인 페이지로 진행
     return NextResponse.next();
