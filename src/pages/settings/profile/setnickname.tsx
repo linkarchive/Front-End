@@ -1,28 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import useDebounce from '@/hooks/useDebounce';
-import { DEBOUNCED_DELAY, NICKNAME, USER_ID, domain } from '@/constants';
+import { DEBOUNCED_DELAY } from '@/constants';
 import CheckGreenSvg from 'public/assets/svg/check-green.svg';
 import XMark from 'public/assets/svg/XMark-red.svg';
 import API from '@/api/API';
 import { useMutation } from '@tanstack/react-query';
 import Spinner from '@/components/Spinner';
 import { BottomNavHight } from '@/components/BottomNav/BottomNav';
-import { deleteAllCookies, getCookie, setCookie } from '@/utils';
 import { useRouter } from 'next/router';
 import { ENGLISH_ONLY_REGEX } from '@/utils/regex';
+import { GetServerSideProps } from 'next';
+import { parseCookies } from '@/utils';
 
 export interface MessageWrapperProps {
   isValid: boolean;
 }
 
-const SetNickname = () => {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const { userId, accessToken } = parseCookies(req.headers.cookie);
+
+  return {
+    props: {
+      userId: userId || null,
+      accessToken: accessToken || null,
+    },
+  };
+};
+
+const SetNickname = ({ userId, accessToken }: { userId: string; accessToken: string }) => {
   const router = useRouter();
   const [nickname, setNickname] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isValid, setIsValid] = useState<boolean | null>(null);
   const [message, setMessage] = useState<string>('영문, 2~16자');
-  const userId = getCookie(USER_ID);
   const debouncedNickname = useDebounce(nickname, DEBOUNCED_DELAY);
   const isVerified = !isLoading && isValid;
   const isInvalid = !isLoading && !isValid;
@@ -35,26 +46,38 @@ const SetNickname = () => {
     if (ENGLISH_ONLY_REGEX.test(value)) {
       setNickname(value);
     }
+    console.log(accessToken);
   };
 
   const handleInputSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (debouncedNickname.trim() !== '') {
       updateNicknameMutation.mutate(
-        { nickname: debouncedNickname, userId },
+        { nickname: debouncedNickname, userId, accessToken },
         {
-          onSuccess: () => {
-            setCookie(NICKNAME, debouncedNickname, 30);
-            router.push(`${domain}/`);
+          onSuccess: async () => {
+            await fetch('/api/set-nickname', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ nickname }),
+            });
+
+            router.push('/');
           },
         }
       );
     }
   };
 
-  const Logout = () => {
-    deleteAllCookies();
-    router.push('/');
+  const Logout = async () => {
+    try {
+      await API.deleteAllCookies();
+      router.push('/');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const validateNicknameMutation = useMutation(API.validateNickname, {

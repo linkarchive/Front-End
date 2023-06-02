@@ -43,6 +43,8 @@ const WaterMark = () => {
     envText = '개발 환경입니다.';
   } else if (process.env.NEXT_PUBLIC_APP_ENV === 'production') {
     envText = '프로덕션 환경입니다.';
+  } else if (process.env.NEXT_PUBLIC_APP_ENV === 'test') {
+    envText = '테스트 환경입니다.';
   } else {
     envText = '로컬 환경입니다.';
   }

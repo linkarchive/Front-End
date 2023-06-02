@@ -6,7 +6,6 @@ import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
 import { useEffect } from 'react';
 
-// 비로그인 사용자 홈페이지
 const Home = () => {
   const dispatch = useAppDispatch();
 
