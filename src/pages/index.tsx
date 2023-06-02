@@ -4,10 +4,21 @@ import { LinkItemList } from '@/components/LinkItem';
 import useInfinityScroll from '@/hooks/useInfinityScroll';
 import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
+import { parseCookies } from '@/utils';
+import { GetServerSideProps } from 'next';
 import { useEffect } from 'react';
 
-// 비로그인 사용자 홈페이지
-const Home = () => {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const { accessToken } = parseCookies(req.headers.cookie);
+
+  return {
+    props: {
+      accessToken: accessToken || null,
+    },
+  };
+};
+
+const Home = ({ accessToken }: { accessToken: string }) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -15,7 +26,7 @@ const Home = () => {
   }, [dispatch]);
 
   const { pages, target, isFetchingNextPage } = useInfinityScroll({
-    fetchFn: (linkId: string) => API.getUserLinksArchive(linkId),
+    fetchFn: (linkId: string) => API.getUserLinksArchive({ accessToken, linkId }),
     queryKey: ['linkList', 'user', 'link'],
     getNextPageParam: (lastPage_) => {
       if (!lastPage_?.data?.hasNext) return undefined;

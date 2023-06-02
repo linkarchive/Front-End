@@ -101,14 +101,26 @@ const API = {
   },
 
   /** 내 링크 둘러보기 */
-  getUserLinksArchive: async (linkId?: string) => {
-    const response = await clientInstance.get(`links/user`, {
+  getUserLinksArchive: async ({
+    accessToken,
+    linkId,
+  }: {
+    accessToken: string;
+    linkId?: string;
+  }) => {
+    const serverInstance = createInstance(accessToken);
+    const response = await serverInstance.get(`links/user`, {
       params: {
         linkId,
       },
     });
     return response;
   },
+  // getMyProfile: async ({ accessToken }: { accessToken: string }) => {
+  //   const serverInstance = createInstance(accessToken);
+  //   const response = await serverInstance.get(`user`);
+  //   return response.data;
+  // },
 
   /** 내 마크 둘러보기 */
   getUserMarksArchive: async (linkId?: string) => {
