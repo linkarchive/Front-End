@@ -5,9 +5,25 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import { routerSlice } from '@/store/slices/routerSlice';
 import { useAppDispatch } from '@/store';
+import { parseCookies } from '@/utils';
+import { GetServerSideProps } from 'next';
 
-const Login = () => {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const { accessToken } = parseCookies(req.headers.cookie);
+
+  return {
+    props: {
+      accessToken: accessToken || null,
+    },
+  };
+};
+
+const Login = ({ accessToken }: { accessToken: string }) => {
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    console.log(accessToken);
+  }, []);
 
   useEffect(() => {
     dispatch(routerSlice.actions.loadLoginPage());
