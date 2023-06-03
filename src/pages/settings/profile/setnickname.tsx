@@ -57,15 +57,9 @@ const SetNickname = ({ userId, accessToken }: { userId: string; accessToken: str
         { nickname: debouncedNickname, userId, accessToken },
         {
           onSuccess: async () => {
-            await fetch('/api/set-nickname', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ nickname }),
-            });
+            await API.setCookie({ name: 'nickname', value: debouncedNickname });
 
-            router.push('/');
+            window.location.href = '/';
           },
         }
       );

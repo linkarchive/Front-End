@@ -10,7 +10,7 @@ const API = {
     return response;
   },
 
-  setCookie: async (name: string, value: string): Promise<AxiosResponse> => {
+  setCookie: async ({ name, value }: { name: string; value: string }): Promise<AxiosResponse> => {
     const response = await nextInstance.post(`set-cookie`, { name, value });
     return response;
   },

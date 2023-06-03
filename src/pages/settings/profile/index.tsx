@@ -107,11 +107,13 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
         introduce: profile.introduce.value,
       },
       {
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
           setProfile({
             nickname: { value: data.nickname, initialValue: data.nickname },
             introduce: { value: data.introduce, initialValue: data.introduce },
           });
+
+          await API.setCookie({ name: 'nickname', value: debouncedNickname });
         },
         onError: (error: AxiosError<ErrorMessage>) => {
           // eslint-disable-next-line no-alert
