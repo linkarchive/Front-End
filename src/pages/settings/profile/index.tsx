@@ -11,8 +11,7 @@ import { DEBOUNCED_DELAY } from '@/constants';
 import { useMutation } from '@tanstack/react-query';
 import { MessageWrapperProps } from './setnickname';
 import { AxiosError } from 'axios';
-import { GetServerSideProps } from 'next';
-import { parseCookies } from '@/utils';
+import { withAuth } from '@/lib/withAuth';
 
 interface ErrorMessage {
   message: string;
@@ -43,15 +42,7 @@ const initialState: UserData = {
 
 const initialImage = '/white.jpeg';
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const { accessToken } = parseCookies(req.headers.cookie);
-
-  return {
-    props: {
-      accessToken: accessToken || null,
-    },
-  };
-};
+export const getServerSideProps = withAuth();
 
 const ProfileInput = ({ title, id, value, initialValue, onChange }: ProfileInputProps) => (
   <ProfileInputWrapper>

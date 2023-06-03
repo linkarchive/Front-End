@@ -11,23 +11,13 @@ import Spinner from '@/components/Spinner';
 import { BottomNavHight } from '@/components/BottomNav/BottomNav';
 import { useRouter } from 'next/router';
 import { ENGLISH_ONLY_REGEX } from '@/utils/regex';
-import { GetServerSideProps } from 'next';
-import { parseCookies } from '@/utils';
+import { withAuth } from '@/lib/withAuth';
 
 export interface MessageWrapperProps {
   isValid: boolean;
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const { userId, accessToken } = parseCookies(req.headers.cookie);
-
-  return {
-    props: {
-      userId: userId || null,
-      accessToken: accessToken || null,
-    },
-  };
-};
+export const getServerSideProps = withAuth();
 
 const SetNickname = ({ userId, accessToken }: { userId: string; accessToken: string }) => {
   const router = useRouter();
