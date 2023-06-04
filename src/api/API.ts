@@ -53,7 +53,7 @@ const API = {
   },
 
   getAuthLinksArchive: async (linkId?: string) => {
-    const { data } = await instance.get(`links/authentication`, {
+    const { data } = await instance.get(`links/archive/authentication`, {
       params: {
         linkId,
       },
