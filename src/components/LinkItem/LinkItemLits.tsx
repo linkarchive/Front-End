@@ -1,8 +1,8 @@
-import { LinkItemWithProfile, LinkItemListProps } from '@/components/LinkItem';
+import LinkItem, { LinkItemWithProfile, LinkItemListProps } from '@/components/LinkItem';
 import React from 'react';
 import styled from 'styled-components';
 
-const LinkItemList = ({ data }: LinkItemListProps) => {
+const LinkItemList = ({ data, queryKey }: LinkItemListProps) => {
   const isEmpty =
     data[0]?.linkArchive?.length <= 0 ||
     data[0]?.linkList?.length <= 0 ||
@@ -20,7 +20,7 @@ const LinkItemList = ({ data }: LinkItemListProps) => {
         return (
           <>
             {linkList.map((linkItem) => (
-              <LinkItemWithProfile key={linkItem.linkId} {...linkItem} />
+              <LinkItem key={linkItem.linkId} queryKey={queryKey} {...linkItem} />
             ))}
           </>
         );
@@ -29,7 +29,7 @@ const LinkItemList = ({ data }: LinkItemListProps) => {
   );
 };
 
-const LinkItemWithProfileList = ({ data }: LinkItemListProps) => {
+const LinkItemWithProfileList = ({ data, queryKey }: LinkItemListProps) => {
   const isEmpty =
     data[0]?.linkArchive?.length <= 0 ||
     data[0]?.linkList?.length <= 0 ||
@@ -46,7 +46,7 @@ const LinkItemWithProfileList = ({ data }: LinkItemListProps) => {
         return (
           <>
             {linkList.map((linkItem) => (
-              <LinkItemWithProfile key={linkItem.linkId} {...linkItem} />
+              <LinkItemWithProfile key={linkItem.linkId} queryKey={queryKey} {...linkItem} />
             ))}
           </>
         );
