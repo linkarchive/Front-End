@@ -12,9 +12,10 @@ const Mark = () => {
     dispatch(routerSlice.actions.loadHomePage());
   }, [dispatch]);
 
+  const queryKey = ['linkList', 'user', 'mark'];
   const { pages, target, isFetchingNextPage } = useInfinityScroll<ILinksResponse>({
     fetchFn: (linkId: string) => API.getUserMarksArchive(linkId),
-    queryKey: ['linkList', 'user', 'mark'],
+    queryKey,
     getNextPageParam: (lastPage_) => {
       if (!lastPage_?.data?.hasNext) return undefined;
       const lastPage = lastPage_.data?.linkList;
@@ -25,7 +26,7 @@ const Mark = () => {
 
   return (
     <div>
-      <LinkItemList data={pages} />
+      <LinkItemList data={pages} queryKey={queryKey} />
       {isFetchingNextPage && <div>로딩중...</div>}
       <div ref={target} />
     </div>
