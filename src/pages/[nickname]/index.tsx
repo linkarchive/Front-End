@@ -1,4 +1,4 @@
-import { ILinkItem, ILinksResponse, LinkItemList } from '@/components/LinkItem';
+import { ILinksResponse, LinkItemList } from '@/components/LinkItem';
 import Nav from '@/components/Archive/User/Nav';
 import Profile from '@/components/Archive/User/Profile';
 import { useAppDispatch } from '@/store';
@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import API from '@/api/API';
 import { useRouter } from 'next/router';
 import useInfinityScroll from '@/hooks/useInfinityScroll';
+import useAuth from '@/hooks/useAuth';
 
 const User = () => {
   const dispatch = useAppDispatch();
@@ -19,6 +20,7 @@ const User = () => {
   const router = useRouter();
   const nickname = (router.query.nickname as string) || '';
   const [item, setItem] = useState<'link' | 'mark'>('link');
+  const { isLoggedin } = useAuth();
 
   const { data: profile } = useQuery({
     queryKey: ['user', nickname],
@@ -26,9 +28,7 @@ const User = () => {
     enabled: !!nickname,
   });
 
-  const isUser = false;
-  const fetchLinksFn = setFetchLinksFn(isUser, item);
-
+  const fetchLinksFn = setFetchLinksFn({ isLoggedin, item });
   const queryKey = ['linkList', nickname];
   const { pages, target, isFetchingNextPage } = useInfinityScroll<ILinksResponse>({
     fetchFn: (linkId: string) => fetchLinksFn({ nickname, linkId }),
@@ -54,8 +54,8 @@ const User = () => {
 
 export default User;
 
-const setFetchLinksFn = (isUser, item) => {
-  if (isUser) {
+const setFetchLinksFn = ({ isLoggedin, item }: { isLoggedin: boolean; item: 'link' | 'mark' }) => {
+  if (isLoggedin) {
     if (item === 'link') return API.getAuthLinksArchiveByUserId;
     return API.getAuthMarksArchiveByUserId;
   }

@@ -1,6 +1,7 @@
 import API from '@/api/API';
 import { ILinksResponse, LinkItemWithProfileList } from '@/components/LinkItem';
 import useInfinityScroll from '@/hooks/useInfinityScroll';
+import useAuth from '@/hooks/useAuth';
 import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
 import React, { useEffect } from 'react';
@@ -13,8 +14,8 @@ const Explore = () => {
     dispatch(routerSlice.actions.loadExplorePage());
   }, [dispatch]);
 
-  const isUser = true;
-  const fetchLinksFn = isUser ? API.getAuthLinksArchive : API.getLinksArchive;
+  const { isLoggedin } = useAuth();
+  const fetchLinksFn = isLoggedin ? API.getAuthLinksArchive : API.getLinksArchive;
 
   const queryKey = ['archive'];
   const { pages, target, isFetchingNextPage } = useInfinityScroll<ILinksResponse>({
