@@ -29,9 +29,10 @@ const User = () => {
   const isUser = false;
   const fetchLinksFn = setFetchLinksFn(isUser, item);
 
+  const queryKey = ['linkList', nickname];
   const { pages, target, isFetchingNextPage } = useInfinityScroll<ILinksResponse>({
     fetchFn: (linkId: string) => fetchLinksFn({ nickname, linkId }),
-    queryKey: ['linkList', item, nickname],
+    queryKey,
     getNextPageParam: (lastPage_) => {
       if (!lastPage_?.data?.hasNext) return undefined;
       const lastPage = lastPage_.data?.linkList;
@@ -44,7 +45,7 @@ const User = () => {
     <>
       <Profile {...profile} />
       <Nav handleClick={(v) => setItem(v)} />
-      <LinkItemList data={pages} />
+      <LinkItemList data={pages} queryKey={queryKey} />
       {isFetchingNextPage && <div>로딩중...</div>}
       <div ref={target} />
     </>

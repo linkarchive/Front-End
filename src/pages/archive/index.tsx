@@ -13,12 +13,13 @@ const Explore = () => {
     dispatch(routerSlice.actions.loadExplorePage());
   }, [dispatch]);
 
-  const isUser = false;
+  const isUser = true;
   const fetchLinksFn = isUser ? API.getAuthLinksArchive : API.getLinksArchive;
 
+  const queryKey = ['archive'];
   const { pages, target, isFetchingNextPage } = useInfinityScroll<ILinksResponse>({
     fetchFn: fetchLinksFn,
-    queryKey: ['archive'],
+    queryKey,
     getNextPageParam: (lastPage_) => {
       const hasNext = lastPage_?.hasNext;
       if (!hasNext) return undefined;
@@ -31,7 +32,7 @@ const Explore = () => {
 
   return (
     <Wrapper>
-      <LinkItemWithProfileList data={pages} />
+      <LinkItemWithProfileList data={pages} queryKey={queryKey} />
       {isFetchingNextPage && <div>로딩중...</div>}
       <div ref={target} />
     </Wrapper>
