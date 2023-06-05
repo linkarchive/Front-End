@@ -1,5 +1,6 @@
 import API from '@/api/API';
 import { QueryKey, useMutation, useQueryClient } from '@tanstack/react-query';
+import useAuth from '@/hooks/useAuth';
 
 export const useToggleMark = ({
   linkId,
@@ -11,6 +12,8 @@ export const useToggleMark = ({
   queryKey: QueryKey;
 }) => {
   const queryClient = useQueryClient();
+
+  const { isLoggedin } = useAuth();
 
   const markMutation = useMutation({
     mutationFn: isMark ? API.deleteMark : API.createMark,
@@ -29,6 +32,7 @@ export const useToggleMark = ({
   });
 
   const handleToggleMark = () => {
+    if (!isLoggedin) return; // 비로그인 상태시 동작 x
     if (markMutation.isLoading) return;
 
     markMutation.mutate(linkId);
