@@ -1,12 +1,18 @@
 import API from '@/api/API';
+import { setAccessToken } from '@/api/customAPI';
 import CreateBtn from '@/components/Home/CreateBtn';
 import { ILinkItem, ILinksResponse, LinkItemList } from '@/components/LinkItem';
 import useInfinityScroll from '@/hooks/useInfinityScroll';
+import { withAuth } from '@/lib/withAuth';
 import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
 import { useEffect } from 'react';
 
-const Home = () => {
+export const getServerSideProps = withAuth();
+
+const Home = ({ accessToken }: { accessToken: string }) => {
+  setAccessToken(accessToken);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AxiosResponse } from 'axios';
-import { createInstance, clientInstance, nextInstance } from './customAPI';
+import { clientInstance, nextInstance } from './customAPI';
 import { KakaoType } from './types';
 
 const API = {
@@ -63,7 +63,7 @@ const API = {
   },
 
   getAuthLinksArchive: async (linkId?: string) => {
-    const { data } = await clientInstance.get(`links/authentication`, {
+    const { data } = await clientInstance.get(`links/archive/authentication`, {
       params: {
         linkId,
       },
@@ -154,25 +154,17 @@ const API = {
   },
 
   // 변경
-  uploadImage: async ({
-    accessToken,
-    file,
-  }: {
-    accessToken: string;
-    file: File;
-  }): Promise<AxiosResponse> => {
+  uploadImage: async ({ file }: { file: File }): Promise<AxiosResponse> => {
     const formData = new FormData();
     formData.append('image', file);
 
-    const serverInstance = createInstance(accessToken);
-    const response = await serverInstance.patch(`profile-image`, formData);
+    const response = await clientInstance.patch(`profile-image`, formData);
     return response;
   },
 
   // 변경
-  getMyProfile: async ({ accessToken }: { accessToken: string }) => {
-    const serverInstance = createInstance(accessToken);
-    const response = await serverInstance.get(`user`);
+  getMyProfile: async () => {
+    const response = await clientInstance.get(`user`);
     return response.data;
   },
 
@@ -182,17 +174,8 @@ const API = {
   },
 
   // 변경
-  updateUserProfile: async ({
-    accessToken,
-    nickname,
-    introduce,
-  }: {
-    accessToken: string;
-    nickname: string;
-    introduce: string;
-  }) => {
-    const serverInstance = createInstance(accessToken);
-    const response = await serverInstance.patch('user', {
+  updateUserProfile: async ({ nickname, introduce }: { nickname: string; introduce: string }) => {
+    const response = await clientInstance.patch('user', {
       nickname,
       introduce,
     });
@@ -200,17 +183,8 @@ const API = {
   },
 
   // 변경
-  updateNickname: async ({
-    nickname,
-    userId,
-    accessToken,
-  }: {
-    nickname: string;
-    userId: string;
-    accessToken: string;
-  }) => {
-    const serverInstance = createInstance(accessToken);
-    const response = await serverInstance.patch(`/user/${userId}/nickname`, {
+  updateNickname: async ({ nickname, userId }: { nickname: string; userId: string }) => {
+    const response = await clientInstance.patch(`/user/${userId}/nickname`, {
       nickname,
     });
     return response;

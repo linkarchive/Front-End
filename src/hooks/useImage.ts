@@ -7,12 +7,12 @@ export const useImage = (initialImageUrl: string) => {
 
   const uploadImageMutation = useMutation({ mutationFn: API.uploadImage });
 
-  const onImageChange = (e: ChangeEvent<HTMLInputElement>, accessToken) => {
+  const onImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     const file = e.target.files[0];
 
     uploadImageMutation.mutate(
-      { accessToken, file },
+      { file },
       {
         onSuccess: (response) => {
           setImageUrl(response.data.profileImageFileName);

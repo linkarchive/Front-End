@@ -12,6 +12,7 @@ import { useMutation } from '@tanstack/react-query';
 import { MessageWrapperProps } from './setnickname';
 import { AxiosError } from 'axios';
 import { withAuth } from '@/lib/withAuth';
+import { setAccessToken } from '@/api/customAPI';
 
 interface ErrorMessage {
   message: string;
@@ -60,6 +61,8 @@ const ProfileInput = ({ title, id, value, initialValue, onChange }: ProfileInput
 );
 
 const Profile = ({ accessToken }: { accessToken: string }) => {
+  setAccessToken(accessToken);
+
   const dispatch = useAppDispatch();
   const [profile, setProfile] = useState<UserData>(initialState);
   const { imageUrl, setImageUrl, onImageChange } = useImage(initialImage);
@@ -93,7 +96,6 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
 
     updateUserProfileMutation.mutate(
       {
-        accessToken,
         nickname: profile.nickname.value,
         introduce: profile.introduce.value,
       },
@@ -115,7 +117,7 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
   };
 
   const getMyProfile = async () => {
-    const response = await API.getMyProfile({ accessToken });
+    const response = await API.getMyProfile();
 
     return response;
   };
@@ -209,7 +211,7 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
               accept='image/png'
               style={{ display: 'none' }}
               id='imageInput'
-              onChange={(e) => onImageChange(e, accessToken)}
+              onChange={(e) => onImageChange(e)}
             />
           </ImgContent>
           <SvgIcon onClick={() => document.getElementById('imageInput').click()}>

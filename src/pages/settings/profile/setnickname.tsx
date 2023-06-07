@@ -12,6 +12,7 @@ import { BottomNavHight } from '@/components/BottomNav/BottomNav';
 import { useRouter } from 'next/router';
 import { ENGLISH_ONLY_REGEX } from '@/utils/regex';
 import { withAuth } from '@/lib/withAuth';
+import { setAccessToken } from '@/api/customAPI';
 
 export interface MessageWrapperProps {
   isValid: boolean;
@@ -20,6 +21,8 @@ export interface MessageWrapperProps {
 export const getServerSideProps = withAuth();
 
 const SetNickname = ({ userId, accessToken }: { userId: string; accessToken: string }) => {
+  setAccessToken(accessToken);
+
   const router = useRouter();
   const [nickname, setNickname] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -44,7 +47,7 @@ const SetNickname = ({ userId, accessToken }: { userId: string; accessToken: str
     e.preventDefault();
     if (debouncedNickname.trim() !== '') {
       updateNicknameMutation.mutate(
-        { nickname: debouncedNickname, userId, accessToken },
+        { nickname: debouncedNickname, userId },
         {
           onSuccess: async () => {
             await API.setCookie({ name: 'nickname', value: debouncedNickname });
