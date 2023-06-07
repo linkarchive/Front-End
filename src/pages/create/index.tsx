@@ -9,9 +9,15 @@ import { BottomNavHight } from '@/components/BottomNav/BottomNav';
 import Input, { InputWithButton } from '@/components/Input';
 import LinkInfo from '@/components/Create/LinkInfo';
 import { MetaData } from '@/components/LinkItem';
+import { setAccessToken } from '@/api/customAPI';
+import { withAuth } from '@/lib/withAuth';
 // import HashTagList from '@/components/Create/HashTagList'; TODO mvp 이후 개발 */
 
-const Create = () => {
+export const getServerSideProps = withAuth();
+
+const Create = ({ accessToken }: { accessToken: string }) => {
+  setAccessToken(accessToken);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {

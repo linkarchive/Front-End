@@ -11,6 +11,8 @@ import { DEBOUNCED_DELAY } from '@/constants';
 import { useMutation } from '@tanstack/react-query';
 import { MessageWrapperProps } from './setnickname';
 import { AxiosError } from 'axios';
+import { withAuth } from '@/lib/withAuth';
+import { setAccessToken } from '@/api/customAPI';
 
 interface ErrorMessage {
   message: string;
@@ -41,6 +43,8 @@ const initialState: UserData = {
 
 const initialImage = '/white.jpeg';
 
+export const getServerSideProps = withAuth();
+
 const ProfileInput = ({ title, id, value, initialValue, onChange }: ProfileInputProps) => (
   <ProfileInputWrapper>
     <label htmlFor={id}>
@@ -56,7 +60,9 @@ const ProfileInput = ({ title, id, value, initialValue, onChange }: ProfileInput
   </ProfileInputWrapper>
 );
 
-const Profile = () => {
+const Profile = ({ accessToken }: { accessToken: string }) => {
+  setAccessToken(accessToken);
+
   const dispatch = useAppDispatch();
   const [profile, setProfile] = useState<UserData>(initialState);
   const { imageUrl, setImageUrl, onImageChange } = useImage(initialImage);
@@ -94,11 +100,13 @@ const Profile = () => {
         introduce: profile.introduce.value,
       },
       {
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
           setProfile({
             nickname: { value: data.nickname, initialValue: data.nickname },
             introduce: { value: data.introduce, initialValue: data.introduce },
           });
+
+          await API.setCookie({ name: 'nickname', value: debouncedNickname });
         },
         onError: (error: AxiosError<ErrorMessage>) => {
           // eslint-disable-next-line no-alert
@@ -203,7 +211,7 @@ const Profile = () => {
               accept='image/png'
               style={{ display: 'none' }}
               id='imageInput'
-              onChange={onImageChange}
+              onChange={(e) => onImageChange(e)}
             />
           </ImgContent>
           <SvgIcon onClick={() => document.getElementById('imageInput').click()}>

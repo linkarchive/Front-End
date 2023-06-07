@@ -11,14 +11,17 @@ export const useImage = (initialImageUrl: string) => {
     if (!e.target.files) return;
     const file = e.target.files[0];
 
-    uploadImageMutation.mutate(file, {
-      onSuccess: (response) => {
-        setImageUrl(response.data.profileImageFileName);
-      },
-      onError: () => {
-        console.error('이미지 업로드에 실패했습니다.');
-      },
-    });
+    uploadImageMutation.mutate(
+      { file },
+      {
+        onSuccess: (response) => {
+          setImageUrl(response.data.profileImageFileName);
+        },
+        onError: () => {
+          console.error('이미지 업로드에 실패했습니다.');
+        },
+      }
+    );
   };
 
   return { imageUrl, setImageUrl, onImageChange };

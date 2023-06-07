@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { ACCESS_TOKEN } from '@/constants';
-import { getCookie } from '@/utils';
+import { getAccessToken } from '@/api/customAPI';
 
 const useAuth = () => {
-  const [isLoggedin, setIsLoggedin] = useState(!!getCookie(ACCESS_TOKEN));
+  const [isLoggedin, setIsLoggedin] = useState(!!getAccessToken());
 
   return { isLoggedin };
 };
