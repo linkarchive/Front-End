@@ -8,8 +8,15 @@ import { useQuery } from '@tanstack/react-query';
 import API from '@/api/API';
 import { useRouter } from 'next/router';
 import useInfinityScroll from '@/hooks/useInfinityScroll';
+import useAuth from '@/hooks/useAuth';
+import { setAccessToken } from '@/api/customAPI';
+import { withAuth } from '@/lib/withAuth';
 
-const User = () => {
+export const getServerSideProps = withAuth();
+
+const User = ({ accessToken }: { accessToken: string }) => {
+  setAccessToken(accessToken);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {

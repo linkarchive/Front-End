@@ -5,8 +5,14 @@ import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import { setAccessToken } from '@/api/customAPI';
+import { withAuth } from '@/lib/withAuth';
 
-const Explore = () => {
+export const getServerSideProps = withAuth();
+
+const Explore = ({ accessToken }: { accessToken: string }) => {
+  setAccessToken(accessToken);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
