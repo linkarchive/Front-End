@@ -1,17 +1,27 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AxiosResponse } from 'axios';
-import { instance } from './customAPI';
+import { clientInstance, nextInstance } from './customAPI';
 import { KakaoType } from './types';
 
 const API = {
-  sample: async (params: string): Promise<AxiosResponse> => {
-    const response = await instance.get(`sample`, {
-      params,
-    });
+  /** NEXT api 쿠키 저장, 삭제 */
+  setAllCookies: async (data): Promise<AxiosResponse> => {
+    const response = await nextInstance.post(`set-all-cookies`, data);
+    return response;
+  },
+
+  setCookie: async ({ name, value }: { name: string; value: string }): Promise<AxiosResponse> => {
+    const response = await nextInstance.post(`set-cookie`, { name, value });
+    return response;
+  },
+
+  deleteAllCookies: async (): Promise<AxiosResponse> => {
+    const response = await nextInstance.post(`delete-all-cookies`);
     return response;
   },
 
   kakaoLogin: async ({ code }: KakaoType): Promise<AxiosResponse> => {
-    const response = await instance.post(`auth/kakao`, null, {
+    const response = await clientInstance.post(`auth/kakao`, null, {
       params: {
         code,
       },
@@ -20,7 +30,7 @@ const API = {
   },
 
   getLinkMetadata: async (url: string) => {
-    const { data } = await instance.get(`link/metadata`, {
+    const { data } = await clientInstance.get(`link/metadata`, {
       params: {
         url,
       },
@@ -36,7 +46,7 @@ const API = {
     thumbnail: string;
     tags: string[];
   }) => {
-    const response = await instance.post(`link`, {
+    const response = await clientInstance.post(`link`, {
       ...data,
     });
     return response;
@@ -44,7 +54,7 @@ const API = {
 
   /** 링크 둘러보기 */
   getLinksArchive: async (linkId?: string) => {
-    const { data } = await instance.get(`links/archive/public`, {
+    const { data } = await clientInstance.get(`links/archive/public`, {
       params: {
         linkId,
       },
@@ -53,7 +63,7 @@ const API = {
   },
 
   getAuthLinksArchive: async (linkId?: string) => {
-    const { data } = await instance.get(`links/archive/authentication`, {
+    const { data } = await clientInstance.get(`links/archive/authentication`, {
       params: {
         linkId,
       },
@@ -63,7 +73,7 @@ const API = {
 
   /** 사용자별 링크 둘러보기 */
   getLinksArchiveByUserId: async ({ nickname, linkId }: { nickname: string; linkId?: string }) => {
-    const { data } = await instance.get(`links/public/user/${nickname}`, {
+    const { data } = await clientInstance.get(`links/public/user/${nickname}`, {
       params: {
         linkId,
       },
@@ -78,7 +88,7 @@ const API = {
     nickname: string;
     linkId?: string;
   }) => {
-    const { data } = await instance.get(`links/authentication/user/${nickname}`, {
+    const { data } = await clientInstance.get(`links/authentication/user/${nickname}`, {
       params: {
         linkId,
       },
@@ -88,7 +98,7 @@ const API = {
 
   /** 사용자별 북마크 둘러보기 */
   getMarksArchiveByUserId: async ({ nickname, linkId }: { nickname: string; linkId?: string }) => {
-    const { data } = await instance.get(`mark/links/public/user/${nickname}`, {
+    const { data } = await clientInstance.get(`mark/links/public/user/${nickname}`, {
       params: {
         linkId,
       },
@@ -103,7 +113,7 @@ const API = {
     nickname: string;
     linkId?: string;
   }) => {
-    const { data } = await instance.get(`mark/links/authentication/user/${nickname}`, {
+    const { data } = await clientInstance.get(`mark/links/authentication/user/${nickname}`, {
       params: {
         linkId,
       },
@@ -113,7 +123,7 @@ const API = {
 
   /** 내 링크 둘러보기 */
   getUserLinksArchive: async (linkId?: string) => {
-    const { data } = await instance.get(`links/user`, {
+    const { data } = await clientInstance.get(`links/user`, {
       params: {
         linkId,
       },
@@ -123,7 +133,7 @@ const API = {
 
   /** 내 마크 둘러보기 */
   getUserMarksArchive: async (linkId?: string) => {
-    const { data } = await instance.get(`mark/links/user`, {
+    const { data } = await clientInstance.get(`mark/links/user`, {
       params: {
         linkId,
       },
@@ -133,63 +143,68 @@ const API = {
 
   /** 북마크 */
   createMark: async (linkId: number) => {
-    const { data } = await instance.post(`mark/link/${linkId}`);
+    const { data } = await clientInstance.post(`mark/link/${linkId}`);
     return data;
   },
 
   /** 북마크 취소 */
   deleteMark: async (linkId: number) => {
-    const { data } = await instance.delete(`mark/link/${linkId}`);
+    const { data } = await clientInstance.delete(`mark/link/${linkId}`);
     return data;
   },
 
   createTag: async (tag: string) => {
-    const response = await instance.post(`tag`, {
+    const response = await clientInstance.post(`tag`, {
       tag,
     });
     return response;
   },
 
   getTagsByUserId: async (userId: string) => {
-    const response = await instance.get(`tags/userId${userId}`);
+    const response = await clientInstance.get(`tags/userId${userId}`);
     return response;
   },
 
-  uploadImage: async (file: File): Promise<AxiosResponse> => {
+  // 변경
+  uploadImage: async ({ file }: { file: File }): Promise<AxiosResponse> => {
     const formData = new FormData();
     formData.append('image', file);
 
-    const response = await instance.patch(`profile-image`, formData);
+    const response = await clientInstance.patch(`profile-image`, formData);
     return response;
   },
 
+  // 변경
   getMyProfile: async () => {
-    const response = await instance.get(`user`);
+    const response = await clientInstance.get(`user`);
     return response.data;
   },
 
   getUserProfile: async (nickname: string) => {
-    const { data } = await instance.get(`user/${nickname}`);
+    const { data } = await clientInstance.get(`user/${nickname}`);
     return data;
   },
 
+  // 변경
   updateUserProfile: async ({ nickname, introduce }: { nickname: string; introduce: string }) => {
-    const response = await instance.patch('user', {
+    const response = await clientInstance.patch('user', {
       nickname,
       introduce,
     });
     return response.data;
   },
 
+  // 변경
   updateNickname: async ({ nickname, userId }: { nickname: string; userId: string }) => {
-    const response = await instance.patch(`/user/${userId}/nickname`, {
+    const response = await clientInstance.patch(`/user/${userId}/nickname`, {
       nickname,
     });
     return response;
   },
 
+  // 변경
   validateNickname: async (nickname: string) => {
-    const response = await instance.post(`/nickname`, {
+    const response = await clientInstance.post(`/nickname`, {
       nickname,
     });
     return response.data;
