@@ -21,6 +21,12 @@ const Settings = () => {
     dispatch(routerSlice.actions.loadProfilePage());
   }, [dispatch]);
 
+  const test = async () => {
+    const { data } = await API.getRefreshToken();
+    const response = await API.getNewAccessToken(data);
+    console.log(response);
+  };
+
   return (
     <>
       <Link href='/settings/profile'>
@@ -33,6 +39,9 @@ const Settings = () => {
         <h3>계정</h3>
       </Link>
       <LogoutHeading onClick={Logout}>로그아웃</LogoutHeading>
+      <button type='button' onClick={test}>
+        click
+      </button>
     </>
   );
 };
