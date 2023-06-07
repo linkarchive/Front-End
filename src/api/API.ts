@@ -29,14 +29,14 @@ const API = {
     return response;
   },
 
-  getLinkMetadata: async (url) => {
-    const response = await clientInstance.get(`link/metadata`, {
+  getLinkMetadata: async (url: string) => {
+    const { data } = await clientInstance.get(`link/metadata`, {
       params: {
         url,
       },
       timeout: 5000,
     });
-    return response;
+    return data;
   },
 
   createLink: async (data: {

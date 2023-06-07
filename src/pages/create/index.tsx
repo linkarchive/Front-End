@@ -47,26 +47,28 @@ const Create = ({ accessToken }: { accessToken: string }) => {
       isError,
     } = useQuery(['freqTagList'], { queryFn: () => API.tagsByUserId(''), enabled: false });
   */
+
   const {
     data: metaData,
+    mutate: fetchMetaData,
     isLoading,
     isError,
     isSuccess,
-  } = useQuery(['metadata', urlInput.current], {
-    queryFn: () => API.getLinkMetadata(urlInput.current),
-    // TODO any 타입 개선
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onSuccess: ({ data }: any) => {
+  } = useMutation({
+    mutationFn: API.getLinkMetadata,
+    onSuccess: (data) => {
       setTitle(data?.metaTitle || data?.titleText);
     },
-    enabled: isValid,
-    retry: false,
   });
+
   const createLink = useMutation({ mutationFn: API.createLink });
 
   const handleFetchURL = () => {
+    if (isLoading) return;
+
     if (isValidUrl(urlInput.current)) {
       setIsValid(true);
+      fetchMetaData(urlInput.current);
     } else {
       handleErrorMessage({ key: 'url', message: ERROR_MESSAGE.URL.INVALID });
     }
@@ -92,8 +94,8 @@ const Create = ({ accessToken }: { accessToken: string }) => {
   */
 
   const handleCreate = () => {
-    if (createLink.isLoading) return;
     if (!title.trim()) return; // TODO err msg 추가
+    if (createLink.isLoading) return;
 
     const [url, thumbnail, description] = [
       urlInput.current,
