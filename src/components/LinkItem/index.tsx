@@ -21,20 +21,23 @@ const LinkItem = ({ Header, queryKey, ...props }: LinkItemProps) => {
     props;
   const { handleToggleMark } = useToggleMark({ linkId, isMark, queryKey });
 
+  const handleLinkClick = () => {
+    window.open(url, '_blank');
+    console.log(`you ${linkId} clicked!`); // 읽음 api 전송
+  };
+
   return (
     <Wrapper>
       <article>
         {Header}
-        <div className='info'>
+        <div className='info' onClick={handleLinkClick}>
           <div className='contents'>
             <h1 className='title'>{title}</h1>
             <p className='domain'>{url}</p>
             <p className='desc'>{description}</p>
           </div>
           <div className='thumb'>
-            <a href='/' target='_blank' rel='noreferrer noopener'>
-              <img src={thumbnail} alt={title} />
-            </a>
+            <img src={thumbnail} alt={title} />
           </div>
         </div>
 
@@ -61,7 +64,6 @@ const LinkItem = ({ Header, queryKey, ...props }: LinkItemProps) => {
               <Mark isActivated={isMark}>
                 <IcoMark />
               </Mark>
-              {/* <Image src='/assets/svg/link.svg' alt='' fill /> */}
             </div>
             {bookMarkCount}
           </button>
@@ -94,6 +96,8 @@ const Wrapper = styled.div`
 
     margin-bottom: 30px;
 
+    cursor: pointer;
+
     .contents {
       width: 223px;
 
@@ -111,18 +115,21 @@ const Wrapper = styled.div`
       }
 
       .domain {
+        overflow: hidden;
+        text-overflow: ellipsis;
         margin-bottom: 8px;
 
+        white-space: nowrap;
         color: #c8c8c8;
       }
 
       .desc {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
         overflow: hidden;
 
-        height: 33px;
-
         color: #a1a1a1;
-        text-overflow: ellipsis;
       }
     }
 
@@ -131,6 +138,12 @@ const Wrapper = styled.div`
 
       width: 84px;
       height: 84px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
     }
   }
 

@@ -41,7 +41,7 @@ const initialState: UserData = {
   introduce: { value: '', initialValue: '' },
 };
 
-const initialImage = '/white.jpeg';
+const initialImage = '/white.png';
 
 export const getServerSideProps = withAuth();
 
@@ -157,6 +157,7 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
 
   useEffect(() => {
     setMyProfile();
+    console.log(imageUrl);
   }, []);
 
   useEffect(() => {
