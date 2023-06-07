@@ -13,9 +13,13 @@ import {
   LinkItemListProps,
   ILinksResponse,
 } from './LinkItem.type';
+import IcoMark from 'public/assets/svg/link.svg';
+import { useToggleMark } from '@/hooks/useToggleMark';
 
-const LinkItem = ({ Header, ...props }: LinkItemProps) => {
-  const { linkId, url, title, description, thumbnail, isRead, bookMarkCount, tagList } = props;
+const LinkItem = ({ Header, queryKey, ...props }: LinkItemProps) => {
+  const { linkId, url, title, description, thumbnail, isRead, isMark, bookMarkCount, tagList } =
+    props;
+  const { handleToggleMark } = useToggleMark({ linkId, isMark, queryKey });
 
   return (
     <Wrapper>
@@ -45,9 +49,19 @@ const LinkItem = ({ Header, ...props }: LinkItemProps) => {
               읽음
             </div>
           )}
-          <button className='mark' type='button'>
+          <button
+            className='mark'
+            type='button'
+            onClick={(e) => {
+              e.preventDefault();
+              handleToggleMark();
+            }}
+          >
             <div className='icon'>
-              <Image src='/assets/svg/link.svg' alt='' fill />
+              <Mark isActivated={isMark}>
+                <IcoMark />
+              </Mark>
+              {/* <Image src='/assets/svg/link.svg' alt='' fill /> */}
             </div>
             {bookMarkCount}
           </button>
@@ -140,6 +154,10 @@ const Wrapper = styled.div`
       margin-right: 8px;
     }
 
+    .mark {
+      cursor: pointer;
+    }
+
     .icon {
       position: relative;
 
@@ -147,5 +165,11 @@ const Wrapper = styled.div`
       height: 12px;
       margin-right: 4px;
     }
+  }
+`;
+
+const Mark = styled.span<{ isActivated: boolean }>`
+  svg path {
+    fill: ${({ isActivated }) => (isActivated ? 'var(--svg-color-active)' : '')};
   }
 `;

@@ -1,6 +1,7 @@
 import API from '@/api/API';
 import { ILinksResponse, LinkItemWithProfileList } from '@/components/LinkItem';
 import useInfinityScroll from '@/hooks/useInfinityScroll';
+import useAuth from '@/hooks/useAuth';
 import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
 import React, { useEffect } from 'react';
@@ -19,12 +20,13 @@ const Explore = ({ accessToken }: { accessToken: string }) => {
     dispatch(routerSlice.actions.loadExplorePage());
   }, [dispatch]);
 
-  const isUser = false;
-  const fetchLinksFn = isUser ? API.getAuthLinksArchive : API.getLinksArchive;
+  const { isLoggedin } = useAuth();
+  const fetchLinksFn = isLoggedin ? API.getAuthLinksArchive : API.getLinksArchive;
 
+  const queryKey = ['archive'];
   const { pages, target, isFetchingNextPage } = useInfinityScroll<ILinksResponse>({
     fetchFn: fetchLinksFn,
-    queryKey: ['archive'],
+    queryKey,
     getNextPageParam: (lastPage_) => {
       const hasNext = lastPage_?.hasNext;
       if (!hasNext) return undefined;
@@ -37,7 +39,7 @@ const Explore = ({ accessToken }: { accessToken: string }) => {
 
   return (
     <Wrapper>
-      <LinkItemWithProfileList data={pages} />
+      <LinkItemWithProfileList data={pages} queryKey={queryKey} />
       {isFetchingNextPage && <div>로딩중...</div>}
       <div ref={target} />
     </Wrapper>

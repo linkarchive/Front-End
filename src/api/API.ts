@@ -141,6 +141,18 @@ const API = {
     return data;
   },
 
+  /** 북마크 */
+  createMark: async (linkId: number) => {
+    const { data } = await clientInstance.post(`mark/link/${linkId}`);
+    return data;
+  },
+
+  /** 북마크 취소 */
+  deleteMark: async (linkId: number) => {
+    const { data } = await clientInstance.delete(`mark/link/${linkId}`);
+    return data;
+  },
+
   createTag: async (tag: string) => {
     const response = await clientInstance.post(`tag`, {
       tag,

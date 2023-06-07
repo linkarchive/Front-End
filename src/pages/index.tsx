@@ -1,7 +1,7 @@
 import API from '@/api/API';
 import { setAccessToken } from '@/api/customAPI';
 import CreateBtn from '@/components/Home/CreateBtn';
-import { ILinkItem, ILinksResponse, LinkItemList } from '@/components/LinkItem';
+import { ILinksResponse, LinkItemList } from '@/components/LinkItem';
 import useInfinityScroll from '@/hooks/useInfinityScroll';
 import { withAuth } from '@/lib/withAuth';
 import { useAppDispatch } from '@/store';
@@ -19,9 +19,10 @@ const Home = ({ accessToken }: { accessToken: string }) => {
     dispatch(routerSlice.actions.loadHomePage());
   }, [dispatch]);
 
+  const queryKey = ['linkList', 'user', 'link'];
   const { pages, target, isFetchingNextPage } = useInfinityScroll<ILinksResponse>({
     fetchFn: (linkId: string) => API.getUserLinksArchive(linkId),
-    queryKey: ['linkList', 'user', 'link'],
+    queryKey,
     getNextPageParam: (lastPage_) => {
       if (!lastPage_?.data?.hasNext) return undefined;
       const lastPage = lastPage_.data?.linkList;
@@ -33,7 +34,7 @@ const Home = ({ accessToken }: { accessToken: string }) => {
   return (
     <div>
       <CreateBtn />
-      <LinkItemList data={pages} />
+      <LinkItemList data={pages} queryKey={queryKey} />
       {isFetchingNextPage && <div>로딩중...</div>}
       <div ref={target} />
     </div>
