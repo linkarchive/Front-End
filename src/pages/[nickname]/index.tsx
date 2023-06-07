@@ -29,13 +29,13 @@ const User = ({ accessToken }: { accessToken: string }) => {
   const { isLoggedin } = useAuth();
 
   const { data: profile } = useQuery({
-    queryKey: ['user', nickname],
+    queryKey: ['user', nickname, item],
     queryFn: () => API.getUserProfile(nickname),
     enabled: !!nickname,
   });
 
   const fetchLinksFn = setFetchLinksFn({ isLoggedin, item });
-  const queryKey = ['linkList', nickname];
+  const queryKey = ['linkList', nickname, item];
   const { pages, target, isFetchingNextPage } = useInfinityScroll<ILinksResponse>({
     fetchFn: (linkId: string) => fetchLinksFn({ nickname, linkId }),
     queryKey,
@@ -50,7 +50,7 @@ const User = ({ accessToken }: { accessToken: string }) => {
   return (
     <>
       <Profile {...profile} />
-      <Nav handleClick={(v) => setItem(v)} />
+      <Nav handleClick={setItem} />
       <LinkItemList data={pages} queryKey={queryKey} />
       {isFetchingNextPage && <div>로딩중...</div>}
       <div ref={target} />
