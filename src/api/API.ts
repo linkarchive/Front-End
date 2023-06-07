@@ -20,13 +20,13 @@ const API = {
   },
 
   getLinkMetadata: async (url: string) => {
-    const response = await instance.get(`link/metadata`, {
+    const { data } = await instance.get(`link/metadata`, {
       params: {
         url,
       },
       timeout: 5000,
     });
-    return response;
+    return data;
   },
 
   createLink: async (data: {
