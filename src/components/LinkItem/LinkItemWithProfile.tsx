@@ -16,7 +16,7 @@ const LinkWithProfile = ({
         <Profile>
           <Link href={href}>
             <div className='profile'>
-              {/* <Image src={profileImage} alt='profile' fill /> // TODO */}
+              <Image src={profileImage} alt='profile' fill />
             </div>
           </Link>
           <Link className='name' href={href}>

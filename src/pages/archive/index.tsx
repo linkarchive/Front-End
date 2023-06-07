@@ -49,6 +49,5 @@ const Explore = ({ accessToken }: { accessToken: string }) => {
 export default Explore;
 
 const Wrapper = styled.div`
-  overflow: scroll;
   height: 100%;
 `;
