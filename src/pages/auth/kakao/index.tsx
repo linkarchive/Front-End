@@ -7,7 +7,6 @@ import styled from 'styled-components';
 
 const KakaoAuth = () => {
   const router = useRouter();
-
   const loginMutation = useMutation({ mutationFn: API.kakaoLogin });
 
   const handleKakaoLogin = useCallback(() => {
@@ -16,21 +15,19 @@ const KakaoAuth = () => {
       loginMutation.mutate(
         { code },
         {
-          onSuccess: (response) => {
-            const { accessToken } = response.data;
-            localStorage.setItem('accessToken', accessToken);
+          onSuccess: async (response) => {
+            const { accessToken, refreshToken, userId, nickname } = response.data;
+            await API.setAllCookies({ accessToken, refreshToken, userId, nickname });
 
-            router.push('/');
+            window.location.href = '/';
           },
-          onError: (error) => {
-            // console.error('Login failed:', error);
 
+          onError: (error) => {
             router.push('/');
           },
         }
       );
     }
-    // FIXME: loginMutation을 의존성 배열에 추가하면 무한루프가 걸려버림
   }, [router]);
 
   useEffect(() => {

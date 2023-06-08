@@ -1,15 +1,15 @@
 import TagLabel from '@/components/LinkItem/TagLabel';
 import styled from 'styled-components';
+import { Tag } from '@/components/LinkItem/';
 
-const TagLabelList = ({ className }: { className?: string }) => {
+const TagLabelList = ({ className, tags }: { className?: string; tags: Tag[] }) => {
   return (
     <Wrapper className={className}>
-      <li>
-        <TagLabel />
-      </li>
-      <li>
-        <TagLabel />
-      </li>
+      {tags.map(({ tagId, tagName }) => (
+        <li key={tagId}>
+          <TagLabel text={tagName} />
+        </li>
+      ))}
     </Wrapper>
   );
 };

@@ -1,19 +1,19 @@
 import React from 'react';
-import BottomNav, { BottomNavHight } from '@/components/BottomNav';
+import BottomNav, { BottomNavHight } from '@/components/BottomNav/BottomNav';
 import styled from 'styled-components';
 import HomeHeader from '@/components/Home/HomeHeader';
-import Header from '@/components/Header';
 import { useSelector } from 'react-redux';
+import Header from '@/components/Header/Header';
 import { RootState } from '@/store';
-import ExploreHeader from '@/components/Explore/ExploreHeader';
-import ProfileHeader from '@/components/Profile/ProfileHeader';
+import ArchiveHeader from '@/components/Archive/ArchiveHeader';
+import SettingsHeader from '@/components/Settings/SettingsHeader';
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const { status, current } = useSelector((state: RootState) => state.router);
   const main = status === 'MAIN';
   const home = current === 'HOME';
-  const explore = current === 'EXPLORE';
-  const profile = current === 'PROFILE';
+  const Archive = current === 'ARCHIVE';
+  const settings = current === 'SETTINGS';
   return (
     <>
       <WaterMark />
@@ -21,8 +21,8 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
       {main && (
         <>
           {home && <HomeHeader />}
-          {explore && <ExploreHeader />}
-          {profile && <ProfileHeader />}
+          {Archive && <ArchiveHeader />}
+          {settings && <SettingsHeader />}
         </>
       )}
       <Main>{children}</Main>
@@ -43,6 +43,8 @@ const WaterMark = () => {
     envText = '개발 환경입니다.';
   } else if (process.env.NEXT_PUBLIC_APP_ENV === 'production') {
     envText = '프로덕션 환경입니다.';
+  } else if (process.env.NEXT_PUBLIC_APP_ENV === 'test') {
+    envText = '테스트 환경입니다람쥐.';
   } else {
     envText = '로컬 환경입니다.';
   }

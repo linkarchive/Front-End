@@ -1,18 +1,30 @@
 import Image from 'next/image';
-import LinkItem from '@/components/LinkItem';
+import LinkItem, { LinkItemWithProfileProps } from '@/components/LinkItem';
 import styled from 'styled-components';
+import Link from 'next/link';
 
-const LinkWithProfile = () => {
+const LinkWithProfile = ({
+  userId,
+  nickname,
+  profileImage,
+  ...props
+}: LinkItemWithProfileProps) => {
+  const href = `/${nickname}`;
   return (
     <LinkItem
       Header={
         <Profile>
-          <div className='profile'>
-            <Image src='/test.png' alt='profile' fill />
-          </div>
-          <span className='name'>닉네임</span>
+          <Link href={href}>
+            <div className='profile'>
+              <Image src={profileImage} alt='profile' fill />
+            </div>
+          </Link>
+          <Link className='name' href={href}>
+            {nickname}
+          </Link>
         </Profile>
       }
+      {...props}
     />
   );
 };
@@ -28,7 +40,12 @@ const Profile = styled.div`
   font-weight: 400;
   font-size: 12px;
   line-height: 14px;
-  color: #3a3a3a;
+
+  a,
+  a:visited {
+    color: var(--font-color-darkgray);
+    text-decoration: none;
+  }
 
   .profile {
     position: relative;
@@ -37,7 +54,6 @@ const Profile = styled.div`
     width: 36px;
     height: 36px;
     margin-right: 8px;
-
     border-radius: 100%;
   }
 `;

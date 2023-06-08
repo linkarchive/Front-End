@@ -5,12 +5,19 @@ import { useRouter } from 'next/navigation';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import styled from 'styled-components';
 import API from '@/api/API';
-import { BottomNavHight } from '@/components/BottomNav';
+import { BottomNavHight } from '@/components/BottomNav/BottomNav';
 import Input, { InputWithButton } from '@/components/Input';
 import LinkInfo from '@/components/Create/LinkInfo';
-import HashTagList from '@/components/Create/HashTagList';
+import { MetaData } from '@/components/LinkItem';
+import { setAccessToken } from '@/api/customAPI';
+import { withAuth } from '@/lib/withAuth';
+// import HashTagList from '@/components/Create/HashTagList'; TODO mvp 이후 개발 */
 
-const Create = () => {
+export const getServerSideProps = withAuth();
+
+const Create = ({ accessToken }: { accessToken: string }) => {
+  setAccessToken(accessToken);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -21,8 +28,10 @@ const Create = () => {
 
   const urlInput = useRef('');
   const [title, setTitle] = useState('');
+  /**  // TODO mvp 이후 개발
   const [hashtagInput, setHashTagInput] = useState('');
   const [hashtags, setHashtags] = useState<string[]>([]);
+  */
   const [errorMessages, setErrorMessages] = useState({
     url: '',
     title: '',
@@ -38,21 +47,35 @@ const Create = () => {
       isError,
     } = useQuery(['freqTagList'], { queryFn: () => API.tagsByUserId(''), enabled: false });
   */
-  const getURLMetadata = useQuery(['metadata', urlInput.current], {
-    queryFn: () => API.getUrlMetadata(encodeURIComponent(urlInput.current)),
-    enabled: isValid,
-    retry: false,
+
+  const {
+    data: metaData,
+    mutate: fetchMetaData,
+    isLoading,
+    isError,
+    isSuccess,
+  } = useMutation({
+    mutationFn: API.getLinkMetadata,
+    onSuccess: (data) => {
+      setTitle(data?.metaTitle || data?.titleText);
+    },
   });
+
   const createLink = useMutation({ mutationFn: API.createLink });
 
   const handleFetchURL = () => {
+    if (isLoading) return;
+
     if (isValidUrl(urlInput.current)) {
       setIsValid(true);
+      fetchMetaData(urlInput.current);
     } else {
       handleErrorMessage({ key: 'url', message: ERROR_MESSAGE.URL.INVALID });
     }
   };
 
+  /** 
+   * // TODO mvp 이후 개발
   const handleAddTags = (text) => {
     let message = '';
     if (hashtags.length === 5) {
@@ -68,14 +91,20 @@ const Create = () => {
     setHashtags((prev) => [...prev, text]);
     initErrorMessage({ key: 'hashtag' });
   };
+  */
 
   const handleCreate = () => {
+    if (!title.trim()) return; // TODO err msg 추가
     if (createLink.isLoading) return;
 
-    const [link, thumbnail] = ['', ''];
-    const tagList = [...hashtags];
+    const [url, thumbnail, description] = [
+      urlInput.current,
+      metaData?.metaThumbnail,
+      metaData?.metaDescription,
+    ];
+    const tags = []; //  [...hashtags];
     createLink.mutate(
-      { title, link, thumbnail, tagList },
+      { url, title, description, thumbnail, tags },
       {
         onSuccess: () => router.push('/'),
       }
@@ -120,9 +149,10 @@ const Create = () => {
         />
         <Bottom>
           <p className='info'>미리보기</p>
-          <LinkInfo />
+          <LinkInfo {...(metaData as MetaData)} />
         </Bottom>
       </InputBlock>
+      {/** 
       <InputBlock>
         <InputWithButton
           label='해시태그'
@@ -143,17 +173,19 @@ const Create = () => {
           }}
         />
         <Bottom>
-          {/* // TODO MVP 제외
+           // TODO MVP 제외
             <p className='info'>자주 사용하는 태그</p>
-            <TagLabelList /> */}
+            <TagLabelList /> 
           <HashTagList
             tags={hashtags}
             handleDelete={(value) => setHashtags((prev) => prev.filter((v) => v !== value))}
           />
         </Bottom>
       </InputBlock>
+    */}
+
       <ButtonBlock>
-        <Button type='submit' disabled={!getURLMetadata.isSuccess}>
+        <Button type='submit' disabled={!isSuccess}>
           추가하기
         </Button>
       </ButtonBlock>
@@ -168,7 +200,7 @@ const Wrapper = styled.form`
 `;
 
 const InputBlock = styled.div`
-  padding: 0 34px;
+  padding: 0 5px;
   margin-bottom: 24px;
 `;
 

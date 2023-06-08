@@ -2,43 +2,70 @@ import styled from 'styled-components';
 import Image from 'next/image';
 import LinkItemWithProfile from '@/components/LinkItem/LinkItemWithProfile';
 import TagLabelList from '@/components/LinkItem/TagLabelList';
+import LinkInfo from '@/components/LinkItem/LinkInfo';
+import { LinkItemList, LinkItemWithProfileList } from '@/components/LinkItem/LinkItemLits';
+import {
+  MetaData,
+  LinkItemProps,
+  LinkItemWithProfileProps,
+  Tag,
+  ILinkItem,
+  LinkItemListProps,
+  ILinksResponse,
+} from './LinkItem.type';
+import IcoMark from 'public/assets/svg/link.svg';
+import { useToggleMark } from '@/hooks/useToggleMark';
 
-const LinkItem = ({ Header }: { Header?: JSX.Element }) => {
+const LinkItem = ({ Header, queryKey, ...props }: LinkItemProps) => {
+  const { linkId, url, title, description, thumbnail, isRead, isMark, bookMarkCount, tagList } =
+    props;
+  const { handleToggleMark } = useToggleMark({ linkId, isMark, queryKey });
+
+  const handleLinkClick = () => {
+    window.open(url, '_blank');
+    console.log(`you ${linkId} clicked!`); // 읽음 api 전송
+  };
+
   return (
     <Wrapper>
       <article>
         {Header}
-        <div className='info'>
+        <div className='info' onClick={handleLinkClick}>
           <div className='contents'>
-            <h1 className='title'>제목</h1>
-            <p className='domain'>http:werwe</p>
-            <p className='desc'>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint itaque magnam laborum,
-              voluptatibus consequuntur ducimus doloribus est, aut laboriosam atque ipsam blanditiis
-              nam vitae aspernatur reiciendis fugit iure, assumenda dolore.
-            </p>
+            <h1 className='title'>{title}</h1>
+            <p className='domain'>{url}</p>
+            <p className='desc'>{description}</p>
           </div>
           <div className='thumb'>
-            <a href='/' target='_blank' rel='noreferrer noopener'>
-              <Image src='/test.png' alt='' fill />
-            </a>
+            <img src={thumbnail} alt={title} />
           </div>
         </div>
 
-        <TagLabelList className='tag-list' />
+        <TagLabelList className='tag-list' tags={tagList} />
 
         <div className='utils'>
-          <div className='read'>
-            <div className='icon'>
-              <Image src='/assets/svg/check-green.svg' alt='' fill />
+          {isRead && (
+            <div className='read'>
+              <div className='icon'>
+                <Image src='/assets/svg/check-green.svg' alt='' fill />
+              </div>
+              읽음
             </div>
-            읽음
-          </div>
-          <button className='mark' type='button'>
+          )}
+          <button
+            className='mark'
+            type='button'
+            onClick={(e) => {
+              e.preventDefault();
+              handleToggleMark();
+            }}
+          >
             <div className='icon'>
-              <Image src='/assets/svg/link.svg' alt='' fill />
+              <Mark isActivated={isMark}>
+                <IcoMark />
+              </Mark>
             </div>
-            32
+            {bookMarkCount}
           </button>
         </div>
       </article>
@@ -47,7 +74,16 @@ const LinkItem = ({ Header }: { Header?: JSX.Element }) => {
 };
 
 export default LinkItem;
-export { LinkItem, LinkItemWithProfile };
+export { LinkItem, LinkItemWithProfile, LinkInfo, LinkItemList, LinkItemWithProfileList };
+export type {
+  MetaData,
+  LinkItemProps,
+  LinkItemWithProfileProps,
+  Tag,
+  ILinkItem,
+  LinkItemListProps,
+  ILinksResponse,
+};
 
 const Wrapper = styled.div`
   padding: 24px 0 16px;
@@ -58,8 +94,9 @@ const Wrapper = styled.div`
     flex-direction: row;
     justify-content: space-between;
 
-    padding: 0 29px;
     margin-bottom: 30px;
+
+    cursor: pointer;
 
     .contents {
       width: 223px;
@@ -78,18 +115,21 @@ const Wrapper = styled.div`
       }
 
       .domain {
+        overflow: hidden;
+        text-overflow: ellipsis;
         margin-bottom: 8px;
 
+        white-space: nowrap;
         color: #c8c8c8;
       }
 
       .desc {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
         overflow: hidden;
 
-        height: 33px;
-
         color: #a1a1a1;
-        text-overflow: ellipsis;
       }
     }
 
@@ -98,18 +138,18 @@ const Wrapper = styled.div`
 
       width: 84px;
       height: 84px;
-    }
-  }
 
-  .tag-list {
-    padding: 0 29px;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
   }
 
   .utils {
     display: flex;
     justify-content: flex-end;
-
-    padding: 0 29px;
 
     .read,
     .mark {
@@ -127,6 +167,10 @@ const Wrapper = styled.div`
       margin-right: 8px;
     }
 
+    .mark {
+      cursor: pointer;
+    }
+
     .icon {
       position: relative;
 
@@ -134,5 +178,11 @@ const Wrapper = styled.div`
       height: 12px;
       margin-right: 4px;
     }
+  }
+`;
+
+const Mark = styled.span<{ isActivated: boolean }>`
+  svg path {
+    fill: ${({ isActivated }) => (isActivated ? 'var(--svg-color-active)' : '')};
   }
 `;
