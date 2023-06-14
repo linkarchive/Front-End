@@ -64,6 +64,7 @@ const getNewAccessToken = async (oError) => {
       // 새로운 토큰을 발급받으면 요청 재시도
       onAccessTokenFetched(res.data.accessToken);
     }
+    console.log('토큰이 성공적으로 재발급 되었습니다.');
     return retryOriginalRequest;
   } catch (error) {
     // 그래도 에러나면 쿠키&큐 비우고 로그인페이지로 이동
