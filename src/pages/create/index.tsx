@@ -33,12 +33,12 @@ const Create = ({ accessToken }: { accessToken: string }) => {
   const [hashtagInput, setHashTagInput] = useState('');
   const [hashtags, setHashtags] = useState<string[]>([]);
   */
+  const [metaData, setMetaData] = useState<MetaData>(null);
   const [errorMessages, setErrorMessages] = useState({
     url: '',
     title: '',
     hashtag: '',
   });
-  const [metaData, setMetaData] = useState<MetaData>(null);
   const [isValid, setIsValid] = useState(false);
 
   // TODO api 통신 작업
@@ -62,8 +62,6 @@ const Create = ({ accessToken }: { accessToken: string }) => {
       setIsValid(false);
     },
   });
-
-  const createLink = useMutation({ mutationFn: API.createLink });
 
   const handleFetchURL = () => {
     handleErrorMessage({ key: 'url', message: '' });
@@ -96,6 +94,8 @@ const Create = ({ accessToken }: { accessToken: string }) => {
     initErrorMessage({ key: 'hashtag' });
   };
   */
+
+  const createLink = useMutation({ mutationFn: API.createLink });
 
   const handleCreate = () => {
     if (createLink.isLoading) return;
