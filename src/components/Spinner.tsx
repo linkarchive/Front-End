@@ -5,10 +5,11 @@ import SpinnerIcon from 'public/assets/svg/spinner.svg';
 interface SpinnerProps {
   width?: string;
   height?: string;
+  color?: string;
 }
 
-const Spinner = ({ width, height }: SpinnerProps) => {
-  return <AnimatedSpinner width={width} height={height} />;
+const Spinner = ({ width, height, color }: SpinnerProps) => {
+  return <AnimatedSpinner width={width} height={height} color={color} />;
 };
 
 Spinner.defaultProps = {
@@ -28,6 +29,7 @@ const spin = keyframes`
 const AnimatedSpinner = styled(SpinnerIcon)`
   width: ${(props) => props.width};
   height: ${(props) => props.height};
+  fill: ${(props) => props.color};
   animation: ${spin} 2s linear infinite;
 `;
 
