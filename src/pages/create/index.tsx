@@ -37,6 +37,7 @@ const Create = ({ accessToken }: { accessToken: string }) => {
     title: '',
     hashtag: '',
   });
+  const [metaData, setMetaData] = useState<MetaData>(null);
   const [isValid, setIsValid] = useState(false);
 
   // TODO api 통신 작업
@@ -48,29 +49,31 @@ const Create = ({ accessToken }: { accessToken: string }) => {
     } = useQuery(['freqTagList'], { queryFn: () => API.tagsByUserId(''), enabled: false });
   */
 
-  const {
-    data: metaData,
-    mutate: fetchMetaData,
-    isLoading,
-    isError,
-    isSuccess,
-  } = useMutation({
+  const { mutate: fetchMetaData, isLoading } = useMutation({
     mutationFn: API.getLinkMetadata,
-    onSuccess: (data) => {
-      setTitle(data?.metaTitle || data?.titleText);
+    onSuccess: (data_) => {
+      setMetaData(data_);
+      setTitle(data_?.metaTitle || data_?.titleText);
+      setIsValid(true);
+    },
+    onError: () => {
+      handleErrorMessage({ key: 'url', message: ERROR_MESSAGE.URL.INVALID });
+      setIsValid(false);
     },
   });
 
   const createLink = useMutation({ mutationFn: API.createLink });
 
   const handleFetchURL = () => {
+    handleErrorMessage({ key: 'url', message: '' });
     if (isLoading) return;
 
-    if (isValidUrl(urlInput.current)) {
-      setIsValid(true);
+    const urlErrorMsg = validateUrl(urlInput.current);
+    if (!urlErrorMsg) {
       fetchMetaData(urlInput.current);
     } else {
-      handleErrorMessage({ key: 'url', message: ERROR_MESSAGE.URL.INVALID });
+      handleErrorMessage({ key: 'url', message: urlErrorMsg });
+      initFormInput();
     }
   };
 
@@ -94,8 +97,13 @@ const Create = ({ accessToken }: { accessToken: string }) => {
   */
 
   const handleCreate = () => {
-    if (!title.trim()) return; // TODO err msg 추가
     if (createLink.isLoading) return;
+
+    const titleErrMsg = validateTitle(title);
+    if (titleErrMsg) {
+      handleErrorMessage({ key: 'title', message: titleErrMsg });
+      return;
+    }
 
     const [url, thumbnail, description] = [
       urlInput.current,
@@ -111,14 +119,16 @@ const Create = ({ accessToken }: { accessToken: string }) => {
     );
   };
 
-  const initErrorMessage = ({ key }: { key: string }) => {
-    handleErrorMessage({ key, message: '' });
-  };
-
   const handleErrorMessage = ({ key, message }: { key: string; message: string }) => {
     const errmsgs = { ...errorMessages };
     errmsgs[key] = message;
     setErrorMessages(errmsgs);
+  };
+
+  const initFormInput = () => {
+    setMetaData(null);
+    setTitle('');
+    setIsValid(false);
   };
 
   return (
@@ -136,6 +146,7 @@ const Create = ({ accessToken }: { accessToken: string }) => {
           errMessage={errorMessages.url}
           onChange={(e) => {
             urlInput.current = e.target.value;
+            initFormInput();
           }}
         />
       </InputBlock>
@@ -143,8 +154,11 @@ const Create = ({ accessToken }: { accessToken: string }) => {
         <Input
           label='제목'
           value={title}
+          errMessage={errorMessages.title}
           onChange={(e) => {
-            setTitle(e.target.value);
+            const { value } = e.target;
+            setTitle(value);
+            handleErrorMessage({ key: 'title', message: validateTitle(value) });
           }}
         />
         <Bottom>
@@ -185,7 +199,7 @@ const Create = ({ accessToken }: { accessToken: string }) => {
     */}
 
       <ButtonBlock>
-        <Button type='submit' disabled={!isSuccess}>
+        <Button type='submit' disabled={!isValid}>
           추가하기
         </Button>
       </ButtonBlock>
@@ -253,6 +267,9 @@ const ERROR_MESSAGE = {
   URL: {
     INVALID: 'URL을 다시 확인해주세요',
   },
+  TITLE: {
+    INVALID: '제목을 입력해주세요',
+  },
   HASHTAG: {
     TOO_LONG: '너무 길어요',
     TOO_SHORT: '너무 짧아요',
@@ -282,4 +299,16 @@ const isValidUrl = (url: string): Boolean => {
   const urlRegex =
     /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
   return urlRegex.test(url);
+};
+
+const validateUrl = (url: string): string => {
+  if (!isValidUrl(url)) return ERROR_MESSAGE.URL.INVALID;
+
+  return '';
+};
+
+const validateTitle = (title: string): string => {
+  if (!title) return ERROR_MESSAGE.TITLE.INVALID;
+
+  return '';
 };
