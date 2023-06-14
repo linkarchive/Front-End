@@ -99,8 +99,8 @@ const Create = ({ accessToken }: { accessToken: string }) => {
 
     const [url, thumbnail, description] = [
       urlInput.current,
-      metaData?.data.metaThumbnail,
-      metaData?.data.metaDescription,
+      metaData?.metaThumbnail,
+      metaData?.metaDescription,
     ];
     const tags = []; //  [...hashtags];
     createLink.mutate(
@@ -149,7 +149,7 @@ const Create = ({ accessToken }: { accessToken: string }) => {
         />
         <Bottom>
           <p className='info'>미리보기</p>
-          <LinkInfo {...(metaData?.data as MetaData)} />
+          <LinkInfo {...(metaData as MetaData)} />
         </Bottom>
       </InputBlock>
       {/** 

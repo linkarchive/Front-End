@@ -40,7 +40,6 @@ const SetNickname = ({ userId, accessToken }: { userId: string; accessToken: str
     if (ENGLISH_ONLY_REGEX.test(value)) {
       setNickname(value);
     }
-    console.log(accessToken);
   };
 
   const handleInputSubmit = (e: React.FormEvent) => {
