@@ -20,9 +20,9 @@ const API = {
     return response;
   },
 
-  getRefreshToken: async (): Promise<AxiosResponse> => {
-    const response = await nextInstance.get(`get-refresh-token`);
-    return response;
+  getRefreshToken: async (): Promise<any> => {
+    const { data } = await nextInstance.get(`get-refresh-token`);
+    return data;
   },
 
   kakaoLogin: async ({ code }: KakaoType): Promise<AxiosResponse> => {
@@ -210,12 +210,22 @@ const API = {
     return response.data;
   },
 
-  getNewAccessToken: async (refreshToken: string) => {
-    const response = await clientInstance.post(`/publish/access-token`, null, {
-      headers: {
-        Authorization: `Bearer ${refreshToken}`,
-      },
-    });
+  getNewAccessToken: async ({
+    refreshToken,
+    accessToken,
+  }: {
+    refreshToken: string;
+    accessToken: string;
+  }) => {
+    const response = await clientInstance.post(
+      `/publish/access-token`,
+      { accessToken: `Bearer ${accessToken}` },
+      {
+        headers: {
+          Authorization: `Bearer ${refreshToken}`,
+        },
+      }
+    );
     return response;
   },
 };

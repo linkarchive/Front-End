@@ -4,7 +4,6 @@ import axios, { AxiosError, AxiosInstance } from 'axios';
 import { GetServerSidePropsContext } from 'next';
 import { parseCookies } from '@/utils';
 import API from './API';
-import Router from 'next/router';
 
 const isServer = () => {
   return typeof window === 'undefined';
@@ -38,46 +37,40 @@ export const setContext = (context_: GetServerSidePropsContext) => {
 
 export const getContext = () => context;
 
-const refreshToken = async (oError) => {
+const getNewAccessToken = async (oError) => {
   try {
     const { response } = oError;
 
-    // create new Promise to retry original request
+    // 큐에 밀어 넣기
     const retryOriginalRequest = new Promise((resolve) => {
       addSubscriber((token: string) => {
         response!.config.headers.Authorization = `Bearer ${token}`;
         resolve(axios(response!.config));
       });
     });
-    console.log('hi');
-    console.log(fetchingToken);
     if (!fetchingToken) {
       fetchingToken = true;
 
-      // refresh token
-      const { data } = await API.getRefreshToken();
-      // const res = await API.getNewAccessToken(data.refreshToken);
-      const res = await API.getNewAccessToken(data.refreshToken);
-      console.log('!!', data.refreshToken, res);
-      // check if this is server or not. We don't wanna save response token on server.
+      const { refreshToken } = await API.getRefreshToken();
+      const token = getAccessToken();
+      const res = await API.getNewAccessToken({
+        refreshToken,
+        accessToken: token,
+      });
       if (!isServer) {
         setAccessToken(res.data.accessToken);
       }
       await API.setCookie({ name: 'accessToken', value: res.data.accessToken });
-      // when new token arrives, retry old requests
+      // 새로운 토큰을 발급받으면 요청 재시도
       onAccessTokenFetched(res.data.accessToken);
     }
     return retryOriginalRequest;
   } catch (error) {
-    // on error go to login page
-    if (!isServer() && !Router.asPath.includes('/login')) {
-      Router.push('/login');
-    }
-    if (isServer()) {
-      context.res.setHeader('location', '/login');
-      context.res.statusCode = 302;
-      context.res.end();
-    }
+    // 그래도 에러나면 쿠키&큐 비우고 로그인페이지로 이동
+    await API.deleteAllCookies();
+    subscribers = [];
+    window.location.href = '/login';
+
     return Promise.reject(oError);
   } finally {
     fetchingToken = false;
@@ -89,7 +82,8 @@ const setInterceptors = (instance: AxiosInstance) => {
     (response) => response,
     (error) => {
       if (error.response?.data.code === 'INVALID_TOKEN') {
-        return refreshToken(error);
+        console.log('유효하지않는 토큰입니다 재시도 하겠습니다.');
+        return getNewAccessToken(error);
       }
       return Promise.reject(error);
     }
@@ -97,9 +91,11 @@ const setInterceptors = (instance: AxiosInstance) => {
 
   instance.interceptors.request.use(
     (config) => {
-      const token = getAccessToken();
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+      if (config.url !== '/publish/access-token') {
+        const token = getAccessToken();
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
       }
       return config;
     },
