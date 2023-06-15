@@ -36,9 +36,9 @@ export const setContext = (context_: GetServerSidePropsContext) => {
 
 export const getContext = () => context;
 
-const getNewAccessToken = async (oError) => {
+const getNewAccessToken = async (error) => {
   try {
-    const { response } = oError;
+    const { response } = error;
 
     // 큐에 밀어 넣기
     const retryOriginalRequest = new Promise((resolve) => {
@@ -65,13 +65,13 @@ const getNewAccessToken = async (oError) => {
     }
 
     return retryOriginalRequest;
-  } catch (error) {
+  } catch (err) {
     // 그래도 에러나면 쿠키&큐 비우고 로그인페이지로 이동
     await API.deleteAllCookies();
     subscribers = [];
     window.location.href = '/login';
 
-    return Promise.reject(oError);
+    return Promise.reject(err);
   } finally {
     fetchingToken = false;
   }
