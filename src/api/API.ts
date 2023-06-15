@@ -21,7 +21,7 @@ const API = {
   },
 
   getRefreshToken: async (): Promise<any> => {
-    const { data } = await nextInstance.get(`get-refresh-token`);
+    const { data } = await nextInstance.get(`refresh-token`);
     return data;
   },
 

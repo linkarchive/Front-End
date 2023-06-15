@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosError, AxiosInstance } from 'axios';
 import { GetServerSidePropsContext } from 'next';
@@ -64,7 +63,7 @@ const getNewAccessToken = async (oError) => {
       // 새로운 토큰을 발급받으면 요청 재시도
       onAccessTokenFetched(res.data.accessToken);
     }
-    console.log('토큰이 성공적으로 재발급 되었습니다.');
+
     return retryOriginalRequest;
   } catch (error) {
     // 그래도 에러나면 쿠키&큐 비우고 로그인페이지로 이동
@@ -83,7 +82,6 @@ const setInterceptors = (instance: AxiosInstance) => {
     (response) => response,
     (error) => {
       if (error.response?.data.code === 'INVALID_TOKEN') {
-        console.log('유효하지않는 토큰입니다 재시도 하겠습니다.');
         return getNewAccessToken(error);
       }
       return Promise.reject(error);
