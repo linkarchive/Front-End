@@ -12,11 +12,14 @@ const LinkItemInfoWrapper = styled(InfoWrapper)`
   cursor: pointer;
 
   .title {
+    overflow: hidden;
+    text-overflow: ellipsis;
     margin-bottom: 6px;
 
     font-weight: 600;
     font-size: 18px;
     line-height: 21px;
+    white-space: nowrap;
     color: #3a3a3a;
   }
 
