@@ -210,7 +210,7 @@ const Bottom = styled.div`
   position: relative;
   top: 12px;
 
-  p {
+  > p {
     margin-bottom: 5px;
 
     color: #858585;
