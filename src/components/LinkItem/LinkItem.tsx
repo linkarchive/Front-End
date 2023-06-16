@@ -78,7 +78,11 @@ const Mark = styled.span<{ isActivated: boolean }>`
 `;
 
 const Thumbnail = ({ src, alt }: { src: string; alt: string }) => {
-  return <Thumb>{src && <img src={src} alt={alt} />}</Thumb>;
+  return (
+    <Thumb>
+      <img src={src} alt={alt} />
+    </Thumb>
+  );
 };
 
 const LinkItem = ({ Header, queryKey, ...props }: LinkItemProps) => {
@@ -101,7 +105,7 @@ const LinkItem = ({ Header, queryKey, ...props }: LinkItemProps) => {
             <p className='domain'>{url}</p>
             <Desc>{description}</Desc>
           </LinkContents>
-          <Thumbnail src={thumbnail} alt={title} />
+          {thumbnail && <Thumbnail src={thumbnail} alt={title} />}
         </LinkItemInfoWrapper>
 
         <TagLabelList className='tag-list' tags={tagList} />
