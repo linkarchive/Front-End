@@ -35,11 +35,11 @@ const LinkContents = styled.div`
 const InfoWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
 
   width: 317px;
   min-height: 88px;
   margin: 0 auto;
+  gap: 10px;
 `;
 
 export { Desc, Thumb, LinkContents, InfoWrapper };
