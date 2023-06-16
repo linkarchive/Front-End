@@ -4,49 +4,10 @@ import { useToggleMark } from '@/hooks/useToggleMark';
 import { LinkItemProps } from '@/components/LinkItem/LinkItem.type';
 import TagLabelList from '@/components/LinkItem/TagLabelList';
 import IcoMark from 'public/assets/svg/link.svg';
-
-const Desc = styled.p`
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-
-  color: #a1a1a1;
-`;
-
-const Thumb = styled.div`
-  position: relative;
-
-  width: 84px;
-  height: 84px;
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-`;
-
-const LinkContents = styled.div`
-  width: 223px;
-
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 14px;
-`;
-
-const InfoWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-`;
+import { Desc, InfoWrapper, LinkContents, Thumb } from '@/components/LinkItem/LinkItem.styled';
 
 const Thumbnail = ({ src, alt }: { src: string; alt: string }) => {
-  return (
-    <Thumb>
-      <img src={src} alt={alt} />
-    </Thumb>
-  );
+  return <Thumb>{src && <img src={src} alt={alt} />}</Thumb>;
 };
 
 const LinkItem = ({ Header, queryKey, ...props }: LinkItemProps) => {
@@ -105,7 +66,7 @@ const LinkItem = ({ Header, queryKey, ...props }: LinkItemProps) => {
 };
 
 export default LinkItem;
-export { LinkContents, Desc, Thumbnail, InfoWrapper };
+export { Thumbnail };
 
 const LinkItemInfoWrapper = styled(InfoWrapper)`
   margin-bottom: 30px;
