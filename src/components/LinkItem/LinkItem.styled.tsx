@@ -19,6 +19,8 @@ const Thumb = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
+
+    font-size: var(--font-size-sm);
   }
 `;
 
