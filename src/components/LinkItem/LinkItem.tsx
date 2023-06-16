@@ -6,68 +6,6 @@ import TagLabelList from '@/components/LinkItem/TagLabelList';
 import IcoMark from 'public/assets/svg/link.svg';
 import { Desc, InfoWrapper, LinkContents, Thumb } from '@/components/LinkItem/LinkItem.styled';
 
-const Thumbnail = ({ src, alt }: { src: string; alt: string }) => {
-  return <Thumb>{src && <img src={src} alt={alt} />}</Thumb>;
-};
-
-const LinkItem = ({ Header, queryKey, ...props }: LinkItemProps) => {
-  const { linkId, url, title, description, thumbnail, isRead, isMark, bookMarkCount, tagList } =
-    props;
-  const { handleToggleMark } = useToggleMark({ linkId, isMark, queryKey });
-
-  const handleLinkClick = () => {
-    window.open(url, '_blank');
-    console.log(`you ${linkId} clicked!`); // 읽음 api 전송
-  };
-
-  return (
-    <Wrapper>
-      <article>
-        {Header}
-        <LinkItemInfoWrapper onClick={handleLinkClick}>
-          <LinkContents>
-            <h1 className='title'>{title}</h1>
-            <p className='domain'>{url}</p>
-            <Desc>{description}</Desc>
-          </LinkContents>
-          <Thumbnail src={thumbnail} alt={title} />
-        </LinkItemInfoWrapper>
-
-        <TagLabelList className='tag-list' tags={tagList} />
-
-        <div className='utils'>
-          {isRead && (
-            <div className='read'>
-              <div className='icon'>
-                <Image src='/assets/svg/check-green.svg' alt='' fill />
-              </div>
-              읽음
-            </div>
-          )}
-          <button
-            className='mark'
-            type='button'
-            onClick={(e) => {
-              e.preventDefault();
-              handleToggleMark();
-            }}
-          >
-            <div className='icon'>
-              <Mark isActivated={isMark}>
-                <IcoMark />
-              </Mark>
-            </div>
-            {bookMarkCount}
-          </button>
-        </div>
-      </article>
-    </Wrapper>
-  );
-};
-
-export default LinkItem;
-export { Thumbnail };
-
 const LinkItemInfoWrapper = styled(InfoWrapper)`
   margin-bottom: 30px;
 
@@ -135,3 +73,65 @@ const Mark = styled.span<{ isActivated: boolean }>`
     fill: ${({ isActivated }) => (isActivated ? 'var(--svg-color-active)' : '')};
   }
 `;
+
+const Thumbnail = ({ src, alt }: { src: string; alt: string }) => {
+  return <Thumb>{src && <img src={src} alt={alt} />}</Thumb>;
+};
+
+const LinkItem = ({ Header, queryKey, ...props }: LinkItemProps) => {
+  const { linkId, url, title, description, thumbnail, isRead, isMark, bookMarkCount, tagList } =
+    props;
+  const { handleToggleMark } = useToggleMark({ linkId, isMark, queryKey });
+
+  const handleLinkClick = () => {
+    window.open(url, '_blank');
+    console.log(`you ${linkId} clicked!`); // 읽음 api 전송
+  };
+
+  return (
+    <Wrapper>
+      <article>
+        {Header}
+        <LinkItemInfoWrapper onClick={handleLinkClick}>
+          <LinkContents>
+            <h1 className='title'>{title}</h1>
+            <p className='domain'>{url}</p>
+            <Desc>{description}</Desc>
+          </LinkContents>
+          <Thumbnail src={thumbnail} alt={title} />
+        </LinkItemInfoWrapper>
+
+        <TagLabelList className='tag-list' tags={tagList} />
+
+        <div className='utils'>
+          {isRead && (
+            <div className='read'>
+              <div className='icon'>
+                <Image src='/assets/svg/check-green.svg' alt='' fill />
+              </div>
+              읽음
+            </div>
+          )}
+          <button
+            className='mark'
+            type='button'
+            onClick={(e) => {
+              e.preventDefault();
+              handleToggleMark();
+            }}
+          >
+            <div className='icon'>
+              <Mark isActivated={isMark}>
+                <IcoMark />
+              </Mark>
+            </div>
+            {bookMarkCount}
+          </button>
+        </div>
+      </article>
+    </Wrapper>
+  );
+};
+
+export default LinkItem;
+export { Thumbnail };
