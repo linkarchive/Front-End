@@ -11,7 +11,7 @@ const Desc = styled.p`
 
 const Thumb = styled.div`
   position: relative;
-
+  min-width: 84px;
   width: 84px;
   height: 84px;
 
@@ -23,7 +23,7 @@ const Thumb = styled.div`
 `;
 
 const LinkContents = styled.div`
-  width: 223px;
+  min-width: 223px;
 
   font-weight: 400;
   font-size: 12px;
@@ -34,6 +34,10 @@ const InfoWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
+  width: 317px;
+  min-height: 88px;
+  margin: 0 auto;
 `;
 
 export { Desc, Thumb, LinkContents, InfoWrapper };
