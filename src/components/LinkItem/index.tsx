@@ -16,6 +16,44 @@ import {
 import IcoMark from 'public/assets/svg/link.svg';
 import { useToggleMark } from '@/hooks/useToggleMark';
 
+const Desc = styled.p`
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
+  color: #a1a1a1;
+`;
+
+const Thumb = styled.div`
+  position: relative;
+
+  width: 84px;
+  height: 84px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
+
+const LinkContents = styled.div`
+  width: 223px;
+
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+`;
+
+const Thumbnail = ({ src, alt }: { src: string; alt: string }) => {
+  return (
+    <Thumb>
+      <img src={src} alt={alt} />
+    </Thumb>
+  );
+};
+
 const LinkItem = ({ Header, queryKey, ...props }: LinkItemProps) => {
   const { linkId, url, title, description, thumbnail, isRead, isMark, bookMarkCount, tagList } =
     props;
@@ -31,14 +69,12 @@ const LinkItem = ({ Header, queryKey, ...props }: LinkItemProps) => {
       <article>
         {Header}
         <div className='info' onClick={handleLinkClick}>
-          <div className='contents'>
+          <LinkContents>
             <h1 className='title'>{title}</h1>
             <p className='domain'>{url}</p>
-            <p className='desc'>{description}</p>
-          </div>
-          <div className='thumb'>
-            <img src={thumbnail} alt={title} />
-          </div>
+            <Desc>{description}</Desc>
+          </LinkContents>
+          <Thumbnail src={thumbnail} alt={title} />
         </div>
 
         <TagLabelList className='tag-list' tags={tagList} />
@@ -74,7 +110,16 @@ const LinkItem = ({ Header, queryKey, ...props }: LinkItemProps) => {
 };
 
 export default LinkItem;
-export { LinkItem, LinkItemWithProfile, LinkInfo, LinkItemList, LinkItemWithProfileList };
+export {
+  LinkItem,
+  LinkItemWithProfile,
+  LinkInfo,
+  LinkItemList,
+  LinkItemWithProfileList,
+  LinkContents,
+  Desc,
+  Thumbnail,
+};
 export type {
   MetaData,
   LinkItemProps,
@@ -98,52 +143,22 @@ const Wrapper = styled.div`
 
     cursor: pointer;
 
-    .contents {
-      width: 223px;
+    .title {
+      margin-bottom: 6px;
 
-      font-weight: 400;
-      font-size: 12px;
-      line-height: 14px;
-
-      .title {
-        margin-bottom: 6px;
-
-        font-weight: 600;
-        font-size: 18px;
-        line-height: 21px;
-        color: #3a3a3a;
-      }
-
-      .domain {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        margin-bottom: 8px;
-
-        white-space: nowrap;
-        color: #c8c8c8;
-      }
-
-      .desc {
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-
-        color: #a1a1a1;
-      }
+      font-weight: 600;
+      font-size: 18px;
+      line-height: 21px;
+      color: #3a3a3a;
     }
 
-    .thumb {
-      position: relative;
+    .domain {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 8px;
 
-      width: 84px;
-      height: 84px;
-
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
+      white-space: nowrap;
+      color: #c8c8c8;
     }
   }
 
