@@ -323,7 +323,7 @@ const validateTitle = (title: string): string => {
 /** 설명은 500자 제한 */
 function truncateDesc(str) {
   if (str.length > 500) {
-    return `${str.slice(0, 497)}...`;
+    return `${str.slice(0, 500)}`;
   }
   return str;
 }
