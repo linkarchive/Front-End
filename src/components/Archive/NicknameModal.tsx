@@ -8,7 +8,6 @@ import XMark from 'public/assets/svg/XMark-red.svg';
 import API from '@/api/API';
 import { useMutation } from '@tanstack/react-query';
 import Spinner from '@/components/Spinner';
-import { BottomNavHight } from '@/components/BottomNav/BottomNav';
 import { useRouter } from 'next/router';
 
 export interface MessageWrapperProps {
