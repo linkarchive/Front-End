@@ -20,7 +20,7 @@ export const routerSlice = createSlice({
       state.status = 'MAIN';
       state.current = 'HOME';
     },
-    loadExplorePage(state) {
+    loadArchivePage(state) {
       state.status = 'MAIN';
       state.current = 'EXPLORE';
     },
