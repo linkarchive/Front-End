@@ -25,7 +25,7 @@ const Thumb = styled.div`
 `;
 
 const LinkContents = styled.div`
-  min-width: 223px;
+  overflow: hidden;
 
   font-weight: 400;
   font-size: 12px;
@@ -37,7 +37,7 @@ const InfoWrapper = styled.div`
   flex-direction: row;
 
   width: 317px;
-  min-height: 88px;
+  min-height: 84px;
   margin: 0 auto;
   gap: 10px;
 `;
