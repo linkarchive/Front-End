@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import useDebounce from '@/hooks/useDebounce';
 import { DEBOUNCED_DELAY } from '@/constants';
 import CheckGreenSvg from 'public/assets/svg/check-green.svg';
@@ -132,6 +132,15 @@ const SetNickname = ({ userId }: { userId: string }) => {
   );
 };
 
+const slideUp = keyframes`
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+`;
+
 const Wrapper = styled.div`
   position: fixed;
   inset: 0 0 ${BottomNavHight} 0;
@@ -145,6 +154,7 @@ const Wrapper = styled.div`
 `;
 
 const Content = styled.div`
+  animation: ${slideUp} 0.8s ease-out;
   overflow: hidden;
   width: 330px;
   height: 230px;
