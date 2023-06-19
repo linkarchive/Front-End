@@ -10,18 +10,12 @@ import { useMutation } from '@tanstack/react-query';
 import Spinner from '@/components/Spinner';
 import { BottomNavHight } from '@/components/BottomNav/BottomNav';
 import { useRouter } from 'next/router';
-import { withAuth } from '@/lib/withAuth';
-import { setAccessToken } from '@/api/customAPI';
 
 export interface MessageWrapperProps {
   isValid: boolean;
 }
 
-export const getServerSideProps = withAuth();
-
-const SetNickname = ({ userId, accessToken }: { userId: string; accessToken: string }) => {
-  setAccessToken(accessToken);
-
+const SetNickname = ({ userId }: { userId: string }) => {
   const router = useRouter();
   const [nickname, setNickname] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -47,7 +41,7 @@ const SetNickname = ({ userId, accessToken }: { userId: string; accessToken: str
           onSuccess: async () => {
             await API.setCookie({ name: 'nickname', value: debouncedNickname });
 
-            window.location.href = '/';
+            window.location.href = '/archive';
           },
         }
       );
@@ -57,7 +51,7 @@ const SetNickname = ({ userId, accessToken }: { userId: string; accessToken: str
   const Logout = async () => {
     try {
       await API.deleteAllCookies();
-      router.push('/');
+      router.push('/login');
     } catch (error) {
       console.error(error);
     }
@@ -135,7 +129,7 @@ const SetNickname = ({ userId, accessToken }: { userId: string; accessToken: str
 };
 
 const Wrapper = styled.div`
-  position: absolute;
+  position: fixed;
   inset: 0 0 ${BottomNavHight} 0;
   display: flex;
   margin: auto;
