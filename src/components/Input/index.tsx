@@ -23,7 +23,7 @@ const Input = ({
   return (
     <Wrapper>
       <label htmlFor={name}>{label}</label>
-      <div className='input'>
+      <div className='input-wrapper'>
         <input
           {...inputProps}
           type='text'
@@ -34,7 +34,7 @@ const Input = ({
         />
         {children}
       </div>
-      {errMessage && <span className='error'>{errMessage}</span>}
+      {errMessage && <p className='error'>{errMessage}</p>}
     </Wrapper>
   );
 };
@@ -44,6 +44,8 @@ export { InputWithButton };
 export type { InputProps };
 
 const Wrapper = styled.div`
+  min-height: 80px;
+
   label {
     display: block;
     margin-bottom: 7px;
@@ -54,7 +56,7 @@ const Wrapper = styled.div`
     color: var(--font-color-darkGray);
   }
 
-  .input {
+  .input-wrapper {
     display: flex;
     flex-direction: row;
     height: 35px;
@@ -68,6 +70,8 @@ const Wrapper = styled.div`
   }
 
   .error {
+    margin-top: 2px;
+
     font-weight: 400;
     font-size: 12px;
     line-height: 14px;
