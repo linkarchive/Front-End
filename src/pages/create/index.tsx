@@ -131,8 +131,9 @@ const Create = ({ accessToken }: { accessToken: string }) => {
     const [url, thumbnail, description] = [
       urlInput.current,
       metaData?.metaThumbnail,
-      metaData?.metaDescription,
+      truncateDesc(metaData?.metaDescription),
     ];
+
     const tags = []; //  [...hashtags];
     createLink.mutate(
       { url, title, description, thumbnail, tags },
@@ -318,3 +319,11 @@ const validateTitle = (title: string): string => {
 
   return '';
 };
+
+/** 설명은 500자 제한 */
+function truncateDesc(str) {
+  if (str.length > 500) {
+    return `${str.slice(0, 497)}...`;
+  }
+  return str;
+}
