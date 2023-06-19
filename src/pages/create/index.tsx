@@ -14,6 +14,12 @@ import { withAuth } from '@/lib/withAuth';
 import Spinner from '@/components/Spinner';
 // import HashTagList from '@/components/Create/HashTagList'; TODO mvp 이후 개발 */
 
+const defaultErrorMessages = {
+  url: '',
+  title: '',
+  hashtag: '',
+};
+
 export const getServerSideProps = withAuth();
 
 const Create = ({ accessToken }: { accessToken: string }) => {
@@ -34,12 +40,28 @@ const Create = ({ accessToken }: { accessToken: string }) => {
   const [hashtags, setHashtags] = useState<string[]>([]);
   */
   const [metaData, setMetaData] = useState<MetaData>(null);
-  const [errorMessages, setErrorMessages] = useState({
-    url: '',
-    title: '',
-    hashtag: '',
-  });
+  const [errorMessages, setErrorMessages] = useState(defaultErrorMessages);
   const [isValid, setIsValid] = useState(false);
+
+  const initErrorMessage = () => {
+    setErrorMessages(defaultErrorMessages);
+  };
+
+  const invalidateForm = () => {
+    setIsValid(false);
+  };
+
+  const setErrorMessage = ({
+    key,
+    message,
+  }: {
+    key: keyof typeof defaultErrorMessages;
+    message: string;
+  }) => {
+    const errmsgs = { ...errorMessages };
+    errmsgs[key] = message;
+    setErrorMessages(errmsgs);
+  };
 
   // TODO api 통신 작업
   /** MVP 이후 개발
@@ -54,25 +76,25 @@ const Create = ({ accessToken }: { accessToken: string }) => {
     mutationFn: API.getLinkMetadata,
     onSuccess: (data_) => {
       setMetaData(data_);
-      setTitle(data_?.metaTitle || data_?.titleText);
+      setTitle(data_?.metaTitle);
       setIsValid(true);
+      initErrorMessage();
     },
     onError: () => {
-      handleErrorMessage({ key: 'url', message: ERROR_MESSAGE.URL.INVALID });
+      setErrorMessage({ key: 'url', message: ERROR_MESSAGE.URL.INVALID });
       setIsValid(false);
     },
   });
 
   const handleFetchURL = () => {
-    handleErrorMessage({ key: 'url', message: '' });
     if (isLoading) return;
 
     const urlErrorMsg = validateUrl(urlInput.current);
     if (!urlErrorMsg) {
       fetchMetaData(urlInput.current);
     } else {
-      handleErrorMessage({ key: 'url', message: urlErrorMsg });
-      initFormInput();
+      setErrorMessage({ key: 'url', message: urlErrorMsg });
+      invalidateForm();
     }
   };
 
@@ -102,7 +124,7 @@ const Create = ({ accessToken }: { accessToken: string }) => {
 
     const titleErrMsg = validateTitle(title);
     if (titleErrMsg) {
-      handleErrorMessage({ key: 'title', message: titleErrMsg });
+      setErrorMessage({ key: 'title', message: titleErrMsg });
       return;
     }
 
@@ -118,18 +140,6 @@ const Create = ({ accessToken }: { accessToken: string }) => {
         onSuccess: () => router.push('/'),
       }
     );
-  };
-
-  const handleErrorMessage = ({ key, message }: { key: string; message: string }) => {
-    const errmsgs = { ...errorMessages };
-    errmsgs[key] = message;
-    setErrorMessages(errmsgs);
-  };
-
-  const initFormInput = () => {
-    setMetaData(null);
-    setTitle('');
-    setIsValid(false);
   };
 
   return (
@@ -148,7 +158,7 @@ const Create = ({ accessToken }: { accessToken: string }) => {
           errMessage={errorMessages.url}
           onChange={(e) => {
             urlInput.current = e.target.value;
-            initFormInput();
+            invalidateForm();
           }}
         />
       </InputBlock>
@@ -160,7 +170,6 @@ const Create = ({ accessToken }: { accessToken: string }) => {
           onChange={(e) => {
             const { value } = e.target;
             setTitle(value);
-            handleErrorMessage({ key: 'title', message: validateTitle(value) });
           }}
         />
         <Bottom>
@@ -297,14 +306,10 @@ const validateHashTag = (text: string): string => {
   return '';
 };
 
-const isValidUrl = (url: string): Boolean => {
+const validateUrl = (url: string): string => {
   const urlRegex =
     /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
-  return urlRegex.test(url);
-};
-
-const validateUrl = (url: string): string => {
-  if (!isValidUrl(url)) return ERROR_MESSAGE.URL.INVALID;
+  if (!urlRegex.test(url)) return ERROR_MESSAGE.URL.INVALID;
 
   return '';
 };
