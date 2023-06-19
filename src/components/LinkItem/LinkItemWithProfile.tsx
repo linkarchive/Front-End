@@ -3,34 +3,6 @@ import LinkItem, { LinkItemWithProfileProps } from '@/components/LinkItem';
 import styled from 'styled-components';
 import Link from 'next/link';
 
-const LinkWithProfile = ({
-  userId,
-  nickname,
-  profileImage,
-  ...props
-}: LinkItemWithProfileProps) => {
-  const href = `/${nickname}`;
-  return (
-    <LinkItem
-      Header={
-        <Profile>
-          <Link href={href}>
-            <div className='profile'>
-              {/* <Image src={profileImage} alt='profile' fill /> // TODO */}
-            </div>
-          </Link>
-          <Link className='name' href={href}>
-            {nickname}
-          </Link>
-        </Profile>
-      }
-      {...props}
-    />
-  );
-};
-
-export default LinkWithProfile;
-
 const Profile = styled.div`
   display: flex;
   align-items: center;
@@ -57,3 +29,31 @@ const Profile = styled.div`
     border-radius: 100%;
   }
 `;
+
+const LinkWithProfile = ({
+  userId,
+  nickname,
+  profileImage,
+  ...props
+}: LinkItemWithProfileProps) => {
+  const href = `/${nickname}`;
+  return (
+    <LinkItem
+      Header={
+        <Profile>
+          <Link href={href}>
+            <div className='profile'>
+              <Image src={profileImage} alt='profile' fill />
+            </div>
+          </Link>
+          <Link className='name' href={href}>
+            {nickname}
+          </Link>
+        </Profile>
+      }
+      {...props}
+    />
+  );
+};
+
+export default LinkWithProfile;

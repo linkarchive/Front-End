@@ -11,6 +11,7 @@ import LinkInfo from '@/components/Create/LinkInfo';
 import { MetaData } from '@/components/LinkItem';
 import { setAccessToken } from '@/api/customAPI';
 import { withAuth } from '@/lib/withAuth';
+import Spinner from '@/components/Spinner';
 // import HashTagList from '@/components/Create/HashTagList'; TODO mvp 이후 개발 */
 
 export const getServerSideProps = withAuth();
@@ -141,6 +142,7 @@ const Create = ({ accessToken }: { accessToken: string }) => {
       <InputBlock>
         <InputWithButton
           text='불러오기'
+          ButtonChildren={isLoading && <Spinner width='16' color='#fff' />}
           onClick={handleFetchURL}
           label='링크'
           errMessage={errorMessages.url}
@@ -222,7 +224,7 @@ const Bottom = styled.div`
   position: relative;
   top: 12px;
 
-  p {
+  > p {
     margin-bottom: 5px;
 
     color: #858585;
