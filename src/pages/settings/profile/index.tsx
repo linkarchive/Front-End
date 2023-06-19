@@ -9,10 +9,10 @@ import API from '@/api/API';
 import useDebounce from '@/hooks/useDebounce';
 import { DEBOUNCED_DELAY } from '@/constants';
 import { useMutation } from '@tanstack/react-query';
-import { MessageWrapperProps } from './setnickname';
 import { AxiosError } from 'axios';
 import { withAuth } from '@/lib/withAuth';
 import { setAccessToken } from '@/api/customAPI';
+import { MessageWrapperProps } from '@/components/Archive/SetNickname';
 
 interface ErrorMessage {
   message: string;
