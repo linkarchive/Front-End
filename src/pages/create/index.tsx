@@ -268,9 +268,7 @@ const Button = styled.button`
   text-align: center;
 
   &:disabled {
-    background: var(--button-color-disabled);
-
-    color: var(--font-color-white);
+    opacity: 0.3;
   }
 `;
 
