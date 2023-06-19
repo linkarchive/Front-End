@@ -143,7 +143,7 @@ const Create = ({ accessToken }: { accessToken: string }) => {
   };
 
   return (
-    <Wrapper
+    <Form
       onSubmit={(e) => {
         e.preventDefault();
         handleCreate();
@@ -214,19 +214,20 @@ const Create = ({ accessToken }: { accessToken: string }) => {
           추가하기
         </Button>
       </ButtonBlock>
-    </Wrapper>
+    </Form>
   );
 };
 
 export default Create;
 
-const Wrapper = styled.form`
+const Form = styled.form`
   padding-top: 16px;
 `;
 
 const InputBlock = styled.div`
   padding: 0 5px;
-  margin-bottom: 24px;
+  margin: 0 auto 6px;
+  width: 310px;
 `;
 
 const Bottom = styled.div`
