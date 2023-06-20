@@ -1,12 +1,11 @@
 import API from '@/api/API';
 import { ILinksResponse, LinkItemWithProfileList } from '@/components/LinkItem';
 import useInfinityScroll from '@/hooks/useInfinityScroll';
-import useAuth from '@/hooks/useAuth';
 import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { setAccessToken } from '@/api/customAPI';
+import { getAccessToken, setAccessToken } from '@/api/customAPI';
 import { withAuth } from '@/lib/withAuth';
 
 export const getServerSideProps = withAuth();
@@ -20,7 +19,7 @@ const Explore = ({ accessToken }: { accessToken: string }) => {
     dispatch(routerSlice.actions.loadExplorePage());
   }, [dispatch]);
 
-  const { isLoggedin } = useAuth();
+  const isLoggedin = !!getAccessToken();
   const fetchLinksFn = isLoggedin ? API.getAuthLinksArchive : API.getLinksArchive;
 
   const queryKey = ['archive'];

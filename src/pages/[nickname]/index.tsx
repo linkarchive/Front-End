@@ -8,8 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import API from '@/api/API';
 import { useRouter } from 'next/router';
 import useInfinityScroll from '@/hooks/useInfinityScroll';
-import useAuth from '@/hooks/useAuth';
-import { setAccessToken } from '@/api/customAPI';
+import { getAccessToken, setAccessToken } from '@/api/customAPI';
 import { withAuth } from '@/lib/withAuth';
 
 export const getServerSideProps = withAuth();
@@ -26,7 +25,7 @@ const User = ({ accessToken }: { accessToken: string }) => {
   const router = useRouter();
   const nickname = (router.query.nickname as string) || '';
   const [item, setItem] = useState<'link' | 'mark'>('link');
-  const { isLoggedin } = useAuth();
+  const isLoggedin = !!getAccessToken();
 
   const { data: profile } = useQuery({
     queryKey: ['user', nickname, item],

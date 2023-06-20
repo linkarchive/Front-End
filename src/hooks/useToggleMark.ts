@@ -1,6 +1,6 @@
 import API from '@/api/API';
+import { getAccessToken } from '@/api/customAPI';
 import { QueryKey, useMutation, useQueryClient } from '@tanstack/react-query';
-import useAuth from '@/hooks/useAuth';
 
 export const useToggleMark = ({
   linkId,
@@ -13,7 +13,7 @@ export const useToggleMark = ({
 }) => {
   const queryClient = useQueryClient();
 
-  const { isLoggedin } = useAuth();
+  const isLoggedin = !!getAccessToken();
 
   const markMutation = useMutation({
     mutationFn: isMark ? API.deleteMark : API.createMark,
