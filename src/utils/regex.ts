@@ -1,1 +1,1 @@
-export const ENGLISH_ONLY_REGEX = /^[a-zA-Z]*$/;
+export const NICKNAME_REGEX = /^[\uAC00-\uD7A3a-zA-Z0-9]+$/;

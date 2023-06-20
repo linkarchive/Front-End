@@ -8,9 +8,7 @@ import XMark from 'public/assets/svg/XMark-red.svg';
 import API from '@/api/API';
 import { useMutation } from '@tanstack/react-query';
 import Spinner from '@/components/Spinner';
-import { BottomNavHight } from '@/components/BottomNav/BottomNav';
 import { useRouter } from 'next/router';
-import { ENGLISH_ONLY_REGEX } from '@/utils/regex';
 
 export interface MessageWrapperProps {
   isValid: boolean;
@@ -21,7 +19,7 @@ const NicknameModal = ({ userId }: { userId: string }) => {
   const [nickname, setNickname] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isValid, setIsValid] = useState<boolean | null>(null);
-  const [message, setMessage] = useState<string>('영문, 2~16자');
+  const [message, setMessage] = useState<string>('한글또는 영문, 2~16자');
   const debouncedNickname = useDebounce(nickname, DEBOUNCED_DELAY);
   const isVerified = !isLoading && isValid;
   const isInvalid = !isLoading && !isValid;
@@ -30,10 +28,7 @@ const NicknameModal = ({ userId }: { userId: string }) => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-
-    if (ENGLISH_ONLY_REGEX.test(value)) {
-      setNickname(value);
-    }
+    setNickname(value);
   };
 
   const handleInputSubmit = (e: React.FormEvent) => {
@@ -97,7 +92,7 @@ const NicknameModal = ({ userId }: { userId: string }) => {
 
   useEffect(() => {
     if (!nickname) {
-      setMessage('영문, 2~16글자');
+      setMessage('한글또는 영문, 2~16자');
     }
   }, [nickname]);
 
