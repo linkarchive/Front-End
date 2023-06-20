@@ -19,11 +19,12 @@ const KakaoAuth = () => {
             const { accessToken, refreshToken, userId, nickname } = response.data;
             await API.setAllCookies({ accessToken, refreshToken, userId, nickname });
 
-            window.location.href = '/';
+            window.location.href = '/archive';
           },
 
           onError: (error) => {
-            router.push('/');
+            // FIXME: 토스트 메세지 '로그인에 실패했습니다. + 에러메세지' -> 로그인 페이지로 다시 이동
+            router.push('/login');
           },
         }
       );
