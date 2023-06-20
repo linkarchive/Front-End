@@ -142,8 +142,9 @@ const slideUp = keyframes`
 `;
 
 const Wrapper = styled.div`
+  z-index: 100;
   position: fixed;
-  inset: 0 0 ${BottomNavHight} 0;
+  inset: 0;
   display: flex;
   margin: auto;
 
