@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import useDebounce from '@/hooks/useDebounce';
 import { DEBOUNCED_DELAY } from '@/constants';
 import CheckGreenSvg from 'public/assets/svg/check-green.svg';
@@ -11,18 +11,12 @@ import Spinner from '@/components/Spinner';
 import { BottomNavHight } from '@/components/BottomNav/BottomNav';
 import { useRouter } from 'next/router';
 import { ENGLISH_ONLY_REGEX } from '@/utils/regex';
-import { withAuth } from '@/lib/withAuth';
-import { setAccessToken } from '@/api/customAPI';
 
 export interface MessageWrapperProps {
   isValid: boolean;
 }
 
-export const getServerSideProps = withAuth();
-
-const SetNickname = ({ userId, accessToken }: { userId: string; accessToken: string }) => {
-  setAccessToken(accessToken);
-
+const NicknameModal = ({ userId }: { userId: string }) => {
   const router = useRouter();
   const [nickname, setNickname] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -51,7 +45,7 @@ const SetNickname = ({ userId, accessToken }: { userId: string; accessToken: str
           onSuccess: async () => {
             await API.setCookie({ name: 'nickname', value: debouncedNickname });
 
-            window.location.href = '/';
+            window.location.href = '/archive';
           },
         }
       );
@@ -61,7 +55,7 @@ const SetNickname = ({ userId, accessToken }: { userId: string; accessToken: str
   const Logout = async () => {
     try {
       await API.deleteAllCookies();
-      router.push('/');
+      router.push('/login');
     } catch (error) {
       console.error(error);
     }
@@ -138,9 +132,19 @@ const SetNickname = ({ userId, accessToken }: { userId: string; accessToken: str
   );
 };
 
+const slideUp = keyframes`
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+`;
+
 const Wrapper = styled.div`
-  position: absolute;
-  inset: 0 0 ${BottomNavHight} 0;
+  z-index: 100;
+  position: fixed;
+  inset: 0;
   display: flex;
   margin: auto;
 
@@ -151,6 +155,7 @@ const Wrapper = styled.div`
 `;
 
 const Content = styled.div`
+  animation: ${slideUp} 0.8s ease-out;
   overflow: hidden;
   width: 330px;
   height: 230px;
@@ -255,4 +260,4 @@ const MessageWrapper = styled.div<MessageWrapperProps>`
   font-size: var(--font-size-sm);
 `;
 
-export default SetNickname;
+export default NicknameModal;

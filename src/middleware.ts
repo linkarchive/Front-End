@@ -5,14 +5,19 @@ export function middleware(request: NextRequest) {
   const isLoggedIn = request.cookies.get(ACCESS_TOKEN)?.value;
   const nickname = request.cookies.get(NICKNAME)?.value || '';
 
-  if (isLoggedIn) {
+  // 비로그인 둘러보기 허용
+  if (!isLoggedIn) {
+    if (request.nextUrl.pathname === '/archive') {
+      return NextResponse.next();
+    }
+  } else if (isLoggedIn) {
     // 닉네임 설정 페이지로 이동 허용
-    if (!nickname && request.nextUrl.pathname === '/settings/profile/setnickname') {
+    if (!nickname && request.nextUrl.pathname === '/archive') {
       return NextResponse.next();
     }
     // 닉네임 설정 페이지로 이동
     if (!nickname) {
-      return NextResponse.redirect(`${request.nextUrl.origin}/settings/profile/setnickname`);
+      return NextResponse.redirect(`${request.nextUrl.origin}/archive`);
     }
     // 로그인 페이지 접근 불가
     if (request.nextUrl.pathname === '/login') {
@@ -25,5 +30,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/create/:path*', '/settings/:path*', '/settings/profile/setnickname'],
+  matcher: ['/', '/create/:path*', '/settings/:path*', '/archive'],
 };
