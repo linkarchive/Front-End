@@ -12,7 +12,7 @@ import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { withAuth } from '@/lib/withAuth';
 import { setAccessToken } from '@/api/customAPI';
-import { MessageWrapperProps } from '@/components/Archive/SetNickname';
+import { MessageWrapperProps } from '@/components/Archive/NicknameModal';
 
 interface ErrorMessage {
   message: string;

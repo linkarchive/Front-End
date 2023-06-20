@@ -8,7 +8,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { setAccessToken } from '@/api/customAPI';
 import { withAuth } from '@/lib/withAuth';
-import SetNickname from '@/components/Archive/SetNickname';
+import NicknameModal from '@/components/Archive/NicknameModal';
 
 export const getServerSideProps = withAuth();
 
@@ -51,7 +51,7 @@ const Archive = ({
       <LinkItemWithProfileList data={pages} queryKey={queryKey} />
       {isFetchingNextPage && <div>로딩중...</div>}
       <div ref={target} />
-      {isLoggedin && !nickname && <SetNickname userId={userId} />}
+      {isLoggedin && !nickname && <NicknameModal userId={userId} />}
     </Wrapper>
   );
 };

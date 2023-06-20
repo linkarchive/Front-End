@@ -15,7 +15,7 @@ export interface MessageWrapperProps {
   isValid: boolean;
 }
 
-const SetNickname = ({ userId }: { userId: string }) => {
+const NicknameModal = ({ userId }: { userId: string }) => {
   const router = useRouter();
   const [nickname, setNickname] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -255,4 +255,4 @@ const MessageWrapper = styled.div<MessageWrapperProps>`
   font-size: var(--font-size-sm);
 `;
 
-export default SetNickname;
+export default NicknameModal;
