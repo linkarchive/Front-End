@@ -34,13 +34,14 @@ const BottomNav = () => {
 };
 
 const FooterWrapper = styled.footer`
-  box-sizing: border-box;
-  display: flex;
   position: fixed;
   bottom: 0;
+  display: flex;
+  align-items: center;
+
+  box-sizing: border-box;
   width: var(--default-width);
   height: ${BottomNavHight};
-  align-items: center;
   border-top: 1px solid var(--border-color-lighter-gray);
 
   background-color: var(--background-color-default);
