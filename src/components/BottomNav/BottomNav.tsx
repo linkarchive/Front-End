@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import HomeBtn from './HomeBtn';
 import SettingsBtn from './SettingsBtn';
+import { zIndex } from '@/constants/zIndex';
 
 const BottomNavHight = '70px';
 
@@ -38,6 +39,7 @@ const FooterWrapper = styled.footer`
   bottom: 0;
   display: flex;
   align-items: center;
+  z-index: ${zIndex.BottomNav};
 
   box-sizing: border-box;
   width: var(--default-width);

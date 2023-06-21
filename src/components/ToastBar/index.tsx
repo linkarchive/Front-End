@@ -1,3 +1,4 @@
+import { zIndex } from '@/constants/zIndex';
 import { ReactNode, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 
@@ -8,7 +9,7 @@ const Wrapper = styled.div<{ show?: boolean }>`
   position: fixed;
   left: 50%;
   bottom: -62px;
-  z-index: 2;
+  z-index: ${zIndex.ToastBar};
   align-items: center;
   transform: translateX(-50%);
 
