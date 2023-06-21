@@ -12,6 +12,7 @@ import { MetaData } from '@/components/LinkItem';
 import { setAccessToken } from '@/api/customAPI';
 import { withAuth } from '@/lib/withAuth';
 import Spinner from '@/components/Spinner';
+import { createToastBar } from '@/store/slices/toastBarSlice';
 // import HashTagList from '@/components/Create/HashTagList'; TODO mvp 이후 개발 */
 
 const defaultErrorMessages = {
@@ -138,7 +139,10 @@ const Create = ({ accessToken }: { accessToken: string }) => {
     createLink.mutate(
       { url, title, description, thumbnail, tags },
       {
-        onSuccess: () => router.push('/'),
+        onSuccess: () => {
+          dispatch(createToastBar({ text: '링크가 추가되었습니다.' }));
+          router.push('/');
+        },
       }
     );
   };
