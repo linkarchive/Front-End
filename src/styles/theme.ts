@@ -82,6 +82,9 @@ const theme = {
     inactiveColor: palette.lightGray,
     neutralColor: palette.mediumGray,
   },
+  toastColor: {
+    backgroundColor: palette.lightPrimary,
+  },
 };
 
 export default theme;
