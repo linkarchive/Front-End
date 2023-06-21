@@ -7,6 +7,7 @@ import { GlobalStyle, theme } from '@/styles';
 import wrapper, { persistor } from '@/store';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import { System } from '@/layouts/System';
 
 const queryClient = new QueryClient();
 
@@ -18,6 +19,7 @@ const App = ({ Component, ...rest }: AppProps) => {
       <PersistGate loading={null} persistor={persistor}>
         <ThemeProvider theme={theme}>
           <GlobalStyle />
+          <System />
           <MainLayout>
             <QueryClientProvider client={queryClient}>
               <Component {...props.pageProps} />
