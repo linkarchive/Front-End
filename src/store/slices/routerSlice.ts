@@ -20,7 +20,7 @@ export const routerSlice = createSlice({
       state.status = 'MAIN';
       state.current = 'HOME';
     },
-    loadExplorePage(state) {
+    loadArchivePage(state) {
       state.status = 'MAIN';
       state.current = 'EXPLORE';
     },
@@ -34,7 +34,7 @@ export const routerSlice = createSlice({
     },
     loadLoginPage(state) {
       state.status = 'OTHER';
-      state.name = '로그인';
+      state.name = 'Linkarchive';
     },
 
     loadProfileDetailPage(state) {

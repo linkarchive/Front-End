@@ -11,7 +11,15 @@ import LinkInfo from '@/components/Create/LinkInfo';
 import { MetaData } from '@/components/LinkItem';
 import { setAccessToken } from '@/api/customAPI';
 import { withAuth } from '@/lib/withAuth';
+import Spinner from '@/components/Spinner';
+import { createToastBar } from '@/store/slices/toastBarSlice';
 // import HashTagList from '@/components/Create/HashTagList'; TODO mvp 이후 개발 */
+
+const defaultErrorMessages = {
+  url: '',
+  title: '',
+  hashtag: '',
+};
 
 export const getServerSideProps = withAuth();
 
@@ -32,12 +40,29 @@ const Create = ({ accessToken }: { accessToken: string }) => {
   const [hashtagInput, setHashTagInput] = useState('');
   const [hashtags, setHashtags] = useState<string[]>([]);
   */
-  const [errorMessages, setErrorMessages] = useState({
-    url: '',
-    title: '',
-    hashtag: '',
-  });
+  const [metaData, setMetaData] = useState<MetaData>(null);
+  const [errorMessages, setErrorMessages] = useState(defaultErrorMessages);
   const [isValid, setIsValid] = useState(false);
+
+  const initErrorMessage = () => {
+    setErrorMessages(defaultErrorMessages);
+  };
+
+  const invalidateForm = () => {
+    setIsValid(false);
+  };
+
+  const setErrorMessage = ({
+    key,
+    message,
+  }: {
+    key: keyof typeof defaultErrorMessages;
+    message: string;
+  }) => {
+    const errmsgs = { ...errorMessages };
+    errmsgs[key] = message;
+    setErrorMessages(errmsgs);
+  };
 
   // TODO api 통신 작업
   /** MVP 이후 개발
@@ -48,29 +73,29 @@ const Create = ({ accessToken }: { accessToken: string }) => {
     } = useQuery(['freqTagList'], { queryFn: () => API.tagsByUserId(''), enabled: false });
   */
 
-  const {
-    data: metaData,
-    mutate: fetchMetaData,
-    isLoading,
-    isError,
-    isSuccess,
-  } = useMutation({
+  const { mutate: fetchMetaData, isLoading } = useMutation({
     mutationFn: API.getLinkMetadata,
-    onSuccess: (data) => {
-      setTitle(data?.metaTitle || data?.titleText);
+    onSuccess: (data_) => {
+      setMetaData(data_);
+      setTitle(data_?.metaTitle);
+      setIsValid(true);
+      initErrorMessage();
+    },
+    onError: () => {
+      setErrorMessage({ key: 'url', message: ERROR_MESSAGE.URL.INVALID });
+      setIsValid(false);
     },
   });
-
-  const createLink = useMutation({ mutationFn: API.createLink });
 
   const handleFetchURL = () => {
     if (isLoading) return;
 
-    if (isValidUrl(urlInput.current)) {
-      setIsValid(true);
+    const urlErrorMsg = validateUrl(urlInput.current);
+    if (!urlErrorMsg) {
       fetchMetaData(urlInput.current);
     } else {
-      handleErrorMessage({ key: 'url', message: ERROR_MESSAGE.URL.INVALID });
+      setErrorMessage({ key: 'url', message: urlErrorMsg });
+      invalidateForm();
     }
   };
 
@@ -93,36 +118,37 @@ const Create = ({ accessToken }: { accessToken: string }) => {
   };
   */
 
+  const createLink = useMutation({ mutationFn: API.createLink });
+
   const handleCreate = () => {
-    if (!title.trim()) return; // TODO err msg 추가
     if (createLink.isLoading) return;
+
+    const titleErrMsg = validateTitle(title);
+    if (titleErrMsg) {
+      setErrorMessage({ key: 'title', message: titleErrMsg });
+      return;
+    }
 
     const [url, thumbnail, description] = [
       urlInput.current,
       metaData?.metaThumbnail,
-      metaData?.metaDescription,
+      truncateDesc(metaData?.metaDescription),
     ];
+
     const tags = []; //  [...hashtags];
     createLink.mutate(
       { url, title, description, thumbnail, tags },
       {
-        onSuccess: () => router.push('/'),
+        onSuccess: () => {
+          dispatch(createToastBar({ text: '링크가 추가되었습니다.' }));
+          router.push('/');
+        },
       }
     );
   };
 
-  const initErrorMessage = ({ key }: { key: string }) => {
-    handleErrorMessage({ key, message: '' });
-  };
-
-  const handleErrorMessage = ({ key, message }: { key: string; message: string }) => {
-    const errmsgs = { ...errorMessages };
-    errmsgs[key] = message;
-    setErrorMessages(errmsgs);
-  };
-
   return (
-    <Wrapper
+    <Form
       onSubmit={(e) => {
         e.preventDefault();
         handleCreate();
@@ -131,11 +157,13 @@ const Create = ({ accessToken }: { accessToken: string }) => {
       <InputBlock>
         <InputWithButton
           text='불러오기'
+          ButtonChildren={isLoading && <Spinner width='16' color='#fff' />}
           onClick={handleFetchURL}
           label='링크'
           errMessage={errorMessages.url}
           onChange={(e) => {
             urlInput.current = e.target.value;
+            invalidateForm();
           }}
         />
       </InputBlock>
@@ -143,8 +171,10 @@ const Create = ({ accessToken }: { accessToken: string }) => {
         <Input
           label='제목'
           value={title}
+          errMessage={errorMessages.title}
           onChange={(e) => {
-            setTitle(e.target.value);
+            const { value } = e.target;
+            setTitle(value);
           }}
         />
         <Bottom>
@@ -185,30 +215,31 @@ const Create = ({ accessToken }: { accessToken: string }) => {
     */}
 
       <ButtonBlock>
-        <Button type='submit' disabled={!isSuccess}>
+        <Button type='submit' disabled={!isValid}>
           추가하기
         </Button>
       </ButtonBlock>
-    </Wrapper>
+    </Form>
   );
 };
 
 export default Create;
 
-const Wrapper = styled.form`
+const Form = styled.form`
   padding-top: 16px;
 `;
 
 const InputBlock = styled.div`
   padding: 0 5px;
-  margin-bottom: 24px;
+  margin: 0 auto 6px;
+  width: 310px;
 `;
 
 const Bottom = styled.div`
   position: relative;
   top: 12px;
 
-  p {
+  > p {
     margin-bottom: 5px;
 
     color: #858585;
@@ -243,15 +274,16 @@ const Button = styled.button`
   text-align: center;
 
   &:disabled {
-    background: var(--button-color-disabled);
-
-    color: var(--font-color-white);
+    opacity: 0.3;
   }
 `;
 
 const ERROR_MESSAGE = {
   URL: {
     INVALID: 'URL을 다시 확인해주세요',
+  },
+  TITLE: {
+    INVALID: '제목을 입력해주세요',
   },
   HASHTAG: {
     TOO_LONG: '너무 길어요',
@@ -278,8 +310,24 @@ const validateHashTag = (text: string): string => {
   return '';
 };
 
-const isValidUrl = (url: string): Boolean => {
+const validateUrl = (url: string): string => {
   const urlRegex =
     /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
-  return urlRegex.test(url);
+  if (!urlRegex.test(url)) return ERROR_MESSAGE.URL.INVALID;
+
+  return '';
 };
+
+const validateTitle = (title: string): string => {
+  if (!title) return ERROR_MESSAGE.TITLE.INVALID;
+
+  return '';
+};
+
+/** 설명은 500자 제한 */
+function truncateDesc(str) {
+  if (str.length > 500) {
+    return `${str.slice(0, 500)}`;
+  }
+  return str;
+}

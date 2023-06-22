@@ -20,6 +20,11 @@ const API = {
     return response;
   },
 
+  getRefreshToken: async (): Promise<any> => {
+    const { data } = await nextInstance.get(`refresh-token`);
+    return data;
+  },
+
   kakaoLogin: async ({ code }: KakaoType): Promise<AxiosResponse> => {
     const response = await clientInstance.post(`auth/kakao`, null, {
       params: {
@@ -165,7 +170,6 @@ const API = {
     return response;
   },
 
-  // 변경
   uploadImage: async ({ file }: { file: File }): Promise<AxiosResponse> => {
     const formData = new FormData();
     formData.append('image', file);
@@ -174,7 +178,6 @@ const API = {
     return response;
   },
 
-  // 변경
   getMyProfile: async () => {
     const response = await clientInstance.get(`user`);
     return response.data;
@@ -185,7 +188,6 @@ const API = {
     return data;
   },
 
-  // 변경
   updateUserProfile: async ({ nickname, introduce }: { nickname: string; introduce: string }) => {
     const response = await clientInstance.patch('user', {
       nickname,
@@ -194,7 +196,6 @@ const API = {
     return response.data;
   },
 
-  // 변경
   updateNickname: async ({ nickname, userId }: { nickname: string; userId: string }) => {
     const response = await clientInstance.patch(`/user/${userId}/nickname`, {
       nickname,
@@ -202,12 +203,30 @@ const API = {
     return response;
   },
 
-  // 변경
   validateNickname: async (nickname: string) => {
     const response = await clientInstance.post(`/nickname`, {
       nickname,
     });
     return response.data;
+  },
+
+  getNewAccessToken: async ({
+    refreshToken,
+    accessToken,
+  }: {
+    refreshToken: string;
+    accessToken: string;
+  }) => {
+    const response = await clientInstance.post(
+      `/publish/access-token`,
+      { accessToken: `Bearer ${accessToken}` },
+      {
+        headers: {
+          Authorization: `Bearer ${refreshToken}`,
+        },
+      }
+    );
+    return response;
   },
 };
 

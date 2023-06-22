@@ -2,15 +2,21 @@ import Input, { InputProps } from '@/components/Input';
 import styled from 'styled-components';
 
 interface InputWithButtonProps extends InputProps {
-  text: string;
+  text?: string;
+  ButtonChildren?: JSX.Element;
   onClick: (e) => void;
 }
 
-const InputWithButton = ({ text, onClick, ...inputProps }: InputWithButtonProps) => {
+const InputWithButton = ({
+  text,
+  ButtonChildren,
+  onClick,
+  ...inputProps
+}: InputWithButtonProps) => {
   return (
     <Input {...inputProps}>
       <Button type='button' onClick={onClick}>
-        {text}
+        {ButtonChildren || text}
       </Button>
     </Input>
   );

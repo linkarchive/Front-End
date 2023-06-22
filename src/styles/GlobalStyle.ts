@@ -66,6 +66,7 @@ const GlobalStyle = createGlobalStyle`
     --hashtag-color-background: ${theme.hashTagColor.backgroundColor};
     --hashtag-color-hover: ${theme.hashTagColor.borderHoverColor};
 
+    --toast-background:${theme.toastColor.backgroundColor}
   }
 `;
 

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import useDebounce from '@/hooks/useDebounce';
 import { DEBOUNCED_DELAY } from '@/constants';
 import CheckGreenSvg from 'public/assets/svg/check-green.svg';
@@ -8,26 +8,19 @@ import XMark from 'public/assets/svg/XMark-red.svg';
 import API from '@/api/API';
 import { useMutation } from '@tanstack/react-query';
 import Spinner from '@/components/Spinner';
-import { BottomNavHight } from '@/components/BottomNav/BottomNav';
 import { useRouter } from 'next/router';
-import { ENGLISH_ONLY_REGEX } from '@/utils/regex';
-import { withAuth } from '@/lib/withAuth';
-import { setAccessToken } from '@/api/customAPI';
+import { zIndex } from '@/constants/zIndex';
 
 export interface MessageWrapperProps {
   isValid: boolean;
 }
 
-export const getServerSideProps = withAuth();
-
-const SetNickname = ({ userId, accessToken }: { userId: string; accessToken: string }) => {
-  setAccessToken(accessToken);
-
+const NicknameModal = ({ userId }: { userId: string }) => {
   const router = useRouter();
   const [nickname, setNickname] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isValid, setIsValid] = useState<boolean | null>(null);
-  const [message, setMessage] = useState<string>('영문, 2~16자');
+  const [message, setMessage] = useState<string>('한글또는 영문, 2~16자');
   const debouncedNickname = useDebounce(nickname, DEBOUNCED_DELAY);
   const isVerified = !isLoading && isValid;
   const isInvalid = !isLoading && !isValid;
@@ -36,10 +29,7 @@ const SetNickname = ({ userId, accessToken }: { userId: string; accessToken: str
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-
-    if (ENGLISH_ONLY_REGEX.test(value)) {
-      setNickname(value);
-    }
+    setNickname(value);
   };
 
   const handleInputSubmit = (e: React.FormEvent) => {
@@ -51,7 +41,7 @@ const SetNickname = ({ userId, accessToken }: { userId: string; accessToken: str
           onSuccess: async () => {
             await API.setCookie({ name: 'nickname', value: debouncedNickname });
 
-            window.location.href = '/';
+            window.location.href = '/archive';
           },
         }
       );
@@ -61,7 +51,7 @@ const SetNickname = ({ userId, accessToken }: { userId: string; accessToken: str
   const Logout = async () => {
     try {
       await API.deleteAllCookies();
-      router.push('/');
+      router.push('/login');
     } catch (error) {
       console.error(error);
     }
@@ -103,7 +93,7 @@ const SetNickname = ({ userId, accessToken }: { userId: string; accessToken: str
 
   useEffect(() => {
     if (!nickname) {
-      setMessage('영문, 2~16글자');
+      setMessage('한글또는 영문, 2~16자');
     }
   }, [nickname]);
 
@@ -138,9 +128,19 @@ const SetNickname = ({ userId, accessToken }: { userId: string; accessToken: str
   );
 };
 
+const slideUp = keyframes`
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+`;
+
 const Wrapper = styled.div`
-  position: absolute;
-  inset: 0 0 ${BottomNavHight} 0;
+  z-index: ${zIndex.Modal};
+  position: fixed;
+  inset: 0;
   display: flex;
   margin: auto;
 
@@ -151,6 +151,7 @@ const Wrapper = styled.div`
 `;
 
 const Content = styled.div`
+  animation: ${slideUp} 0.8s ease-out;
   overflow: hidden;
   width: 330px;
   height: 230px;
@@ -255,4 +256,4 @@ const MessageWrapper = styled.div<MessageWrapperProps>`
   font-size: var(--font-size-sm);
 `;
 
-export default SetNickname;
+export default NicknameModal;

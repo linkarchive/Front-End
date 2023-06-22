@@ -19,7 +19,7 @@ const makeStore = () => {
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         serializableCheck: false,
-      }).concat(thunk),
+      }),
   });
 
   return store;
