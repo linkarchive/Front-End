@@ -13,6 +13,8 @@ import { AxiosError } from 'axios';
 import { withAuth } from '@/lib/withAuth';
 import { setAccessToken } from '@/api/customAPI';
 import { MessageWrapperProps } from '@/components/Archive/NicknameModal';
+import { createToastBar } from '@/store/slices/toastBarSlice';
+import Router from 'next/router';
 
 interface ErrorMessage {
   message: string;
@@ -107,6 +109,8 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
           });
 
           await API.setCookie({ name: 'nickname', value: debouncedNickname });
+          dispatch(createToastBar({ text: '프로필이 수정되었습니다.' }));
+          Router.push('/');
         },
         onError: (error: AxiosError<ErrorMessage>) => {
           // eslint-disable-next-line no-alert
