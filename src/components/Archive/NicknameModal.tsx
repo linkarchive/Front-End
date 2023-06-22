@@ -9,6 +9,7 @@ import API from '@/api/API';
 import { useMutation } from '@tanstack/react-query';
 import Spinner from '@/components/Spinner';
 import { useRouter } from 'next/router';
+import { zIndex } from '@/constants/zIndex';
 
 export interface MessageWrapperProps {
   isValid: boolean;
@@ -137,7 +138,7 @@ const slideUp = keyframes`
 `;
 
 const Wrapper = styled.div`
-  z-index: 100;
+  z-index: ${zIndex.Modal};
   position: fixed;
   inset: 0;
   display: flex;

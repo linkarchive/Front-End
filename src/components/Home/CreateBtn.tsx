@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import styled from 'styled-components';
+import { zIndex } from '@/constants/zIndex';
 
 const CreateBtn = () => {
   return (
@@ -23,7 +24,7 @@ const Wrapper = styled.div`
   position: fixed;
   bottom: 12%;
   left: 55%;
-  z-index: 1;
+  z-index: ${zIndex.CreateBtn};
   transform: translate(100%, 0);
 
   .button {
