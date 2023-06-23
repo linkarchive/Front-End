@@ -15,10 +15,9 @@ const BottomNav = () => {
   useEffect(() => {
     const path = router.pathname;
     const getActiveItem = () => {
-      if (path === '/') return 'home';
-      if (path.startsWith('/archive')) return 'archive';
+      if (path === '/' || path === '/create' || path === '/login') return 'home';
       if (path.startsWith('/settings')) return 'settings';
-      return 'home';
+      return 'archive';
     };
     setActiveItem(getActiveItem());
   }, [router.pathname]);

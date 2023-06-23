@@ -1,28 +1,34 @@
-import Link from 'next/link';
 import styled from 'styled-components';
 import Title from '@/components/Title.styled';
-import { useRouter } from 'next/router';
-
-const navLinks = [
-  {
-    path: '/',
-    name: '내 링크',
-  },
-  { path: '/mark', name: '내 마크' },
-];
+import { useState } from 'react';
+import { RootState, useAppDispatch } from '@/store';
+import { homeSlice } from '@/store/slices/homeSlice';
+import { useSelector } from 'react-redux';
 
 const HomeHeader = () => {
-  const router = useRouter();
-  const { pathname } = router;
+  const { name } = useSelector((state: RootState) => state.home);
+  const [isLink, setIsLink] = useState<boolean>(name === '내 링크');
+  const dispatch = useAppDispatch();
+
+  const handleMarkClick = () => {
+    setIsLink(false);
+    dispatch(homeSlice.actions.onClickMark());
+  };
+
+  const handleLinkClick = () => {
+    setIsLink(true);
+    dispatch(homeSlice.actions.onClickLink());
+  };
 
   return (
     <Wrapper>
       <nav>
-        {navLinks.map(({ path, name }) => (
-          <Link href={path} key={path}>
-            <Title color={!(path === pathname) ? '#D9D9D9' : ''}>{name}</Title>
-          </Link>
-        ))}
+        <Title onClick={handleLinkClick} color={!isLink && '#D9D9D9'}>
+          내 링크
+        </Title>
+        <Title onClick={handleMarkClick} color={isLink && '#D9D9D9'}>
+          내 마크
+        </Title>
       </nav>
     </Wrapper>
   );

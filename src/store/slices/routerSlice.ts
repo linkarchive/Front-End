@@ -22,11 +22,15 @@ export const routerSlice = createSlice({
     },
     loadArchivePage(state) {
       state.status = 'MAIN';
-      state.current = 'EXPLORE';
+      state.current = 'ARCHIVE';
     },
     loadProfilePage(state) {
       state.status = 'MAIN';
-      state.current = 'PROFILE';
+      state.current = 'SETTINGS';
+    },
+    loadUserPage(state) {
+      state.status = 'MAIN';
+      state.current = 'NONE';
     },
     loadCreatePage(state) {
       state.status = 'OTHER';
@@ -36,7 +40,6 @@ export const routerSlice = createSlice({
       state.status = 'OTHER';
       state.name = 'Linkarchive';
     },
-
     loadProfileDetailPage(state) {
       state.status = 'OTHER';
       state.current = 'PROFILE';

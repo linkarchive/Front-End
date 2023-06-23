@@ -19,21 +19,36 @@ const User: NextPageWithLayout = () => {
   const { isLoggedin } = useAuth();
 
   const fetchLinksFn = setFetchLinksFn({ isLoggedin, item });
+
   const queryKey = ['linkList', nickname, item];
   const { pages, target, isFetchingNextPage } = useInfinityScroll<ILinksResponse>({
-    fetchFn: (linkId: string) => fetchLinksFn({ nickname, linkId }),
+    fetchFn: (id: string) =>
+      item === 'link'
+        ? fetchLinksFn({ nickname, linkId: id })
+        : fetchLinksFn({ nickname, markId: id }),
     queryKey,
     getNextPageParam: (lastPage_) => {
-      if (!lastPage_?.data?.hasNext) return undefined;
-      const lastPage = lastPage_.data?.linkList;
-      const lastItem = lastPage[lastPage.length - 1].urlId;
+      const hasNext = lastPage_?.hasNext;
+      if (!hasNext) return undefined;
+
+      if (item === 'link') {
+        const lastPage = lastPage_?.linkList;
+        const lastItem = lastPage[lastPage.length - 1].linkId;
+
+        return lastItem;
+      }
+
+      const lastPage = lastPage_?.markList;
+      const lastItem = lastPage[lastPage.length - 1].markId;
+
       return lastItem;
     },
   });
 
   useEffect(() => {
-    dispatch(routerSlice.actions.loadProfilePage());
+    dispatch(routerSlice.actions.loadUserPage());
   }, [dispatch]);
+
   return (
     <>
       <Nav handleClick={setItem} />
@@ -51,10 +66,10 @@ User.getLayout = function getLayout(page: ReactElement) {
 };
 
 const setFetchLinksFn = ({ isLoggedin, item }: { isLoggedin: boolean; item: 'link' | 'mark' }) => {
-  if (isLoggedin) {
-    if (item === 'link') return API.getAuthLinksArchiveByUserId;
-    return API.getAuthMarksArchiveByUserId;
-  }
-  if (item === 'link') return API.getLinksArchiveByUserId;
-  return API.getMarksArchiveByUserId;
+  const fetchFunctions = {
+    link: isLoggedin ? API.getAuthLinksArchiveByUserId : API.getLinksArchiveByUserId,
+    mark: isLoggedin ? API.getAuthMarksArchiveByUserId : API.getMarksArchiveByUserId,
+  };
+
+  return fetchFunctions[item];
 };

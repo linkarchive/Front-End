@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import { HYDRATE } from 'next-redux-wrapper';
 import { routerSlice } from './slices/routerSlice';
-import { userSlice } from './slices/userSlice';
 import { toastBarSlice } from './slices/toastBarSlice';
+import { homeSlice } from './slices/homeSlice';
 
 const combinedReducer = combineReducers({
   router: routerSlice.reducer,
-  user: userSlice.reducer,
+  home: homeSlice.reducer,
   toastBar: toastBarSlice.reducer,
 });
 

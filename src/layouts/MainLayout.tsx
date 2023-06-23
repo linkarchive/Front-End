@@ -14,6 +14,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const home = current === 'HOME';
   const Archive = current === 'ARCHIVE';
   const settings = current === 'SETTINGS';
+  const none = current === 'NONE';
   return (
     <>
       <WaterMark />
@@ -23,6 +24,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
           {home && <HomeHeader />}
           {Archive && <ArchiveHeader />}
           {settings && <SettingsHeader />}
+          {none}
         </>
       )}
       <Main>{children}</Main>

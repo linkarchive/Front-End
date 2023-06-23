@@ -6,9 +6,7 @@ const ArchiveHeader = () => {
   return (
     <Wrapper>
       <nav>
-        <Link href='/Archive'>
-          <Title>둘러보기</Title>
-        </Link>
+        <Title>둘러보기</Title>
       </nav>
     </Wrapper>
   );

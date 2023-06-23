@@ -102,10 +102,10 @@ const API = {
   },
 
   /** 사용자별 북마크 둘러보기 */
-  getMarksArchiveByUserId: async ({ nickname, linkId }: { nickname: string; linkId?: string }) => {
+  getMarksArchiveByUserId: async ({ nickname, markId }: { nickname: string; markId?: string }) => {
     const { data } = await clientInstance.get(`mark/links/public/user/${nickname}`, {
       params: {
-        linkId,
+        markId,
       },
     });
     return data;
@@ -113,14 +113,14 @@ const API = {
 
   getAuthMarksArchiveByUserId: async ({
     nickname,
-    linkId,
+    markId,
   }: {
     nickname: string;
-    linkId?: string;
+    markId?: string;
   }) => {
     const { data } = await clientInstance.get(`mark/links/authentication/user/${nickname}`, {
       params: {
-        linkId,
+        markId,
       },
     });
     return data;
@@ -137,10 +137,10 @@ const API = {
   },
 
   /** 내 마크 둘러보기 */
-  getUserMarksArchive: async (linkId?: string) => {
+  getUserMarksArchive: async (markId?: string) => {
     const { data } = await clientInstance.get(`mark/links/user`, {
       params: {
-        linkId,
+        markId,
       },
     });
     return data;
