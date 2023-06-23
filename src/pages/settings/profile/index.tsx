@@ -213,7 +213,7 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
             <Image src={imageUrl} alt='cat' fill />
             <input
               type='file'
-              accept='image/png'
+              accept='image/png, image/jpeg, image/jpg, image/gif'
               style={{ display: 'none' }}
               id='imageInput'
               onChange={(e) => onImageChange(e)}
