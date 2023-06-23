@@ -137,10 +137,10 @@ const API = {
   },
 
   /** 내 마크 둘러보기 */
-  getUserMarksArchive: async (linkId?: string) => {
+  getUserMarksArchive: async (markId?: string) => {
     const { data } = await clientInstance.get(`mark/links/user`, {
       params: {
-        linkId,
+        markId,
       },
     });
     return data;
