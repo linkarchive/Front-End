@@ -28,6 +28,10 @@ export const routerSlice = createSlice({
       state.status = 'MAIN';
       state.current = 'SETTINGS';
     },
+    loadUserPage(state) {
+      state.status = 'MAIN';
+      state.current = 'NONE';
+    },
     loadCreatePage(state) {
       state.status = 'OTHER';
       state.name = '링크 추가';
@@ -36,7 +40,6 @@ export const routerSlice = createSlice({
       state.status = 'OTHER';
       state.name = 'Linkarchive';
     },
-
     loadProfileDetailPage(state) {
       state.status = 'OTHER';
       state.current = 'PROFILE';

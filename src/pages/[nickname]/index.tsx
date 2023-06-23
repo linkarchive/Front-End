@@ -32,7 +32,7 @@ const User: NextPageWithLayout = () => {
   });
 
   useEffect(() => {
-    dispatch(routerSlice.actions.loadProfilePage());
+    dispatch(routerSlice.actions.loadUserPage());
   }, [dispatch]);
   return (
     <>
