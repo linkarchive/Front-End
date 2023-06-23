@@ -8,11 +8,23 @@ import wrapper, { persistor } from '@/store';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { System } from '@/layouts/System';
+import { ReactElement, ReactNode } from 'react';
+import { NextPage } from 'next';
 
 const queryClient = new QueryClient();
 
-const App = ({ Component, ...rest }: AppProps) => {
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+const App = ({ Component, ...rest }: AppPropsWithLayout) => {
   const { store, props } = wrapper.useWrappedStore(rest);
+
+  const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
     <Provider store={store}>
@@ -22,7 +34,7 @@ const App = ({ Component, ...rest }: AppProps) => {
           <System />
           <MainLayout>
             <QueryClientProvider client={queryClient}>
-              <Component {...props.pageProps} />
+              {getLayout(<Component {...props.pageProps} />)}
             </QueryClientProvider>
           </MainLayout>
         </ThemeProvider>
