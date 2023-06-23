@@ -18,8 +18,8 @@ const Home = ({ accessToken }: { accessToken: string }) => {
 
   const { name } = useSelector((state: RootState) => state.home);
 
-  const fetchFn = (linkId: string) => {
-    return name === '내 링크' ? API.getUserLinksArchive(linkId) : API.getUserMarksArchive(linkId);
+  const fetchFn = (id: string) => {
+    return name === '내 링크' ? API.getUserLinksArchive(id) : API.getUserMarksArchive(id);
   };
 
   useEffect(() => {
