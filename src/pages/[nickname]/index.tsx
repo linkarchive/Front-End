@@ -10,7 +10,7 @@ import useAuth from '@/hooks/useAuth';
 import ProfileLayout from '@/layouts/ProfileLayout';
 import { NextPageWithLayout } from '../_app';
 
-const Page: NextPageWithLayout = () => {
+const User: NextPageWithLayout = () => {
   const dispatch = useAppDispatch();
 
   const router = useRouter();
@@ -44,9 +44,9 @@ const Page: NextPageWithLayout = () => {
   );
 };
 
-export default Page;
+export default User;
 
-Page.getLayout = function getLayout(page: ReactElement) {
+User.getLayout = function getLayout(page: ReactElement) {
   return <ProfileLayout>{page}</ProfileLayout>;
 };
 
