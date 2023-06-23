@@ -228,6 +228,11 @@ const API = {
     );
     return response;
   },
+
+  getHashTagList: async (nickname: string) => {
+    const { data } = await clientInstance.get(`/tags/user/${nickname}`);
+    return data;
+  },
 };
 
 export default API;

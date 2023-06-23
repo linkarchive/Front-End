@@ -6,12 +6,14 @@ import useInfinityScroll from '@/hooks/useInfinityScroll';
 import { withAuth } from '@/lib/withAuth';
 import { RootState, useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
-import { useEffect } from 'react';
+import { ReactElement, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { NextPageWithLayout } from './_app';
+import HashTagLayout from '@/layouts/HashTagLayout';
 
 export const getServerSideProps = withAuth();
 
-const Home = ({ accessToken }: { accessToken: string }) => {
+const Home: NextPageWithLayout = ({ accessToken }: { accessToken: string }) => {
   setAccessToken(accessToken);
 
   const dispatch = useAppDispatch();
@@ -29,6 +31,11 @@ const Home = ({ accessToken }: { accessToken: string }) => {
   useEffect(() => {
     fetchFn('');
   }, [name]);
+
+  useEffect(() => {
+    const response = API.getHashTagList('hi');
+    console.log(response);
+  }, []);
 
   const queryKey = ['linkList', 'user', 'link', 'mark', name];
   const { pages, target, isFetchingNextPage } = useInfinityScroll<ILinksResponse>({
@@ -60,6 +67,9 @@ const Home = ({ accessToken }: { accessToken: string }) => {
       <div ref={target} />
     </div>
   );
+};
+Home.getLayout = function getLayout(page: ReactElement) {
+  return <HashTagLayout>{page}</HashTagLayout>;
 };
 
 export default Home;
