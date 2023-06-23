@@ -22,11 +22,11 @@ export const routerSlice = createSlice({
     },
     loadArchivePage(state) {
       state.status = 'MAIN';
-      state.current = 'EXPLORE';
+      state.current = 'ARCHIVE';
     },
     loadProfilePage(state) {
       state.status = 'MAIN';
-      state.current = 'PROFILE';
+      state.current = 'SETTINGS';
     },
     loadCreatePage(state) {
       state.status = 'OTHER';
