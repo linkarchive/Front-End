@@ -50,6 +50,7 @@ const Home = ({ accessToken }: { accessToken: string }) => {
 
       return lastItem;
     },
+    config: name !== '내 링크' && { staleTime: 0 },
   });
 
   return (
