@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Desc, InfoWrapper, LinkContents } from '@/components/LinkItem/LinkItem.styled';
+import { Desc, InfoWrapper, LinkMetaWrapper } from '@/components/LinkItem/LinkItem.styled';
 import { MetaData } from '@/components/LinkItem/LinkItem.type';
 import { Thumbnail } from '@/components/LinkItem/LinkItem';
 
@@ -7,7 +7,7 @@ const LinkInfoWrapper = styled(InfoWrapper)`
   width: 100%;
 `;
 
-const LinkInfoContents = styled(LinkContents)`
+const LinkInfoMetaWrapper = styled(LinkMetaWrapper)`
   display: flex;
   align-items: center;
 `;
@@ -15,9 +15,9 @@ const LinkInfoContents = styled(LinkContents)`
 const LinkInfo = ({ metaThumbnail: thumbnail, metaDescription: description }: MetaData) => {
   return (
     <LinkInfoWrapper>
-      <LinkInfoContents>
+      <LinkInfoMetaWrapper>
         <Desc>{description}</Desc>
-      </LinkInfoContents>
+      </LinkInfoMetaWrapper>
       <Thumbnail src={thumbnail} alt='' />
     </LinkInfoWrapper>
   );

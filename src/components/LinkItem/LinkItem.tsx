@@ -7,7 +7,7 @@ import IcoMark from 'public/assets/svg/link.svg';
 import {
   Desc,
   InfoWrapper,
-  LinkContents,
+  LinkMetaWrapper,
   Thumb,
   UtilsWrapper,
 } from '@/components/LinkItem/LinkItem.styled';
@@ -74,11 +74,11 @@ const LinkItem = ({ Header, queryKey, ...props }: LinkItemProps) => {
       <article>
         {Header}
         <LinkItemInfoWrapper onClick={handleLinkClick}>
-          <LinkContents>
+          <LinkMetaWrapper>
             <h1 className='title'>{title}</h1>
             <p className='domain'>{url}</p>
             <Desc>{description}</Desc>
-          </LinkContents>
+          </LinkMetaWrapper>
           <Thumbnail src={thumbnail} alt={title} />
         </LinkItemInfoWrapper>
 

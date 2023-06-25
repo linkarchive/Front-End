@@ -13,7 +13,7 @@ const InfoWrapper = styled(LinkItem)`
   gap: 10px;
 `;
 
-const LinkContents = styled.div`
+const LinkMetaWrapper = styled.div`
   overflow: hidden;
 
   font-weight: 400;
@@ -80,4 +80,4 @@ const UtilsWrapper = styled(LinkItem)`
   }
 `;
 
-export { Desc, Thumb, LinkContents, InfoWrapper, UtilsWrapper };
+export { Desc, Thumb, LinkMetaWrapper, InfoWrapper, UtilsWrapper };
