@@ -17,9 +17,11 @@ const Home = ({ accessToken }: { accessToken: string }) => {
   const dispatch = useAppDispatch();
 
   const { name } = useSelector((state: RootState) => state.home);
+  const myLink = name === '내 링크';
+  const myMark = !myLink;
 
   const fetchFn = (id: string) => {
-    return name === '내 링크' ? API.getUserLinksArchive(id) : API.getUserMarksArchive(id);
+    return myLink ? API.getUserLinksArchive(id) : API.getUserMarksArchive(id);
   };
 
   useEffect(() => {
@@ -38,7 +40,7 @@ const Home = ({ accessToken }: { accessToken: string }) => {
       const hasNext = lastPage_?.hasNext;
       if (!hasNext) return undefined;
 
-      if (name === '내 링크') {
+      if (myLink) {
         const lastPage = lastPage_?.linkList;
         const lastItem = lastPage[lastPage.length - 1].linkId;
 
@@ -50,7 +52,7 @@ const Home = ({ accessToken }: { accessToken: string }) => {
 
       return lastItem;
     },
-    config: name !== '내 링크' && { staleTime: 0 },
+    config: myMark && { staleTime: 0 },
   });
 
   return (
