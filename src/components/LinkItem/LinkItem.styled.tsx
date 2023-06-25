@@ -32,14 +32,52 @@ const LinkContents = styled.div`
   line-height: 14px;
 `;
 
-const InfoWrapper = styled.div`
+const LinkItem = styled.div`
+  width: 317px;
+  margin: 0 auto;
+`;
+
+const InfoWrapper = styled(LinkItem)`
   display: flex;
   flex-direction: row;
 
-  width: 317px;
   min-height: 84px;
-  margin: 0 auto;
   gap: 10px;
 `;
 
-export { Desc, Thumb, LinkContents, InfoWrapper };
+const UtilsWrapper = styled(LinkItem)`
+  .utils {
+    display: flex;
+    justify-content: flex-end;
+
+    .read,
+    .mark {
+      display: flex;
+      flex-direction: row;
+
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 14px;
+      color: #858585;
+    }
+
+    .read {
+      margin-right: 8px;
+    }
+
+    .mark {
+      cursor: pointer;
+    }
+
+    .icon {
+      position: relative;
+
+      width: 12px;
+      height: 12px;
+      margin-right: 4px;
+    }
+  }
+`;
+
+export { Desc, Thumb, LinkContents, InfoWrapper, UtilsWrapper };
