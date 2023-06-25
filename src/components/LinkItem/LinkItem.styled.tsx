@@ -1,5 +1,26 @@
 import styled from 'styled-components';
 
+const LinkItem = styled.div`
+  width: 317px;
+  margin: 0 auto;
+`;
+
+const InfoWrapper = styled(LinkItem)`
+  display: flex;
+  flex-direction: row;
+
+  min-height: 84px;
+  gap: 10px;
+`;
+
+const LinkContents = styled.div`
+  overflow: hidden;
+
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+`;
+
 const Desc = styled.p`
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -22,27 +43,6 @@ const Thumb = styled.div`
 
     font-size: var(--font-size-sm);
   }
-`;
-
-const LinkContents = styled.div`
-  overflow: hidden;
-
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 14px;
-`;
-
-const LinkItem = styled.div`
-  width: 317px;
-  margin: 0 auto;
-`;
-
-const InfoWrapper = styled(LinkItem)`
-  display: flex;
-  flex-direction: row;
-
-  min-height: 84px;
-  gap: 10px;
 `;
 
 const UtilsWrapper = styled(LinkItem)`
