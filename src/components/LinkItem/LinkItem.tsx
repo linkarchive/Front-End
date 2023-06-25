@@ -12,6 +12,11 @@ import {
   UtilsWrapper,
 } from '@/components/LinkItem/LinkItem.styled';
 
+const Wrapper = styled.div`
+  padding: 24px 0 16px;
+  border-bottom: 1px solid #c8c8c8;
+`;
+
 const LinkItemInfoWrapper = styled(InfoWrapper)`
   margin-bottom: 30px;
 
@@ -37,11 +42,6 @@ const LinkItemInfoWrapper = styled(InfoWrapper)`
     white-space: nowrap;
     color: #c8c8c8;
   }
-`;
-
-const Wrapper = styled.div`
-  padding: 24px 0 16px;
-  border-bottom: 1px solid #c8c8c8;
 `;
 
 const Mark = styled.span<{ isActivated: boolean }>`
