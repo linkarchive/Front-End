@@ -83,7 +83,7 @@ const LinkItem = ({ Header, queryKey, ...props }: LinkItemProps) => {
         </LinkItemInfoWrapper>
 
         <UtilsWrapper>
-          <TagLabelList className='tag-list' tags={[{ tagId: 1, tagName: 'qwer' }]} />
+          <TagLabelList className='tag-list' tags={tagList} />
           <div className='utils'>
             {isRead && (
               <div className='read'>
