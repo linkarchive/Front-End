@@ -4,7 +4,13 @@ import { useToggleMark } from '@/hooks/useToggleMark';
 import { LinkItemProps } from '@/components/LinkItem/LinkItem.type';
 import TagLabelList from '@/components/LinkItem/TagLabelList';
 import IcoMark from 'public/assets/svg/link.svg';
-import { Desc, InfoWrapper, LinkContents, Thumb } from '@/components/LinkItem/LinkItem.styled';
+import {
+  Desc,
+  InfoWrapper,
+  LinkContents,
+  Thumb,
+  UtilsWrapper,
+} from '@/components/LinkItem/LinkItem.styled';
 
 const LinkItemInfoWrapper = styled(InfoWrapper)`
   margin-bottom: 30px;
@@ -36,39 +42,6 @@ const LinkItemInfoWrapper = styled(InfoWrapper)`
 const Wrapper = styled.div`
   padding: 24px 0 16px;
   border-bottom: 1px solid #c8c8c8;
-
-  .utils {
-    display: flex;
-    justify-content: flex-end;
-
-    .read,
-    .mark {
-      display: flex;
-      flex-direction: row;
-
-      font-style: normal;
-      font-weight: 400;
-      font-size: 12px;
-      line-height: 14px;
-      color: #858585;
-    }
-
-    .read {
-      margin-right: 8px;
-    }
-
-    .mark {
-      cursor: pointer;
-    }
-
-    .icon {
-      position: relative;
-
-      width: 12px;
-      height: 12px;
-      margin-right: 4px;
-    }
-  }
 `;
 
 const Mark = styled.span<{ isActivated: boolean }>`
@@ -109,33 +82,34 @@ const LinkItem = ({ Header, queryKey, ...props }: LinkItemProps) => {
           <Thumbnail src={thumbnail} alt={title} />
         </LinkItemInfoWrapper>
 
-        <TagLabelList className='tag-list' tags={tagList} />
-
-        <div className='utils'>
-          {isRead && (
-            <div className='read'>
-              <div className='icon'>
-                <Image src='/assets/svg/check-green.svg' alt='' fill />
+        <UtilsWrapper>
+          <TagLabelList className='tag-list' tags={[{ tagId: 1, tagName: 'qwer' }]} />
+          <div className='utils'>
+            {isRead && (
+              <div className='read'>
+                <div className='icon'>
+                  <Image src='/assets/svg/check-green.svg' alt='' fill />
+                </div>
+                읽음
               </div>
-              읽음
-            </div>
-          )}
-          <button
-            className='mark'
-            type='button'
-            onClick={(e) => {
-              e.preventDefault();
-              handleToggleMark();
-            }}
-          >
-            <div className='icon'>
-              <Mark isActivated={isMark}>
-                <IcoMark />
-              </Mark>
-            </div>
-            {bookMarkCount}
-          </button>
-        </div>
+            )}
+            <button
+              className='mark'
+              type='button'
+              onClick={(e) => {
+                e.preventDefault();
+                handleToggleMark();
+              }}
+            >
+              <div className='icon'>
+                <Mark isActivated={isMark}>
+                  <IcoMark />
+                </Mark>
+              </div>
+              {bookMarkCount}
+            </button>
+          </div>
+        </UtilsWrapper>
       </article>
     </Wrapper>
   );
