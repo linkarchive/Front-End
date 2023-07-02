@@ -326,7 +326,7 @@ const validateHashTag = (text: string): string => {
   const isShort = text.length < 2; // 최소 2글자
   const isLong = text.length > 8; // 최대 8글자
   const hasWhitespace = whiteSpaceRegex.test(text); // 공백 불가
-  const hasSpecialSybmols = !specialSybmolsRegEx.test(text); // 특수기호, 이모지 불가
+  const hasSpecialSymbols = !specialSybmolsRegEx.test(text); // 특수기호, 이모지 불가
 
   if (isShort) {
     return ERROR_MESSAGE.HASHTAG.TOO_SHORT;
@@ -334,12 +334,10 @@ const validateHashTag = (text: string): string => {
   if (isLong) {
     return ERROR_MESSAGE.HASHTAG.TOO_LONG;
   }
-
   if (hasWhitespace) {
     return ERROR_MESSAGE.HASHTAG.NO_SPACE;
   }
-
-  if (hasSpecialSybmols) {
+  if (hasSpecialSymbols) {
     return ERROR_MESSAGE.HASHTAG.NO_SPECIAL;
   }
 
