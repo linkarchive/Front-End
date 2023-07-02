@@ -165,9 +165,16 @@ const API = {
     return response;
   },
 
-  getTagsByUserId: async (userId: string) => {
-    const response = await clientInstance.get(`tags/userId${userId}`);
-    return response;
+  /**
+   * 사용자 해시태그 리스트
+   * @param usernickname 조회할 사용자 닉네임
+   * @param size 조회할 해시태그 수
+   */
+  getTagsByNickname: async ({ usernickname, size }: { usernickname: string; size?: number }) => {
+    const { data } = size
+      ? await clientInstance.get(`tags/limit/user/${usernickname}?size=${size}`)
+      : await clientInstance.get(`tags/user/${usernickname}`);
+    return data;
   },
 
   uploadImage: async ({ file }: { file: File }): Promise<AxiosResponse> => {

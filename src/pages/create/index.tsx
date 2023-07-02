@@ -13,7 +13,8 @@ import { setAccessToken } from '@/api/customAPI';
 import { withAuth } from '@/lib/withAuth';
 import Spinner from '@/components/Spinner';
 import { createToastBar } from '@/store/slices/toastBarSlice';
-// import HashTagList from '@/components/Create/HashTagList'; TODO mvp 이후 개발 */
+import HashTagList from '@/components/Create/HashTagList';
+import TagLabelList from '@/components/LinkItem/TagLabelList';
 
 const defaultErrorMessages = {
   url: '',
@@ -23,8 +24,9 @@ const defaultErrorMessages = {
 
 export const getServerSideProps = withAuth();
 
-const Create = ({ accessToken }: { accessToken: string }) => {
+const Create = ({ userId, accessToken }: { userId: string; accessToken: string }) => {
   setAccessToken(accessToken);
+  const usernickname = userId; // TODO getTagsByNickname 백엔드 작업 후 userId가 아닌 nickname으로 변경
 
   const dispatch = useAppDispatch();
 
@@ -64,14 +66,11 @@ const Create = ({ accessToken }: { accessToken: string }) => {
     setErrorMessages(errmsgs);
   };
 
-  // TODO api 통신 작업
-  /** MVP 이후 개발
-    const {
-      data: freqTags,
-      isLoading,
-      isError,
-    } = useQuery(['freqTagList'], { queryFn: () => API.tagsByUserId(''), enabled: false });
-  */
+  const { data: tagList } = useQuery({
+    queryKey: ['user', 'tagList', 10],
+    queryFn: () => API.getTagsByNickname({ usernickname, size: 10 }),
+    retry: 1,
+  });
 
   const { mutate: fetchMetaData, isLoading } = useMutation({
     mutationFn: API.getLinkMetadata,
@@ -203,9 +202,8 @@ const Create = ({ accessToken }: { accessToken: string }) => {
           }}
         />
         <Bottom>
-           // TODO MVP 제외
-            <p className='info'>자주 사용하는 태그</p>
-            <TagLabelList /> 
+          <p className='info'>자주 사용하는 태그</p>
+          <TagLabelList tags={tagList || []} />
           <HashTagList
             tags={hashtags}
             handleDelete={(value) => setHashtags((prev) => prev.filter((v) => v !== value))}
