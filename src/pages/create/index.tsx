@@ -38,10 +38,8 @@ const Create = ({ userId, accessToken }: { userId: string; accessToken: string }
 
   const urlInput = useRef('');
   const [title, setTitle] = useState('');
-  /**  // TODO mvp 이후 개발
   const [hashtagInput, setHashTagInput] = useState('');
-  const [hashtags, setHashtags] = useState<string[]>([]);
-  */
+  const [hashtagList, setHashtagList] = useState<string[]>([]);
   const [metaData, setMetaData] = useState<MetaData>(null);
   const [errorMessages, setErrorMessages] = useState(defaultErrorMessages);
   const [isValid, setIsValid] = useState(false);
@@ -98,43 +96,40 @@ const Create = ({ userId, accessToken }: { userId: string; accessToken: string }
     }
   };
 
-  /** 
-   * // TODO mvp 이후 개발
-  const handleAddTags = (text) => {
-    let message = '';
-    if (hashtags.length === 5) {
-      message = ERROR_MESSAGE.HASHTAG.MAXIMUM;
-      handleErrorMessage({ key: 'hashtag', message });
+  const handleAddTags = (text: string) => {
+    const newHashTagList = [...hashtagList];
+    if (text.length > 0 && !hashtagList.includes(text)) newHashTagList.push(text);
+
+    const hashtagErrMsg = validateHashTagList(newHashTagList);
+
+    if (hashtagErrMsg) {
+      setErrorMessage({ key: 'hashtag', message: hashtagErrMsg });
       return;
     }
-    message = validateHashTag(text);
-    if (message) {
-      handleErrorMessage({ key: 'hashtag', message });
-      return;
-    }
-    setHashtags((prev) => [...prev, text]);
-    initErrorMessage({ key: 'hashtag' });
+    setHashtagList(newHashTagList);
+    setHashTagInput('');
+    setErrorMessage({ key: 'hashtag', message: '' });
   };
-  */
 
   const createLink = useMutation({ mutationFn: API.createLink });
 
   const handleCreate = () => {
     if (createLink.isLoading) return;
 
-    const titleErrMsg = validateTitle(title);
-    if (titleErrMsg) {
-      setErrorMessage({ key: 'title', message: titleErrMsg });
-      return;
-    }
-
-    const [url, thumbnail, description] = [
+    const [url, thumbnail, description, tags] = [
       urlInput.current,
       metaData?.metaThumbnail,
       truncateDesc(metaData?.metaDescription),
+      [...hashtagList],
     ];
 
-    const tags = []; //  [...hashtags];
+    const errorMessage = validateForm({ title, tags });
+    const isFormValid = Object.values(errorMessage).every((err) => err === '');
+    if (!isFormValid) {
+      setErrorMessages(errorMessage);
+      return;
+    }
+
     createLink.mutate(
       { url, title, description, thumbnail, tags },
       {
@@ -181,13 +176,12 @@ const Create = ({ userId, accessToken }: { userId: string; accessToken: string }
           <LinkInfo {...(metaData as MetaData)} />
         </Bottom>
       </InputBlock>
-      {/** 
+
       <InputBlock>
         <InputWithButton
           label='해시태그'
           value={hashtagInput}
           onKeyDown={(e) => {
-            // FIXME 한글 입력시 'ㅁㄴㅇㄹ ' 공백 입력 이슈
             if (e.key === ' ') e.preventDefault();
           }}
           onChange={(e) => {
@@ -198,19 +192,17 @@ const Create = ({ userId, accessToken }: { userId: string; accessToken: string }
           onClick={() => {
             if (!hashtagInput) return;
             handleAddTags(hashtagInput.trim());
-            setHashTagInput('');
           }}
         />
         <Bottom>
           <p className='info'>자주 사용하는 태그</p>
           <FavoriteTagList tags={tagList || []} onClick={({ tagName }) => handleAddTags(tagName)} />
           <HashTagList
-            tags={hashtags}
-            handleDelete={(value) => setHashtags((prev) => prev.filter((v) => v !== value))}
+            tags={hashtagList}
+            handleDelete={(value) => setHashtagList((prev) => prev.filter((v) => v !== value))}
           />
         </Bottom>
       </InputBlock>
-    */}
 
       <ButtonBlock>
         <Button type='submit' disabled={!isValid}>
@@ -284,24 +276,65 @@ const ERROR_MESSAGE = {
     INVALID: '제목을 입력해주세요',
   },
   HASHTAG: {
-    TOO_LONG: '너무 길어요',
-    TOO_SHORT: '너무 짧아요',
+    TOO_LONG: '최대 8글자 입력해주세요',
+    TOO_SHORT: '최소 2글자 입력해주세요',
     NO_SPECIAL: '특수기호는 안돼요',
-    MAXIMUM: '5개까지 등록할 수 있어요',
+    NO_SPACE: '공백을 제거해주세요',
+    MAXIMUM: '최대 10개까지 등록할 수 있어요',
   },
 };
 
-const validateHashTag = (text: string): string => {
-  const encoder = new TextEncoder();
-  const byteLength = encoder.encode(text).length;
-  const isValidLength = !(byteLength < 4 || byteLength > 16); // 최소 4바이트, 최대 16바이트
-  const noSpecialSybmols = /^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]+$/; // 특수기호, 이모지 불가
+const validateForm = ({
+  title,
+  tags: hashtagList,
+}: {
+  title: string;
+  tags: string[];
+}): typeof defaultErrorMessages => {
+  const titleErrMsg = validateTitle(title);
+  const hashtagErrMsg = validateHashTagList(hashtagList);
 
-  if (!isValidLength) {
-    return ERROR_MESSAGE.HASHTAG.TOO_LONG;
+  const errorMsg = {
+    title: titleErrMsg,
+    hashtag: hashtagErrMsg,
+    url: '',
+  };
+
+  return errorMsg;
+};
+
+const validateHashTagList = (hashtagList: string[]): string => {
+  const MAX_HASHTAG = 10; // 최대 10개 등록 가능
+
+  if (hashtagList.length >= MAX_HASHTAG) {
+    return ERROR_MESSAGE.HASHTAG.MAXIMUM;
   }
 
-  if (!noSpecialSybmols.test(text)) {
+  const errors = hashtagList
+    .map((hashtag) => validateHashTag(hashtag))
+    .filter((errMesg) => errMesg !== '');
+
+  return errors[0] || '';
+};
+
+const validateHashTag = (text: string): string => {
+  const whiteSpaceRegex = /\s/;
+  const specialSybmolsRegEx = /^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]+$/;
+  const isShort = text.length < 2; // 최소 2글자
+  const isLong = text.length > 8; // 최대 8글자
+  const hasWhitespace = whiteSpaceRegex.test(text); // 공백 불가
+  const hasSpecialSymbols = !specialSybmolsRegEx.test(text); // 특수기호, 이모지 불가
+
+  if (isShort) {
+    return ERROR_MESSAGE.HASHTAG.TOO_SHORT;
+  }
+  if (isLong) {
+    return ERROR_MESSAGE.HASHTAG.TOO_LONG;
+  }
+  if (hasWhitespace) {
+    return ERROR_MESSAGE.HASHTAG.NO_SPACE;
+  }
+  if (hasSpecialSymbols) {
     return ERROR_MESSAGE.HASHTAG.NO_SPECIAL;
   }
 
