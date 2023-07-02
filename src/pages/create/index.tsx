@@ -14,7 +14,7 @@ import { withAuth } from '@/lib/withAuth';
 import Spinner from '@/components/Spinner';
 import { createToastBar } from '@/store/slices/toastBarSlice';
 import HashTagList from '@/components/Create/HashTagList';
-import TagLabelList from '@/components/LinkItem/TagLabelList';
+import FavoriteTagList from '@/components/Create/FavoriteTagList';
 
 const defaultErrorMessages = {
   url: '',
@@ -203,7 +203,7 @@ const Create = ({ userId, accessToken }: { userId: string; accessToken: string }
         />
         <Bottom>
           <p className='info'>자주 사용하는 태그</p>
-          <TagLabelList tags={tagList || []} />
+          <FavoriteTagList tags={tagList || []} onClick={({ tagName }) => handleAddTags(tagName)} />
           <HashTagList
             tags={hashtags}
             handleDelete={(value) => setHashtags((prev) => prev.filter((v) => v !== value))}
