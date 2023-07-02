@@ -109,6 +109,7 @@ const Create = ({ accessToken }: { accessToken: string }) => {
       return;
     }
     setHashtagList(newHashTagList);
+    setHashTagInput('');
     setErrorMessage({ key: 'hashtag', message: '' });
   };
 
@@ -193,7 +194,6 @@ const Create = ({ accessToken }: { accessToken: string }) => {
           onClick={() => {
             if (!hashtagInput) return;
             handleAddTags(hashtagInput.trim());
-            setHashTagInput('');
           }}
         />
         <Bottom>
