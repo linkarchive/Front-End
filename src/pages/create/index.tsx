@@ -171,7 +171,7 @@ const Create = ({ userId, accessToken }: { userId: string; accessToken: string }
             setTitle(value);
           }}
         />
-        <Bottom>
+        <Bottom style={{ marginBottom: '29px' }}>
           <p className='info'>미리보기</p>
           <LinkInfo {...(metaData as MetaData)} />
         </Bottom>
@@ -194,14 +194,14 @@ const Create = ({ userId, accessToken }: { userId: string; accessToken: string }
             handleAddTags(hashtagInput.trim());
           }}
         />
-        <Bottom>
+        <Bottom style={{ marginBottom: '12px' }}>
           <p className='info'>자주 사용하는 태그</p>
           <FavoriteTagList tags={tagList || []} onClick={({ tagName }) => handleAddTags(tagName)} />
-          <HashTagList
-            tags={hashtagList}
-            handleDelete={(value) => setHashtagList((prev) => prev.filter((v) => v !== value))}
-          />
         </Bottom>
+        <HashTagList
+          tags={hashtagList}
+          handleDelete={(value) => setHashtagList((prev) => prev.filter((v) => v !== value))}
+        />
       </InputBlock>
 
       <ButtonBlock>
@@ -226,8 +226,8 @@ const InputBlock = styled.div`
 `;
 
 const Bottom = styled.div`
-  position: relative;
-  top: 12px;
+  width: 276px;
+  margin: 0 auto;
 
   > p {
     margin-bottom: 5px;
