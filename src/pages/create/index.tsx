@@ -99,10 +99,8 @@ const Create = ({ accessToken }: { accessToken: string }) => {
   };
 
   const handleAddTags = (text: string) => {
-    let newHashTagList;
-    if (text.length > 0 && !hashtagList.includes(text)) {
-      newHashTagList = [...hashtagList, text];
-    }
+    const newHashTagList = [...hashtagList];
+    if (text.length > 0 && !hashtagList.includes(text)) newHashTagList.push(text);
 
     const hashtagErrMsg = validateHashTagList(newHashTagList);
 
