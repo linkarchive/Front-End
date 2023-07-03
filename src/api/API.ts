@@ -172,7 +172,7 @@ const API = {
    */
   getTagsByNickname: async ({ usernickname, size }: { usernickname: string; size?: number }) => {
     const { data } = size
-      ? await clientInstance.get(`tags/limit/user/${usernickname}?size=${size}`)
+      ? await clientInstance.get(`limited-tags/user/${usernickname}?size=${size}`)
       : await clientInstance.get(`tags/user/${usernickname}`);
     return data;
   },

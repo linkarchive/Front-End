@@ -64,11 +64,12 @@ const Create = ({ userId, accessToken }: { userId: string; accessToken: string }
     setErrorMessages(errmsgs);
   };
 
-  const { data: tagList } = useQuery({
+  const { data: tagListData } = useQuery({
     queryKey: ['user', 'tagList', 10],
     queryFn: () => API.getTagsByNickname({ usernickname, size: 10 }),
     retry: 1,
   });
+  const tagList = tagListData?.tagList || [];
 
   const { mutate: fetchMetaData, isLoading } = useMutation({
     mutationFn: API.getLinkMetadata,
@@ -196,7 +197,7 @@ const Create = ({ userId, accessToken }: { userId: string; accessToken: string }
         />
         <Bottom style={{ marginBottom: '12px' }}>
           <p className='info'>자주 사용하는 태그</p>
-          <FavoriteTagList tags={tagList || []} onClick={({ tagName }) => handleAddTags(tagName)} />
+          <FavoriteTagList tags={tagList} onClick={({ tagName }) => handleAddTags(tagName)} />
         </Bottom>
         <HashTagList
           tags={hashtagList}
