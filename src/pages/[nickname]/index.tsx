@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import useInfinityScroll from '@/hooks/useInfinityScroll';
 import ProfileLayout from '@/layouts/ProfileLayout';
 import { NextPageWithLayout } from '../_app';
+import LinkItemListLayout from '@/layouts/LinkItemLayout';
 
 const User: NextPageWithLayout = () => {
   const dispatch = useAppDispatch();
@@ -50,7 +51,9 @@ const User: NextPageWithLayout = () => {
   return (
     <>
       <Nav handleClick={setItem} />
-      <LinkItemList data={pages} queryKey={queryKey} />
+      <LinkItemListLayout>
+        <LinkItemList data={pages} queryKey={queryKey} />
+      </LinkItemListLayout>
       {isFetchingNextPage && <div>로딩중...</div>}
       <div ref={target} />
     </>
