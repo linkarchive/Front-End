@@ -207,6 +207,19 @@ const API = {
     );
     return response;
   },
+
+  /** 사용자별 해시태그 리스트 조회 */
+  getUsersLinksTagList: async (nickname: string) => {
+    const { data } = await clientInstance.get(`/tags/user/${nickname}`);
+
+    return data.tagList;
+  },
+
+  getUsersMarksTagList: async (nickname: string) => {
+    const { data } = await clientInstance.get(`/marks/tags/user/${nickname}`);
+
+    return data.tagList;
+  },
 };
 
 export default API;
