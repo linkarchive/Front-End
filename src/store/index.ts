@@ -13,17 +13,17 @@ const persistConfig = {
 
 export const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-const makeStore = () => {
-  const store = configureStore({
-    reducer: persistedReducer,
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware({
-        serializableCheck: false,
-      }),
-  });
+const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
+});
 
-  return store;
-};
+export const persistor = persistStore(store);
+
+const makeStore = () => store;
 
 const wrapper = createWrapper<Store>(makeStore);
 
@@ -32,7 +32,5 @@ export type AppDispatch = Store['dispatch'];
 export type RootState = ReturnType<Store['getState']>;
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, Action>;
-
-export const persistor = persistStore(makeStore());
 
 export default wrapper;
