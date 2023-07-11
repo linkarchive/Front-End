@@ -3,10 +3,11 @@ import { setAccessToken } from '@/api/customAPI';
 import CreateBtn from '@/components/Home/CreateBtn';
 import { ILinksResponse, LinkItemList } from '@/components/LinkItem';
 import useInfinityScroll from '@/hooks/useInfinityScroll';
+import LinkItemListLayout from '@/layouts/LinkItemLayout';
 import { withAuth } from '@/lib/withAuth';
 import { RootState, useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
-import { useEffect } from 'react';
+import { ReactElement, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 export const getServerSideProps = withAuth();
@@ -17,6 +18,7 @@ const Home = ({ accessToken }: { accessToken: string }) => {
   const dispatch = useAppDispatch();
 
   const { name } = useSelector((state: RootState) => state.home);
+  const { tagName } = useSelector((state: RootState) => state.hashTag);
   const myLink = name === '내 링크';
   const myMark = !myLink;
 
@@ -31,6 +33,10 @@ const Home = ({ accessToken }: { accessToken: string }) => {
   useEffect(() => {
     fetchFn('');
   }, [name]);
+
+  useEffect(() => {
+    // 클릭한 해시태그 기반으로 CSR 로직 추가
+  }, [tagName]);
 
   const queryKey = ['linkList', 'user', 'link', 'mark', name];
   const { pages, target, isFetchingNextPage } = useInfinityScroll<ILinksResponse>({
@@ -58,11 +64,17 @@ const Home = ({ accessToken }: { accessToken: string }) => {
   return (
     <div>
       <CreateBtn />
-      <LinkItemList data={pages} queryKey={queryKey} />
+      <LinkItemListLayout>
+        <LinkItemList data={pages} queryKey={queryKey} />
+      </LinkItemListLayout>
       {isFetchingNextPage && <div>로딩중...</div>}
       <div ref={target} />
     </div>
   );
+};
+
+Home.getLayout = function getLayout(page: ReactElement) {
+  return page;
 };
 
 export default Home;
