@@ -55,6 +55,11 @@ const LinkItemWithProfileList = ({ data, queryKey }: LinkItemListProps) => {
   );
 };
 
+// LinkItemList.getLayout = function getLayout(page: ReactElement) {
+//   return <div>asdasd</div>;
+//   // return <HashTagList>{page}</HashTagList>;
+// };
+
 export { LinkItemList, LinkItemWithProfileList };
 
 const Block = styled.div`
