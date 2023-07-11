@@ -1,5 +1,7 @@
 import API from '@/api/API';
 import Spinner from '@/components/Spinner';
+import { useAppDispatch } from '@/store';
+import { setUser } from '@/store/slices/userSlice';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect } from 'react';
@@ -8,6 +10,7 @@ import styled from 'styled-components';
 const KakaoAuth = () => {
   const router = useRouter();
   const loginMutation = useMutation({ mutationFn: API.kakaoLogin });
+  const dispatch = useAppDispatch();
 
   const handleKakaoLogin = useCallback(() => {
     if (router.query.code) {
@@ -18,6 +21,7 @@ const KakaoAuth = () => {
           onSuccess: async (response) => {
             const { accessToken, refreshToken, userId, nickname } = response.data;
             await API.setAllCookies({ accessToken, refreshToken, userId, nickname });
+            await dispatch(setUser({ myId: userId, myNickname: nickname }));
 
             window.location.href = '/archive';
           },
