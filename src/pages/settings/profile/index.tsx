@@ -161,7 +161,6 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
 
   useEffect(() => {
     setMyProfile();
-    console.log(imageUrl);
   }, []);
 
   useEffect(() => {
