@@ -244,7 +244,7 @@ const API = {
   },
 
   getUsersMarksTagList: async (nickname: string) => {
-    const { data } = await clientInstance.get(`/marks/tags/user/${nickname}`);
+    const { data } = await clientInstance.get(`/mark/tags/user/${nickname}`);
 
     return data.tagList;
   },
