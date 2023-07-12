@@ -69,40 +69,60 @@ const API = {
   },
 
   /** 사용자별 링크 둘러보기 */
-  getLinksArchiveByUserId: async ({ nickname, linkId }: { nickname: string; linkId?: string }) => {
+  getLinksArchiveByUserId: async ({
+    nickname,
+    linkId,
+    tag,
+  }: {
+    nickname: string;
+    linkId?: string;
+    tag?: string;
+  }) => {
     const { data } = await clientInstance.get(`links/user/${nickname}`, {
       params: {
         linkId,
+        tag,
       },
     });
     return data;
   },
 
   /** 사용자별 북마크 둘러보기 */
-  getMarksArchiveByUserId: async ({ nickname, markId }: { nickname: string; markId?: string }) => {
+  getMarksArchiveByUserId: async ({
+    nickname,
+    markId,
+    tag,
+  }: {
+    nickname: string;
+    markId?: string;
+    tag?: string;
+  }) => {
     const { data } = await clientInstance.get(`mark/links/user/${nickname}`, {
       params: {
         markId,
+        tag,
       },
     });
     return data;
   },
 
   /** 내 링크 둘러보기 */
-  getUserLinksArchive: async (linkId?: string) => {
+  getUserLinksArchive: async (linkId: string, tag?: string) => {
     const { data } = await clientInstance.get(`links/user`, {
       params: {
         linkId,
+        tag,
       },
     });
     return data;
   },
 
   /** 내 마크 둘러보기 */
-  getUserMarksArchive: async (markId?: string) => {
+  getUserMarksArchive: async (markId: string, tag?: string) => {
     const { data } = await clientInstance.get(`mark/links/user`, {
       params: {
         markId,
+        tag,
       },
     });
     return data;
