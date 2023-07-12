@@ -38,7 +38,7 @@ const HashTagList = ({ children }: HashTagListProps) => {
       setHashTagList(tagList);
     }
     return () => setHashTagList([]);
-  }, [tagList]);
+  }, [tagList, name]);
 
   const handleClickTag = (tagName: string) => {
     dispatch(onClickHashTag({ tagName }));
