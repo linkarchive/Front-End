@@ -2,25 +2,25 @@ import { createSlice } from '@reduxjs/toolkit';
 
 interface HashTag {
   tagId: number;
-  tagName: string;
+  selectedTagName: string;
 }
 
 const initialState: HashTag = {
   tagId: 0,
-  tagName: 'All',
+  selectedTagName: 'All',
 };
 
 export const HashTagSlice = createSlice({
   name: 'hashTag',
   initialState,
   reducers: {
-    setHashTag(state, action) {
-      state.tagName = action.payload.tagName;
+    setInitialState(state) {
+      state.selectedTagName = 'All';
+    },
+    onClickHashTag(state, action) {
+      state.selectedTagName = action.payload.tagName;
     },
   },
 });
 
-export const { setHashTag } = HashTagSlice.actions;
-export const onClickHashTag = (props) => (dispatch) => {
-  dispatch(setHashTag(props));
-};
+export const { onClickHashTag } = HashTagSlice.actions;
