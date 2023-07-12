@@ -6,6 +6,7 @@ import useInfinityScroll from '@/hooks/useInfinityScroll';
 import LinkItemListLayout from '@/layouts/LinkItemLayout';
 import { withAuth } from '@/lib/withAuth';
 import { RootState, useAppDispatch } from '@/store';
+import { HashTagSlice } from '@/store/slices/hashTagSlice';
 import { routerSlice } from '@/store/slices/routerSlice';
 import { ReactElement, useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -17,13 +18,14 @@ const Home = ({ accessToken }: { accessToken: string }) => {
 
   const dispatch = useAppDispatch();
 
-  const { name } = useSelector((state: RootState) => state.home);
-  const { tagName } = useSelector((state: RootState) => state.hashTag);
-  const myLink = name === '내 링크';
+  const { myLink } = useSelector((state: RootState) => state.nav);
+  const { selectedTagName } = useSelector((state: RootState) => state.hashTag);
   const myMark = !myLink;
 
   const fetchFn = (id: string) => {
-    return myLink ? API.getUserLinksArchive(id) : API.getUserMarksArchive(id);
+    const tag = selectedTagName === 'All' ? undefined : selectedTagName;
+
+    return myLink ? API.getUserLinksArchive(id, tag) : API.getUserMarksArchive(id, tag);
   };
 
   useEffect(() => {
@@ -31,14 +33,10 @@ const Home = ({ accessToken }: { accessToken: string }) => {
   }, [dispatch]);
 
   useEffect(() => {
-    fetchFn('');
-  }, [name]);
+    dispatch(HashTagSlice.actions.setInitialState());
+  }, [dispatch, myLink]);
 
-  useEffect(() => {
-    // 클릭한 해시태그 기반으로 CSR 로직 추가
-  }, [tagName]);
-
-  const queryKey = ['linkList', 'user', 'link', 'mark', name];
+  const queryKey = ['linkList', 'user', 'link', 'mark', myLink, selectedTagName];
   const { pages, target, isFetchingNextPage } = useInfinityScroll<ILinksResponse>({
     fetchFn,
     queryKey,
