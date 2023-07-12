@@ -13,23 +13,24 @@ type HashTagListProps = {
 };
 
 const HashTagList = ({ children }: HashTagListProps) => {
-  const [activeTag, setActiveTag] = useState<string>('All');
   const [hashTagList, setHashTagList] = useState([]);
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { name } = useSelector((state: RootState) => state.home);
+  const { myLink, userLink } = useSelector((state: RootState) => state.nav);
   const { myNickname } = useSelector((state: RootState) => state.user);
+  const { current } = useSelector((state: RootState) => state.router);
 
   const userNickname = (router.query.nickname as string) || myNickname;
+  const home = current === 'HOME';
 
-  const myLink = name === '내 링크';
+  const useLink = home ? myLink : userLink;
 
   const fetchFn = (nickname: string) => {
-    return myLink ? API.getUsersLinksTagList(nickname) : API.getUsersMarksTagList(nickname);
+    return useLink ? API.getUsersLinksTagList(nickname) : API.getUsersMarksTagList(nickname);
   };
 
   const { data: tagList } = useQuery({
-    queryKey: ['tagList', userNickname],
+    queryKey: ['tagList', userNickname, myLink, userLink],
     queryFn: () => fetchFn(userNickname),
   });
 
@@ -38,26 +39,18 @@ const HashTagList = ({ children }: HashTagListProps) => {
       setHashTagList(tagList);
     }
     return () => setHashTagList([]);
-  }, [tagList, name]);
+  }, [tagList, myLink]);
 
   const handleClickTag = (tagName: string) => {
     dispatch(onClickHashTag({ tagName }));
-    setActiveTag(tagName);
   };
 
   return (
     <>
       <Wrapper>
-        <HashTag tagName='All' activeTag={activeTag} onClickTag={handleClickTag} />
+        <HashTag tagName='All' onClickTag={handleClickTag} />
         {hashTagList.map((tag) => {
-          return (
-            <HashTag
-              key={tag.tagId}
-              tagName={tag.tagName}
-              activeTag={activeTag}
-              onClickTag={handleClickTag}
-            />
-          );
+          return <HashTag key={tag.tagId} tagName={tag.tagName} onClickTag={handleClickTag} />;
         })}
       </Wrapper>
       {children}
