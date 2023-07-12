@@ -9,7 +9,7 @@ import { persistReducer, persistStore } from 'redux-persist';
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['hashTag'],
+  blacklist: ['hashTag', 'nav'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

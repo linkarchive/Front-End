@@ -30,20 +30,21 @@ const HashTagList = ({ children }: HashTagListProps) => {
   };
 
   const { data: tagList } = useQuery({
-    queryKey: ['tagList', userNickname, myLink, userLink],
+    queryKey: ['tagList', userNickname, myLink, userLink, current],
     queryFn: () => fetchFn(userNickname),
   });
+
+  const handleClickTag = (tagName: string) => {
+    dispatch(onClickHashTag({ tagName }));
+  };
 
   useEffect(() => {
     if (tagList) {
       setHashTagList(tagList);
     }
-    return () => setHashTagList([]);
-  }, [tagList, myLink]);
 
-  const handleClickTag = (tagName: string) => {
-    dispatch(onClickHashTag({ tagName }));
-  };
+    return () => setHashTagList([]);
+  }, [tagList, myLink, userLink]);
 
   return (
     <>

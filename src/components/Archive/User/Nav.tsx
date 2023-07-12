@@ -1,11 +1,18 @@
 import { RootState, useAppDispatch } from '@/store';
 import { navSlice } from '@/store/slices/navSlice';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 
 const Nav = () => {
   const dispatch = useAppDispatch();
   const { userLink } = useSelector((state: RootState) => state.nav);
+
+  useEffect(() => {
+    return () => {
+      dispatch(navSlice.actions.onClickUserLink());
+    };
+  }, [dispatch]);
 
   return (
     <Wrapper>

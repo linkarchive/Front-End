@@ -28,14 +28,6 @@ const Home = ({ accessToken }: { accessToken: string }) => {
     return myLink ? API.getUserLinksArchive(id, tag) : API.getUserMarksArchive(id, tag);
   };
 
-  useEffect(() => {
-    dispatch(routerSlice.actions.loadHomePage());
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(HashTagSlice.actions.setInitialState());
-  }, [dispatch, myLink]);
-
   const queryKey = ['linkList', 'user', 'link', 'mark', myLink, selectedTagName];
   const { pages, target, isFetchingNextPage } = useInfinityScroll<ILinksResponse>({
     fetchFn,
@@ -58,6 +50,14 @@ const Home = ({ accessToken }: { accessToken: string }) => {
     },
     config: myMark && { staleTime: 0 },
   });
+
+  useEffect(() => {
+    dispatch(routerSlice.actions.loadHomePage());
+
+    return () => {
+      dispatch(HashTagSlice.actions.setInitialState());
+    };
+  }, [dispatch]);
 
   return (
     <div>
