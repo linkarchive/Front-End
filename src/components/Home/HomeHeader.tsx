@@ -2,22 +2,22 @@ import styled from 'styled-components';
 import Title from '@/components/Title.styled';
 import { useState } from 'react';
 import { RootState, useAppDispatch } from '@/store';
-import { homeSlice } from '@/store/slices/homeSlice';
+import { navSlice } from '@/store/slices/navSlice';
 import { useSelector } from 'react-redux';
 
 const HomeHeader = () => {
-  const { name } = useSelector((state: RootState) => state.home);
-  const [isLink, setIsLink] = useState<boolean>(name === '내 링크');
+  const { myLink } = useSelector((state: RootState) => state.nav);
+  const [isLink, setIsLink] = useState<boolean>(myLink);
   const dispatch = useAppDispatch();
 
   const handleMarkClick = () => {
     setIsLink(false);
-    dispatch(homeSlice.actions.onClickMark());
+    dispatch(navSlice.actions.onClickMyMark());
   };
 
   const handleLinkClick = () => {
     setIsLink(true);
-    dispatch(homeSlice.actions.onClickLink());
+    dispatch(navSlice.actions.onClickMyLink());
   };
 
   return (
