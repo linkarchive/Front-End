@@ -1,26 +1,27 @@
-import { useState } from 'react';
+import { RootState, useAppDispatch } from '@/store';
+import { navSlice } from '@/store/slices/navSlice';
+import { useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 
-const Nav = ({ handleClick }: { handleClick: (item) => void }) => {
-  const [isLink, setIsLink] = useState(true);
+const Nav = () => {
+  const dispatch = useAppDispatch();
+  const { userLink } = useSelector((state: RootState) => state.nav);
 
   return (
     <Wrapper>
       <ul className='nav'>
         <Item
-          isActive={isLink}
+          isActive={userLink}
           onClick={() => {
-            setIsLink(true);
-            handleClick('link');
+            dispatch(navSlice.actions.onClickUserLink());
           }}
         >
           링크
         </Item>
         <Item
-          isActive={!isLink}
+          isActive={!userLink}
           onClick={() => {
-            setIsLink(false);
-            handleClick('mark');
+            dispatch(navSlice.actions.onClickUserMark());
           }}
         >
           마크
