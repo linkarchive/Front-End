@@ -66,6 +66,7 @@ const LinkItem = ({ Header, queryKey, ...props }: LinkItemProps) => {
 
   const handleLinkClick = () => {
     window.open(url, '_blank');
+    // eslint-disable-next-line no-console
     console.log(`you ${linkId} clicked!`); // 읽음 api 전송
   };
 

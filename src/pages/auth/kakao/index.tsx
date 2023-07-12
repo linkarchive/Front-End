@@ -26,13 +26,14 @@ const KakaoAuth = () => {
             window.location.href = '/archive';
           },
 
-          onError: (error) => {
+          onError: () => {
             // FIXME: 토스트 메세지 '로그인에 실패했습니다. + 에러메세지' -> 로그인 페이지로 다시 이동
             router.push('/login');
           },
         }
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   useEffect(() => {

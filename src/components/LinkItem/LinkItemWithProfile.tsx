@@ -30,12 +30,7 @@ const Profile = styled.div`
   }
 `;
 
-const LinkWithProfile = ({
-  userId,
-  nickname,
-  profileImage,
-  ...props
-}: LinkItemWithProfileProps) => {
+const LinkWithProfile = ({ nickname, profileImage, ...props }: LinkItemWithProfileProps) => {
   const href = `/${nickname}`;
   return (
     <LinkItem
