@@ -4,7 +4,7 @@ import { User } from '@/components/Archive/User/User.type';
 
 interface ProfileProps extends User {}
 
-const Profile = ({ id, nickname, introduce, profileImageFileName }: ProfileProps) => {
+const Profile = ({ nickname, introduce, profileImageFileName }: ProfileProps) => {
   return (
     <Wrapper>
       <div className='profile-image'>
