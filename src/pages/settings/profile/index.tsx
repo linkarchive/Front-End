@@ -185,6 +185,7 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
     } else {
       setIsNicknameValid(null);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedNickname]);
 
   useEffect(() => {

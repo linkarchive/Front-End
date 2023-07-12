@@ -6,7 +6,7 @@ interface ToastBar {
   show: boolean;
 }
 
-type ToastBarProps = Pick<ToastBar, 'text' | 'children'>;
+// type ToastBarProps = Pick<ToastBar, 'text' | 'children'>;
 
 const initialState: ToastBar = {
   text: '',
