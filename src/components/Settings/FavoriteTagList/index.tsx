@@ -14,6 +14,10 @@ const Title = styled.p`
   color: var(--font-color-darkGray);
 `;
 
+const List = styled.ul`
+  width: 100%;
+`;
+
 const InputBlock = styled.div`
   width: 327px;
   padding: 0 5px;
@@ -31,12 +35,12 @@ export const FavoriteTagList = ({ usernickname }: { usernickname: string }) => {
   return (
     <InputBlock>
       <Title>자주 사용하는 태그</Title>
-      <ul>
+      <List>
         <FavoriteTag tag='qwer' />
         <FavoriteTag tag='qwer' />
         <FavoriteTag tag='qwer' />
         <FavoriteTag tag='qwer' />
-      </ul>
+      </List>
     </InputBlock>
   );
 };
