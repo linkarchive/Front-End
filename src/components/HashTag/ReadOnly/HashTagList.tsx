@@ -49,10 +49,13 @@ const HashTagList = ({ children }: HashTagListProps) => {
   return (
     <>
       <Wrapper>
-        <HashTag tagName='All' onClickTag={handleClickTag} />
-        {hashTagList.map((tag) => {
-          return <HashTag key={tag.tagId} tagName={tag.tagName} onClickTag={handleClickTag} />;
-        })}
+        <Content>
+          <HashTag tagName='All' onClickTag={handleClickTag} />
+          {hashTagList.map((tag) => {
+            return <HashTag key={tag.tagId} tagName={tag.tagName} onClickTag={handleClickTag} />;
+          })}
+        </Content>
+        <Blank>전체보기</Blank>
       </Wrapper>
       {children}
     </>
@@ -62,5 +65,25 @@ const HashTagList = ({ children }: HashTagListProps) => {
 export default HashTagList;
 
 const Wrapper = styled.div`
-  padding: 5px 0 5px 26px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #c8c8c8;
+  overflow-x: hidden;
+`;
+
+const Blank = styled.div`
+  padding-top: 6px;
+  margin-right: 10px;
+
+  text-align: right;
+  font-size: 14px;
+  color: var(--font-color-darkgray);
+
+  cursor: pointer;
+`;
+
+const Content = styled.div`
+  padding: 5px 0 5px 10px;
+
+  white-space: nowrap;
 `;
