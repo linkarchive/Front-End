@@ -9,7 +9,7 @@
     <p>
         <a href="https://www.link-archive.com/" target="_blank">바로 이용해보기</a>
     </p>
-    <a href="https://www.notion.so/team-ZELLO-9e414fde5019400f9ecf6371bfca3775" target="_blank">WIKI</a> &nbsp; &nbsp; |&nbsp; &nbsp; 
+    <a href="https://github.com/linkarchive/Front-End/wiki" target="_blank">WIKI</a> &nbsp; &nbsp; |&nbsp; &nbsp; 
     <a href="https://github.com/linkarchive/Front-End/wiki/2023%E2%80%9004%E2%80%9019-%ED%9A%8C%EC%9D%98%EB%A1%9D" target="_blank">회의록</a> &nbsp; &nbsp; |&nbsp; &nbsp;
     <a href="https://github.com/linkarchive/Front-End/wiki/2023%E2%80%9007%E2%80%9004-%EC%8A%A4%ED%81%AC%EB%9F%BC" target="_blank">스크럼</a>
     <br /><br />
