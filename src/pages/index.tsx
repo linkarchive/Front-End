@@ -57,7 +57,7 @@ const Home = ({ accessToken }: { accessToken: string }) => {
     return () => {
       dispatch(HashTagSlice.actions.setInitialState());
     };
-  }, [dispatch]);
+  }, [dispatch, myMark]);
 
   return (
     <div>
