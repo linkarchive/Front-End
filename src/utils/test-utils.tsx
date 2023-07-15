@@ -5,6 +5,8 @@ import { configureStore, Store } from '@reduxjs/toolkit';
 import type { PreloadedState } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { RootState, persistedReducer } from '@/store';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from '@/pages/_app';
 
 // 이 타입 인터페이스는 RTL의 기본 render 옵션을 확장하며, initialState나 store와 같은 다른 것들을 명시함
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
@@ -22,7 +24,11 @@ export function renderWithProviders(
   }: ExtendedRenderOptions = {}
 ) {
   const Wrapper = ({ children }: PropsWithChildren<{}>): JSX.Element => {
-    return <Provider store={store}>{children}</Provider>;
+    return (
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      </Provider>
+    );
   };
 
   // store와 RTL의 모든 쿼리 함수를 포함한 객체를 반환
