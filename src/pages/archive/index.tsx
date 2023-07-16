@@ -30,7 +30,7 @@ const Archive = ({
   }, [dispatch]);
 
   const { isLoggedin } = useAuth();
-  const fetchLinksFn = isLoggedin ? API.getAuthLinksArchive : API.getLinksArchive;
+  const fetchLinksFn = API.getLinksArchive;
 
   const queryKey = ['archive'];
   const { pages, target, isFetchingNextPage } = useInfinityScroll<ILinksResponse>({
