@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { FavoriteTag } from './FavoriteTag';
 import { useQuery } from '@tanstack/react-query';
 import API from '@/api/API';
+import { useFetchTagsByNickname } from '@/queries';
 
 const Title = styled.p`
   display: block;
@@ -24,12 +25,8 @@ const InputBlock = styled.div`
   margin: 0 auto;
 `;
 
-export const FavoriteTagList = ({ usernickname }: { usernickname: string }) => {
-  const { data: tagListData } = useQuery({
-    queryKey: ['user', 'tagList', 10],
-    queryFn: () => API.getTagsByNickname({ usernickname, size: 10 }),
-    retry: 1,
-  });
+export const FavoriteTagList = ({ nickname }: { nickname: string }) => {
+  const { data: tagListData } = useFetchTagsByNickname({ nickname });
   const tagList = tagListData?.tagList || [];
 
   return (

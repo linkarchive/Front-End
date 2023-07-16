@@ -33,7 +33,7 @@ const Page = ({ accessToken, nickname }: { accessToken: string; nickname: string
   return (
     <Wrapper>
       <TagForm onSuccess={updateFavoriteTagList} />
-      <FavoriteTagList usernickname={nickname} />
+      <FavoriteTagList nickname={nickname} />
     </Wrapper>
   );
 };

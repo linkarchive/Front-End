@@ -16,6 +16,7 @@ import { createToastBar } from '@/store/slices/toastBarSlice';
 import HashTagList from '@/components/Create/HashTagList';
 import FavoriteTagList from '@/components/Create/FavoriteTagList';
 import { validateHashTag } from '@/utils/validation';
+import { useFetchTagsByNickname } from '@/queries';
 
 const defaultErrorMessages = {
   url: '',
@@ -27,7 +28,6 @@ export const getServerSideProps = withAuth();
 
 const Create = ({ nickname, accessToken }: { nickname: string; accessToken: string }) => {
   setAccessToken(accessToken);
-  const usernickname = nickname; // TODO getTagsByNickname 백엔드 작업 후 userId가 아닌 nickname으로 변경
 
   const dispatch = useAppDispatch();
 
@@ -65,11 +65,7 @@ const Create = ({ nickname, accessToken }: { nickname: string; accessToken: stri
     setErrorMessages(errmsgs);
   };
 
-  const { data: tagListData } = useQuery({
-    queryKey: ['user', 'tagList', 10],
-    queryFn: () => API.getTagsByNickname({ usernickname, size: 10 }),
-    retry: 1,
-  });
+  const { data: tagListData } = useFetchTagsByNickname({ nickname });
   const tagList = tagListData?.tagList || [];
 
   const { mutate: fetchMetaData, isLoading } = useMutation({
