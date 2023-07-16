@@ -6,6 +6,7 @@ import { routerSlice } from '@/store/slices/routerSlice';
 import styled from 'styled-components';
 import { withAuth } from '@/lib/withAuth';
 import { useQueryClient } from '@tanstack/react-query';
+import { setAccessToken } from '@/api/customAPI';
 
 const Wrapper = styled.div`
   margin-top: 23px;
@@ -13,7 +14,9 @@ const Wrapper = styled.div`
 
 export const getServerSideProps = withAuth();
 
-const Page = ({ nickname }: { nickname: string }) => {
+const Page = ({ accessToken, nickname }: { accessToken: string; nickname: string }) => {
+  setAccessToken(accessToken);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
