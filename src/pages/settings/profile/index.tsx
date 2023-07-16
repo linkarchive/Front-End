@@ -3,7 +3,6 @@ import { routerSlice } from '@/store/slices/routerSlice';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import PhotoSvgIcon from 'public/assets/svg/photo.svg';
 import { useImage } from '@/hooks/useImage';
 import API from '@/api/API';
 import useDebounce from '@/hooks/useDebounce';
@@ -14,7 +13,7 @@ import { withAuth } from '@/lib/withAuth';
 import { setAccessToken } from '@/api/customAPI';
 import { MessageWrapperProps } from '@/components/Archive/NicknameModal';
 import { createToastBar } from '@/store/slices/toastBarSlice';
-import Router from 'next/router';
+import PhotoSvgIcon from '@/components/svg/PhotoSvgIcon';
 
 interface ErrorMessage {
   message: string;
@@ -110,7 +109,6 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
 
           await API.setCookie({ name: 'nickname', value: debouncedNickname });
           dispatch(createToastBar({ text: '프로필이 수정되었습니다.' }));
-          Router.push('/');
         },
         onError: (error: AxiosError<ErrorMessage>) => {
           // eslint-disable-next-line no-alert
@@ -161,12 +159,9 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
 
   useEffect(() => {
     setMyProfile();
-    console.log(imageUrl);
-  }, []);
 
-  useEffect(() => {
     dispatch(routerSlice.actions.loadProfileDetailPage());
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     if (isNicknameChanged && !profile.nickname.value) {
@@ -216,6 +211,7 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
               accept='image/png, image/jpeg, image/jpg, image/gif'
               style={{ display: 'none' }}
               id='imageInput'
+              data-testid='imageInput'
               onChange={(e) => onImageChange(e)}
             />
           </ImgContent>
