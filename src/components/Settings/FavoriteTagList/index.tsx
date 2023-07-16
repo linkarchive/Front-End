@@ -36,10 +36,9 @@ export const FavoriteTagList = ({ usernickname }: { usernickname: string }) => {
     <InputBlock>
       <Title>자주 사용하는 태그</Title>
       <List>
-        <FavoriteTag tag='qwer' />
-        <FavoriteTag tag='qwer' />
-        <FavoriteTag tag='qwer' />
-        <FavoriteTag tag='qwer' />
+        {tagList.map(({ tagId, tagName }) => (
+          <FavoriteTag key={tagId} tag={tagName} />
+        ))}
       </List>
     </InputBlock>
   );

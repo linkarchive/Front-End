@@ -2,6 +2,8 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { InputWithButton } from '@/components/Input';
 import { validateHashTag } from '@/utils/validation';
+import { useMutation } from '@tanstack/react-query';
+import API from '@/api/API';
 
 const InputBlock = styled.div`
   padding: 0 5px;
@@ -9,15 +11,27 @@ const InputBlock = styled.div`
   width: 327px;
 `;
 
-// TODO post api 호출
-export const TagForm = () => {
+export const TagForm = ({ onSuccess: onSubmit }: { onSuccess: () => void }) => {
   const [tag, setTag] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const createHashTag = {
-    isLoading: false,
-  };
+  const createHashTag = useMutation({
+    mutationFn: API.createTag,
+    onSuccess: () => {
+      onSubmit();
+      setTag('');
+      setErrorMessage('');
+    },
+    onError: (error) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const d = error as any; // FIXME
+      if (d.response) {
+        const { message } = d.response.data;
+        setErrorMessage(message);
+      }
+    },
+  });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = () => {
     if (createHashTag.isLoading) return;
 
     const errMsg = validateHashTag(tag);
@@ -27,7 +41,7 @@ export const TagForm = () => {
       return;
     }
 
-    console.log('api call'); // createHashTag.mutate({ tag });
+    createHashTag.mutate(tag);
   };
 
   return (
