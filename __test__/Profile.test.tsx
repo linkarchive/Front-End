@@ -89,7 +89,7 @@ describe('프로필 페이지에서', () => {
     });
   });
 
-  test('수정버튼 누르면 프로필 업데이트 api호출', async () => {
+  test('수정버튼 누르면 프로필 업데이트 api호출되는지', async () => {
     const { container } = renderWithProviders(<Profile accessToken='testToken' />);
 
     const updateButton = getByRole(container, 'button', { name: /수정하기/i });
