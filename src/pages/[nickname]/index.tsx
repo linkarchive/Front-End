@@ -6,6 +6,7 @@ import React, { ReactElement, useEffect, useState } from 'react';
 import API from '@/api/API';
 import { useRouter } from 'next/router';
 import useInfinityScroll from '@/hooks/useInfinityScroll';
+import useAuth from '@/hooks/useAuth';
 import ProfileLayout from '@/layouts/ProfileLayout';
 import { NextPageWithLayout } from '../_app';
 
@@ -15,8 +16,9 @@ const User: NextPageWithLayout = () => {
   const router = useRouter();
   const nickname = (router.query.nickname as string) || '';
   const [item, setItem] = useState<'link' | 'mark'>('link');
+  const { isLoggedin } = useAuth();
 
-  const fetchLinksFn = setFetchLinksFn({ item });
+  const fetchLinksFn = setFetchLinksFn({ isLoggedin, item });
 
   const queryKey = ['linkList', nickname, item];
   const { pages, target, isFetchingNextPage } = useInfinityScroll<ILinksResponse>({
@@ -63,10 +65,10 @@ User.getLayout = function getLayout(page: ReactElement) {
   return <ProfileLayout>{page}</ProfileLayout>;
 };
 
-const setFetchLinksFn = ({ item }: { item: 'link' | 'mark' }) => {
+const setFetchLinksFn = ({ isLoggedin, item }: { isLoggedin: boolean; item: 'link' | 'mark' }) => {
   const fetchFunctions = {
-    link: API.getLinksArchiveByUserId,
-    mark: API.getMarksArchiveByUserId,
+    link: isLoggedin ? API.getAuthLinksArchiveByUserId : API.getLinksArchiveByUserId,
+    mark: isLoggedin ? API.getAuthMarksArchiveByUserId : API.getMarksArchiveByUserId,
   };
 
   return fetchFunctions[item];

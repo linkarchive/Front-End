@@ -92,7 +92,6 @@ const setInterceptors = (instance: AxiosInstance) => {
     (config) => {
       if (config.url !== '/publish/access-token') {
         const token = getAccessToken();
-
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }

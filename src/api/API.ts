@@ -59,7 +59,16 @@ const API = {
 
   /** 링크 둘러보기 */
   getLinksArchive: async (linkId?: string) => {
-    const { data } = await clientInstance.get(`links/archive`, {
+    const { data } = await clientInstance.get(`links/archive/public`, {
+      params: {
+        linkId,
+      },
+    });
+    return data;
+  },
+
+  getAuthLinksArchive: async (linkId?: string) => {
+    const { data } = await clientInstance.get(`links/archive/authentication`, {
       params: {
         linkId,
       },
@@ -69,7 +78,22 @@ const API = {
 
   /** 사용자별 링크 둘러보기 */
   getLinksArchiveByUserId: async ({ nickname, linkId }: { nickname: string; linkId?: string }) => {
-    const { data } = await clientInstance.get(`links/user/${nickname}`, {
+    const { data } = await clientInstance.get(`links/public/user/${nickname}`, {
+      params: {
+        linkId,
+      },
+    });
+    return data;
+  },
+
+  getAuthLinksArchiveByUserId: async ({
+    nickname,
+    linkId,
+  }: {
+    nickname: string;
+    linkId?: string;
+  }) => {
+    const { data } = await clientInstance.get(`links/authentication/user/${nickname}`, {
       params: {
         linkId,
       },
@@ -79,7 +103,22 @@ const API = {
 
   /** 사용자별 북마크 둘러보기 */
   getMarksArchiveByUserId: async ({ nickname, markId }: { nickname: string; markId?: string }) => {
-    const { data } = await clientInstance.get(`mark/links/user/${nickname}`, {
+    const { data } = await clientInstance.get(`mark/links/public/user/${nickname}`, {
+      params: {
+        markId,
+      },
+    });
+    return data;
+  },
+
+  getAuthMarksArchiveByUserId: async ({
+    nickname,
+    markId,
+  }: {
+    nickname: string;
+    markId?: string;
+  }) => {
+    const { data } = await clientInstance.get(`mark/links/authentication/user/${nickname}`, {
       params: {
         markId,
       },
