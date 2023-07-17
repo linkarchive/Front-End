@@ -2,8 +2,6 @@ import API from '@/api/API';
 import Settings from '@/pages/settings';
 import { renderWithProviders } from '@/utils/test-utils';
 import { fireEvent, waitFor } from '@testing-library/react';
-import { server } from '@/mocks/server';
-import { rest } from 'msw';
 
 describe('Settings 페이지에서', () => {
   test('최초 렌더링시 dispatch 실행 후 status는 MAIN, current는 SETTINGS인지', () => {
@@ -31,14 +29,6 @@ describe('Settings 페이지에서', () => {
   test('로그아웃 버튼 클릭시 deleteAllCookies 호출 및 API 요청 검사', async () => {
     // 스파이 설정
     const deleteAllCookiesSpy = jest.spyOn(API, 'deleteAllCookies');
-    const apiResponse = { message: 'Success' };
-
-    // Mocking API 응답
-    server.use(
-      rest.post(`/api/delete-all-cookies`, (req, res, ctx) => {
-        return res(ctx.status(200), ctx.json(apiResponse));
-      })
-    );
 
     const { getByText } = renderWithProviders(<Settings />);
     const logoutButton = getByText('로그아웃');
@@ -53,6 +43,6 @@ describe('Settings 페이지에서', () => {
 
     // deleteAllCookies 함수가 리턴한 응답이 apiResponse와 일치하는지 검사
     const response = await API.deleteAllCookies();
-    expect(response.data).toEqual(apiResponse);
+    expect(response.data).toEqual({ message: 'Success' });
   });
 });
