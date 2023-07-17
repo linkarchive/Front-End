@@ -42,12 +42,7 @@
     "import/no-anonymous-default-export": "off",
     "import/no-cycle": "off",
     "jsx-a11y/no-static-element-interactions": "off",
-    "import/no-extraneous-dependencies": [
-      "error",
-      {
-        "devDependencies": [".storybook/**", "src/stories/**"]
-      }
-    ],
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
     "no-param-reassign": ["error", { "props": false }],
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": ["error"],

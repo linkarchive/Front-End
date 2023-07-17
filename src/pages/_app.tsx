@@ -11,7 +11,7 @@ import { System } from '@/layouts/System';
 import { ReactElement, ReactNode } from 'react';
 import { NextPage } from 'next';
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
