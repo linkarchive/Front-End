@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { clientInstance, nextInstance } from './customAPI';
 import { KakaoType } from './types';
+import { createSource } from '@/utils/cancelToken';
 
 const API = {
   /** NEXT api 쿠키 저장, 삭제 */
@@ -147,8 +148,18 @@ const API = {
   },
 
   getMyProfile: async () => {
-    const response = await clientInstance.get(`user`);
-    return response.data;
+    const source = createSource();
+    try {
+      const response = await clientInstance.get('user', {
+        cancelToken: source.token,
+      });
+      return response.data;
+    } catch (error) {
+      if (axios.isCancel(error)) {
+        return null;
+      }
+      throw error;
+    }
   },
 
   getUserProfile: async (nickname: string) => {
