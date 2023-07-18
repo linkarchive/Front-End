@@ -17,7 +17,7 @@ jobs:
     - name: Install Dependencies
       run: npm install
     - name: Run Tests
-      run: npm run test
+      run: npm run test:ci
 
   deploy_to_vercel:
     needs: build_and_test
