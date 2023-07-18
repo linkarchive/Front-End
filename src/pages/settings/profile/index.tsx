@@ -14,6 +14,7 @@ import { setAccessToken } from '@/api/customAPI';
 import { MessageWrapperProps } from '@/components/Archive/NicknameModal';
 import { createToastBar } from '@/store/slices/toastBarSlice';
 import PhotoSvgIcon from '@/components/svg/PhotoSvgIcon';
+import { cancelSource } from '@/utils/cancelToken';
 
 interface ErrorMessage {
   message: string;
@@ -128,11 +129,11 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
     const data = await getMyProfile();
 
     setProfile({
-      nickname: { value: data.nickname, initialValue: data.nickname },
-      introduce: { value: data.introduce, initialValue: data.introduce },
+      nickname: { value: data?.nickname, initialValue: data?.nickname },
+      introduce: { value: data?.introduce, initialValue: data?.introduce },
     });
 
-    setImageUrl(data.profileImageFileName);
+    setImageUrl(data?.profileImageFileName);
   };
 
   const validateNicknameMutation = useMutation(API.validateNickname, {
@@ -161,6 +162,10 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
     setMyProfile();
 
     dispatch(routerSlice.actions.loadProfileDetailPage());
+    return () => {
+      // axios 요청 취소
+      cancelSource();
+    };
   }, []);
 
   useEffect(() => {

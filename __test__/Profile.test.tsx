@@ -54,9 +54,7 @@ jest.mock(
 
 describe('프로필 페이지에서', () => {
   test('화면에 텍스트, 이미지, 버튼이 렌더링 되는지', async () => {
-    await act(async () => {
-      renderWithProviders(<Profile accessToken='testToken' />);
-    });
+    const { unmount } = renderWithProviders(<Profile accessToken='testToken' />);
 
     // 텍스트가 렌더링 되는지 확인
     expect(screen.getByText('아이디')).toBeInTheDocument();
@@ -70,12 +68,12 @@ describe('프로필 페이지에서', () => {
     // 초기에는 버튼이 비활성화되어 있어야 함
     const submitButton = screen.getByText('수정하기') as HTMLButtonElement;
     expect(submitButton).toBeDisabled();
+
+    unmount();
   });
 
   test('이미지 변경 동작하는지', async () => {
-    await act(async () => {
-      renderWithProviders(<Profile accessToken='testToken' />);
-    });
+    const { unmount } = renderWithProviders(<Profile accessToken='testToken' />);
 
     const imageInput = screen.getByTestId('imageInput') as HTMLInputElement;
     const newImageFile = new File(['new-image'], '/new-image.png', { type: 'image/png' });
@@ -87,6 +85,8 @@ describe('프로필 페이지에서', () => {
     await waitFor(() => {
       expect(imageElement.src.includes('new-image.png')).toBeTruthy();
     });
+
+    unmount();
   });
 
   test('수정버튼 누르면 프로필 업데이트 api호출되는지', async () => {
