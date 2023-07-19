@@ -11,7 +11,7 @@
     "lint-front": "lint-staged",
     "lint:css": "stylelint './src/**/*.tsx'",
     "test": "jest --watch",
-    "test:ci": "jest --ci --detectOpenHandles"
+    "test:ci": "jest --ci"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
