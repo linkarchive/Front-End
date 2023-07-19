@@ -197,14 +197,14 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
   }, [profile.introduce]);
 
   useEffect(() => {
-    if (profile.introduce.value.length > 20) {
+    if (profile.introduce.value?.length > 20) {
       setMessage2('자기소개는 20자 이하로 작성해주세요.');
       setIsIntroduceValid(false);
     } else {
       setMessage2('');
       setIsIntroduceValid(true);
     }
-  }, [profile.introduce.value.length]);
+  }, [profile.introduce.value?.length]);
 
   return (
     <FormWrapper onSubmit={handleSubmit}>
