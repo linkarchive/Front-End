@@ -1,6 +1,6 @@
 import { rest } from 'msw';
 
-const API_BASE_URL = 'https://api.link-archive.com';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export const handlers = [
   /** 프로필 조회 */
