@@ -41,13 +41,10 @@ const Main = styled.main`
 
 const WaterMark = () => {
   let envText = '';
-  if (process.env.NEXT_PUBLIC_APP_ENV === 'development') {
-    envText = '개발 환경입니다.';
-  } else if (process.env.NEXT_PUBLIC_APP_ENV === 'production') {
+  if (process.env.NEXT_PUBLIC_APP_ENV === 'production') {
     return null;
-  } else {
-    envText = '로컬 환경입니다.';
   }
+  envText = `${process.env.NEXT_PUBLIC_APP_ENV}`;
 
   return <Wrapper>{envText}</Wrapper>;
 };
