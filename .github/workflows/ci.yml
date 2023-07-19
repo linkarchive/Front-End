@@ -28,7 +28,7 @@ jobs:
     - name: Install Vercel CLI
       run: npm i -g vercel
     - name: Deploy to Vercel
-      run: vercel --token ${{ secrets.VERCEL_TOKEN }} --prod
+      run: vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --confirm
 
         
     - name: Cache dependencies
