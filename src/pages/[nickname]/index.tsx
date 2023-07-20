@@ -11,6 +11,7 @@ import { NextPageWithLayout } from '../_app';
 import LinkItemListLayout from '@/layouts/LinkItemLayout';
 import { useSelector } from 'react-redux';
 import { HashTagSlice } from '@/store/slices/hashTagSlice';
+import { MainLayoutWrapper } from '..';
 
 const User: NextPageWithLayout = () => {
   const dispatch = useAppDispatch();
@@ -59,14 +60,14 @@ const User: NextPageWithLayout = () => {
   }, [dispatch, userLink]);
 
   return (
-    <>
+    <MainLayoutWrapper>
       <Nav />
       <LinkItemListLayout>
         <LinkItemList data={pages} queryKey={queryKey} />
       </LinkItemListLayout>
       {isFetchingNextPage && <div>로딩중...</div>}
       <div ref={target} />
-    </>
+    </MainLayoutWrapper>
   );
 };
 

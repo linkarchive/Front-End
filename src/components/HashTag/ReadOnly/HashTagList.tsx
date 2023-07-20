@@ -54,10 +54,10 @@ const HashTagList = ({ children }: HashTagListProps) => {
 
   return (
     <>
+      <Toggle onClick={handleButtonClick}>
+        <ChevronUpAndDown isButtonClicked={isButtonClicked} />
+      </Toggle>
       <Wrapper isButtonClicked={isButtonClicked}>
-        <Toggle onClick={handleButtonClick}>
-          <ChevronUpAndDown isButtonClicked={isButtonClicked} />
-        </Toggle>
         <Content isButtonClicked={isButtonClicked}>
           <HashTag tagName='All' onClickTag={handleClickTag} />
           {hashTagList.map((tag) => {
@@ -93,8 +93,8 @@ const Toggle = styled.span`
   position: absolute;
   justify-content: right;
   align-items: center;
-  right: 20px;
-  padding: 2px;
+  right: 0;
+  margin: 6px 20px;
 
   background: linear-gradient(to right, rgba(255 255 255 / 0%), rgba(255 255 255 / 100%));
 

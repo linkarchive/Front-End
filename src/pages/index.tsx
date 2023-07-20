@@ -10,6 +10,7 @@ import { HashTagSlice } from '@/store/slices/hashTagSlice';
 import { routerSlice } from '@/store/slices/routerSlice';
 import { ReactElement, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import styled from 'styled-components';
 
 export const getServerSideProps = withAuth();
 
@@ -60,19 +61,23 @@ const Home = ({ accessToken }: { accessToken: string }) => {
   }, [dispatch, myMark]);
 
   return (
-    <div>
+    <MainLayoutWrapper>
       <CreateBtn />
       <LinkItemListLayout>
         <LinkItemList data={pages} queryKey={queryKey} />
       </LinkItemListLayout>
       {isFetchingNextPage && <div>로딩중...</div>}
       <div ref={target} />
-    </div>
+    </MainLayoutWrapper>
   );
 };
 
 Home.getLayout = function getLayout(page: ReactElement) {
   return page;
 };
+
+export const MainLayoutWrapper = styled.div`
+  position: relative;
+`;
 
 export default Home;
