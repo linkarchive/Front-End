@@ -1,13 +1,14 @@
 import LinkItem, { LinkItemWithProfile, LinkItemListProps } from '@/components/LinkItem';
 import React from 'react';
 import styled from 'styled-components';
+import { DeleteButton } from './DeleteButton';
 
 const LinkItemList = ({ data, queryKey }: LinkItemListProps) => {
   const isEmpty =
     data[0]?.linkArchive?.length <= 0 ||
     data[0]?.linkList?.length <= 0 ||
-    data[0]?.markList?.length <= 0;
-
+    data[0]?.markList?.length <= 0 ||
+    data[0]?.trashLinkList?.length <= 0;
   if (isEmpty) {
     return <Block>링크가 없습니다.</Block>;
   }
@@ -15,7 +16,8 @@ const LinkItemList = ({ data, queryKey }: LinkItemListProps) => {
   return (
     <>
       {data.map((data_) => {
-        const linkList = data_.linkList || data_.linkArchive || data_.markList;
+        const linkList =
+          data_.linkList || data_.linkArchive || data_.markList || data_.trashLinkList;
 
         return (
           <>
@@ -55,7 +57,38 @@ const LinkItemWithProfileList = ({ data, queryKey }: LinkItemListProps) => {
   );
 };
 
-export { LinkItemList, LinkItemWithProfileList };
+const HomeLinkItemList = ({ data, queryKey }: LinkItemListProps) => {
+  const isEmpty =
+    data[0]?.linkArchive?.length <= 0 ||
+    data[0]?.linkList?.length <= 0 ||
+    data[0]?.markList?.length <= 0;
+
+  if (isEmpty) {
+    return <Block>링크가 없습니다.</Block>;
+  }
+
+  return (
+    <>
+      {data.map((data_) => {
+        const linkList =
+          data_.linkList || data_.linkArchive || data_.markList || data_.trashLinkList;
+
+        return (
+          <>
+            {linkList.map((linkItem) => (
+              <>
+                <LinkItem key={linkItem.linkId} queryKey={queryKey} {...linkItem} />
+                <DeleteButton id={linkItem.linkId} queryKey={queryKey} />
+              </>
+            ))}
+          </>
+        );
+      })}
+    </>
+  );
+};
+
+export { LinkItemList, LinkItemWithProfileList, HomeLinkItemList };
 
 const Block = styled.div`
   display: flex;

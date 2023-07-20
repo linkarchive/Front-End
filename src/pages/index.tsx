@@ -2,7 +2,7 @@ import API from '@/api/API';
 import { setAccessToken } from '@/api/customAPI';
 import InfinityScroll from '@/components/Common/InfinityScroll';
 import CreateBtn from '@/components/Home/CreateBtn';
-import { LinkItemList } from '@/components/LinkItem';
+import { HomeLinkItemList } from '@/components/LinkItem/LinkItemLits';
 import { withAuth } from '@/lib/withAuth';
 import { RootState, useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
@@ -38,7 +38,7 @@ const Home = ({ accessToken }: { accessToken: string }) => {
     <div>
       <CreateBtn />
       <InfinityScroll
-        renderList={({ pages }) => <LinkItemList data={pages} queryKey={queryKey} />}
+        renderList={({ pages }) => <HomeLinkItemList data={pages} queryKey={queryKey} />}
         fetchFn={fetchFn}
         queryKey={queryKey}
         getNextPageParam={(lastPage_) => {
