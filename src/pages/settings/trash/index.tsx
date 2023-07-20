@@ -28,7 +28,7 @@ const Page = ({ accessToken }: { accessToken: string }) => {
       getNextPageParam={(lastPage_) => {
         const hasNext = lastPage_?.hasNext;
         if (!hasNext) return undefined;
-        const lastPage = lastPage_?.linkArchive;
+        const lastPage = lastPage_?.trashLinkList;
         const lastItem = lastPage[lastPage.length - 1].linkId;
 
         return lastItem;
