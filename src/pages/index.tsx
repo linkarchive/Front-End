@@ -1,8 +1,8 @@
 import API from '@/api/API';
 import { setAccessToken } from '@/api/customAPI';
+import InfinityScroll from '@/components/Common/InfinityScroll';
 import CreateBtn from '@/components/Home/CreateBtn';
-import { ILinksResponse, LinkItemList } from '@/components/LinkItem';
-import useInfinityScroll from '@/hooks/useInfinityScroll';
+import { LinkItemList } from '@/components/LinkItem';
 import { withAuth } from '@/lib/withAuth';
 import { RootState, useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
@@ -33,34 +33,32 @@ const Home = ({ accessToken }: { accessToken: string }) => {
   }, [name]);
 
   const queryKey = ['linkList', 'user', 'link', 'mark', name];
-  const { pages, target, isFetchingNextPage } = useInfinityScroll<ILinksResponse>({
-    fetchFn,
-    queryKey,
-    getNextPageParam: (lastPage_) => {
-      const hasNext = lastPage_?.hasNext;
-      if (!hasNext) return undefined;
-
-      if (myLink) {
-        const lastPage = lastPage_?.linkList;
-        const lastItem = lastPage[lastPage.length - 1].linkId;
-
-        return lastItem;
-      }
-
-      const lastPage = lastPage_?.markList;
-      const lastItem = lastPage[lastPage.length - 1].markId;
-
-      return lastItem;
-    },
-    config: myMark && { staleTime: 0 },
-  });
 
   return (
     <div>
       <CreateBtn />
-      <LinkItemList data={pages} queryKey={queryKey} />
-      {isFetchingNextPage && <div>로딩중...</div>}
-      <div ref={target} />
+      <InfinityScroll
+        renderList={({ pages }) => <LinkItemList data={pages} queryKey={queryKey} />}
+        fetchFn={fetchFn}
+        queryKey={queryKey}
+        getNextPageParam={(lastPage_) => {
+          const hasNext = lastPage_?.hasNext;
+          if (!hasNext) return undefined;
+
+          if (myLink) {
+            const lastPage = lastPage_?.linkList;
+            const lastItem = lastPage[lastPage.length - 1].linkId;
+
+            return lastItem;
+          }
+
+          const lastPage = lastPage_?.markList;
+          const lastItem = lastPage[lastPage.length - 1].markId;
+
+          return lastItem;
+        }}
+        config={myMark && { staleTime: 0 }}
+      />
     </div>
   );
 };

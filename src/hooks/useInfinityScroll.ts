@@ -49,3 +49,4 @@ const useInfinityScroll = <TPage>({
 };
 
 export default useInfinityScroll;
+export type { IuseInfinityScroll };

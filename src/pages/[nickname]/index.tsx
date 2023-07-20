@@ -1,13 +1,13 @@
-import { ILinksResponse, LinkItemList } from '@/components/LinkItem';
+import { LinkItemList } from '@/components/LinkItem';
 import Nav from '@/components/Archive/User/Nav';
 import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
 import React, { ReactElement, useEffect, useState } from 'react';
 import API from '@/api/API';
 import { useRouter } from 'next/router';
-import useInfinityScroll from '@/hooks/useInfinityScroll';
 import ProfileLayout from '@/layouts/ProfileLayout';
 import { NextPageWithLayout } from '../_app';
+import InfinityScroll from '@/components/Common/InfinityScroll';
 
 const User: NextPageWithLayout = () => {
   const dispatch = useAppDispatch();
@@ -19,29 +19,6 @@ const User: NextPageWithLayout = () => {
   const fetchLinksFn = setFetchLinksFn({ item });
 
   const queryKey = ['linkList', nickname, item];
-  const { pages, target, isFetchingNextPage } = useInfinityScroll<ILinksResponse>({
-    fetchFn: (id: string) =>
-      item === 'link'
-        ? fetchLinksFn({ nickname, linkId: id })
-        : fetchLinksFn({ nickname, markId: id }),
-    queryKey,
-    getNextPageParam: (lastPage_) => {
-      const hasNext = lastPage_?.hasNext;
-      if (!hasNext) return undefined;
-
-      if (item === 'link') {
-        const lastPage = lastPage_?.linkList;
-        const lastItem = lastPage[lastPage.length - 1].linkId;
-
-        return lastItem;
-      }
-
-      const lastPage = lastPage_?.markList;
-      const lastItem = lastPage[lastPage.length - 1].markId;
-
-      return lastItem;
-    },
-  });
 
   useEffect(() => {
     dispatch(routerSlice.actions.loadUserPage());
@@ -50,9 +27,27 @@ const User: NextPageWithLayout = () => {
   return (
     <>
       <Nav handleClick={setItem} />
-      <LinkItemList data={pages} queryKey={queryKey} />
-      {isFetchingNextPage && <div>로딩중...</div>}
-      <div ref={target} />
+      <InfinityScroll
+        renderList={({ pages }) => <LinkItemList data={pages} queryKey={queryKey} />}
+        queryKey={queryKey}
+        fetchFn={fetchLinksFn}
+        getNextPageParam={(lastPage_) => {
+          const hasNext = lastPage_?.hasNext;
+          if (!hasNext) return undefined;
+
+          if (item === 'link') {
+            const lastPage = lastPage_?.linkList;
+            const lastItem = lastPage[lastPage.length - 1].linkId;
+
+            return lastItem;
+          }
+
+          const lastPage = lastPage_?.markList;
+          const lastItem = lastPage[lastPage.length - 1].markId;
+
+          return lastItem;
+        }}
+      />
     </>
   );
 };
