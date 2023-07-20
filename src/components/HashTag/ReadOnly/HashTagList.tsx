@@ -78,6 +78,7 @@ const Wrapper = styled.div<{ isButtonClicked: boolean }>`
   border-bottom: 1px solid #c8c8c8;
   overflow-x: hidden;
   max-height: ${({ isButtonClicked }) => (isButtonClicked ? '100px' : '50px')};
+  transition: max-height 0.5s ease;
 
   ::-webkit-scrollbar {
     display: none;
