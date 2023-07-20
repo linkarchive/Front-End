@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import API from '@/api/API';
 import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
+import ChevronUpAndDown from '@/components/svg/ChevronDown';
 
 type HashTagListProps = {
   children: React.ReactNode;
@@ -19,6 +20,7 @@ const HashTagList = ({ children }: HashTagListProps) => {
   const { myLink, userLink } = useSelector((state: RootState) => state.nav);
   const { myNickname } = useSelector((state: RootState) => state.user);
   const { current } = useSelector((state: RootState) => state.router);
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
 
   const userNickname = (router.query.nickname as string) || myNickname;
   const home = current === 'HOME';
@@ -38,6 +40,10 @@ const HashTagList = ({ children }: HashTagListProps) => {
     dispatch(onClickHashTag({ tagName }));
   };
 
+  const handleButtonClick = () => {
+    setIsButtonClicked(!isButtonClicked);
+  };
+
   useEffect(() => {
     if (tagList) {
       setHashTagList(tagList);
@@ -48,14 +54,16 @@ const HashTagList = ({ children }: HashTagListProps) => {
 
   return (
     <>
-      <Wrapper>
-        <Content>
+      <Wrapper isButtonClicked={isButtonClicked}>
+        <Toggle onClick={handleButtonClick}>
+          <ChevronUpAndDown isButtonClicked={isButtonClicked} />
+        </Toggle>
+        <Content isButtonClicked={isButtonClicked}>
           <HashTag tagName='All' onClickTag={handleClickTag} />
           {hashTagList.map((tag) => {
             return <HashTag key={tag.tagId} tagName={tag.tagName} onClickTag={handleClickTag} />;
           })}
         </Content>
-        <Blank>전체보기</Blank>
       </Wrapper>
       {children}
     </>
@@ -64,26 +72,45 @@ const HashTagList = ({ children }: HashTagListProps) => {
 
 export default HashTagList;
 
-const Wrapper = styled.div`
-  padding-top: 6px;
-  padding-bottom: 6px;
+const Wrapper = styled.div<{ isButtonClicked: boolean }>`
+  position: relative;
+  padding: 6px 20px;
   border-bottom: 1px solid #c8c8c8;
   overflow-x: hidden;
+  max-height: ${({ isButtonClicked }) => (isButtonClicked ? '100px' : '50px')};
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 `;
 
-const Blank = styled.div`
-  padding-top: 6px;
-  margin-right: 10px;
+const Toggle = styled.span`
+  z-index: 1;
+  display: flex;
+  position: absolute;
+  justify-content: right;
+  align-items: center;
+  right: 20px;
+  padding: 2px;
 
-  text-align: right;
-  font-size: 14px;
-  color: var(--font-color-darkgray);
+  background: linear-gradient(to right, rgba(255 255 255 / 0%), rgba(255 255 255 / 100%));
 
-  cursor: pointer;
+  background-color: #fff;
+
+  svg {
+    cursor: pointer;
+  }
 `;
 
-const Content = styled.div`
+const Content = styled.div<{ isButtonClicked: boolean }>`
+  overflow: hidden;
+
   padding: 5px 0 5px 10px;
 
-  white-space: nowrap;
+  white-space: ${({ isButtonClicked }) => (isButtonClicked ? 'normal' : 'nowrap')};
+  overflow-y: auto;
+  max-height: 150px;
 `;
