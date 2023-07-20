@@ -32,6 +32,9 @@ const Settings = () => {
       <Link href=''>
         <h3>계정</h3>
       </Link>
+      <Link href='/settings/trash'>
+        <h3>임시 삭제 보관함</h3>
+      </Link>
       <LogoutHeading onClick={Logout}>로그아웃</LogoutHeading>
     </>
   );
