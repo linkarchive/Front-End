@@ -45,6 +45,7 @@ const API = {
     return data;
   },
 
+  /** 링크 추가 */
   createLink: async (data: {
     url: string;
     title: string;
@@ -57,6 +58,26 @@ const API = {
     });
     return response;
   },
+
+  /** 링크 임시 삭제 */
+  deleteLinkTemp: async (id: number) => {
+    const { data } = await clientInstance.patch(`link/${id}`);
+    return data;
+  },
+
+  /** 임시 삭제 보관함 조회 */
+  getTrashedLinks: async ({ linkId, tag }: { linkId?: string; tag?: string }) => {
+    const { data } = await clientInstance.get(`/links/trash`, {
+      params: {
+        linkId,
+        tag,
+      },
+    });
+    return data;
+  },
+
+  /** 링크 삭제 */
+  // TODO
 
   /** 링크 둘러보기 */
   getLinksArchive: async (linkId?: string) => {
