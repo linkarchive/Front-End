@@ -2,11 +2,10 @@ import LinkItem, { LinkItemWithProfile, LinkItemListProps } from '@/components/L
 import React from 'react';
 import styled from 'styled-components';
 
-const LinkItemList = ({ data, queryKey }: LinkItemListProps) => {
-  const isEmpty =
-    data[0]?.linkArchive?.length <= 0 ||
-    data[0]?.linkList?.length <= 0 ||
-    data[0]?.markList?.length <= 0;
+const LinkItemList = ({ linkInfoList, queryKey }: LinkItemListProps) => {
+  const isEmpty = linkInfoList.some(
+    (info) => !(info?.linkList?.length || info?.linkArchive?.length || info?.markList?.length)
+  );
 
   if (isEmpty) {
     return <Block>링크가 없습니다.</Block>;
@@ -14,43 +13,39 @@ const LinkItemList = ({ data, queryKey }: LinkItemListProps) => {
 
   return (
     <>
-      {data.map((data_) => {
-        const linkList = data_.linkList || data_.linkArchive || data_.markList;
+      {linkInfoList
+        .map((linkInfo) => {
+          const linkList = linkInfo?.linkList || linkInfo?.linkArchive || linkInfo?.markList;
 
-        return (
-          <>
-            {linkList.map((linkItem) => (
-              <LinkItem key={linkItem.linkId} queryKey={queryKey} {...linkItem} />
-            ))}
-          </>
-        );
-      })}
+          return linkList?.map((linkItem) => (
+            <LinkItem key={`${linkItem.linkId}`} queryKey={queryKey} {...linkItem} />
+          ));
+        })
+        .flat()}
     </>
   );
 };
 
-const LinkItemWithProfileList = ({ data, queryKey }: LinkItemListProps) => {
-  const isEmpty =
-    data[0]?.linkArchive?.length <= 0 ||
-    data[0]?.linkList?.length <= 0 ||
-    data[0]?.markList?.length <= 0;
+const LinkItemWithProfileList = ({ linkInfoList, queryKey }: LinkItemListProps) => {
+  const isEmpty = linkInfoList.some(
+    (info) => !(info?.linkList?.length || info?.linkArchive?.length || info?.markList?.length)
+  );
 
   if (isEmpty) {
     return <Block>링크가 없습니다.</Block>;
   }
+
   return (
     <>
-      {data.map((data_) => {
-        const linkList = data_.linkList || data_.linkArchive || data_.markList;
+      {linkInfoList
+        .map((linkInfo) => {
+          const linkList = linkInfo?.linkList || linkInfo?.linkArchive || linkInfo?.markList;
 
-        return (
-          <>
-            {linkList.map((linkItem) => (
-              <LinkItemWithProfile key={linkItem.linkId} queryKey={queryKey} {...linkItem} />
-            ))}
-          </>
-        );
-      })}
+          return linkList?.map((linkItem) => (
+            <LinkItemWithProfile key={`${linkItem.linkId}`} queryKey={queryKey} {...linkItem} />
+          ));
+        })
+        .flat()}
     </>
   );
 };
