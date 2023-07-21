@@ -26,7 +26,7 @@ const User: NextPageWithLayout = () => {
           ? fetchLinksFn({ nickname, linkId: id })
           : fetchLinksFn({ nickname, markId: id });
       }
-      return Promise.resolve(null); // 아무것도 하지 않고, Promise를 즉시 해결하는 것을 반환
+      return Promise.resolve(null);
     },
     queryKey,
     getNextPageParam: (lastPage_) => {

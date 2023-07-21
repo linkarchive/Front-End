@@ -58,7 +58,7 @@ const Home = ({ accessToken }: { accessToken: string }) => {
   return (
     <div>
       <CreateBtn />
-      <LinkItemList data={pages} queryKey={queryKey} />
+      <LinkItemList linkInfoList={pages} queryKey={queryKey} />
       {isFetchingNextPage && <div>로딩중...</div>}
       <div ref={target} />
     </div>
