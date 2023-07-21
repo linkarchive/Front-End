@@ -1,32 +1,35 @@
 import styled from 'styled-components';
 import Title from '@/components/Title.styled';
-import { useState } from 'react';
 import { RootState, useAppDispatch } from '@/store';
-import { homeSlice } from '@/store/slices/homeSlice';
+import { navSlice } from '@/store/slices/navSlice';
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 const HomeHeader = () => {
-  const { name } = useSelector((state: RootState) => state.home);
-  const [isLink, setIsLink] = useState<boolean>(name === '내 링크');
+  const { myLink } = useSelector((state: RootState) => state.nav);
   const dispatch = useAppDispatch();
 
   const handleMarkClick = () => {
-    setIsLink(false);
-    dispatch(homeSlice.actions.onClickMark());
+    dispatch(navSlice.actions.onClickMyMark());
   };
 
   const handleLinkClick = () => {
-    setIsLink(true);
-    dispatch(homeSlice.actions.onClickLink());
+    dispatch(navSlice.actions.onClickMyLink());
   };
+
+  useEffect(() => {
+    return () => {
+      dispatch(navSlice.actions.onClickMyLink());
+    };
+  }, [dispatch]);
 
   return (
     <Wrapper>
       <nav>
-        <Title onClick={handleLinkClick} color={!isLink && '#D9D9D9'}>
+        <Title onClick={handleLinkClick} color={!myLink && '#D9D9D9'}>
           내 링크
         </Title>
-        <Title onClick={handleMarkClick} color={isLink && '#D9D9D9'}>
+        <Title onClick={handleMarkClick} color={myLink && '#D9D9D9'}>
           내 마크
         </Title>
       </nav>

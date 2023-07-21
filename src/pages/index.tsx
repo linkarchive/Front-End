@@ -2,12 +2,14 @@ import API from '@/api/API';
 import { setAccessToken } from '@/api/customAPI';
 import InfinityScroll from '@/components/Common/InfinityScroll';
 import CreateBtn from '@/components/Home/CreateBtn';
-import { HomeLinkItemList } from '@/components/LinkItem/LinkItemLits';
+import { HomeLinkItemList } from '@/components/LinkItem/LinkItemList';
 import { withAuth } from '@/lib/withAuth';
 import { RootState, useAppDispatch } from '@/store';
+import { HashTagSlice } from '@/store/slices/hashTagSlice';
 import { routerSlice } from '@/store/slices/routerSlice';
-import { useEffect } from 'react';
+import { ReactElement, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import styled from 'styled-components';
 
 export const getServerSideProps = withAuth();
 
@@ -16,13 +18,17 @@ const Home = ({ accessToken }: { accessToken: string }) => {
 
   const dispatch = useAppDispatch();
 
-  const { name } = useSelector((state: RootState) => state.home);
-  const myLink = name === '내 링크';
+  const { myLink } = useSelector((state: RootState) => state.nav);
+  const { selectedTagName } = useSelector((state: RootState) => state.hashTag);
   const myMark = !myLink;
 
   const fetchFn = (id: string) => {
-    return myLink ? API.getUserLinksArchive(id) : API.getUserMarksArchive(id);
+    const tag = selectedTagName === 'All' ? undefined : selectedTagName;
+
+    return myLink ? API.getUserLinksArchive(id, tag) : API.getUserMarksArchive(id, tag);
   };
+
+  const queryKey = ['linkList', 'user', 'link', 'mark', myLink, selectedTagName];
 
   useEffect(() => {
     dispatch(routerSlice.actions.loadHomePage());
@@ -30,12 +36,18 @@ const Home = ({ accessToken }: { accessToken: string }) => {
 
   useEffect(() => {
     fetchFn('');
-  }, [name]);
+  }, []);
 
-  const queryKey = ['linkList', 'user', 'link', 'mark', name];
+  useEffect(() => {
+    dispatch(routerSlice.actions.loadHomePage());
+
+    return () => {
+      dispatch(HashTagSlice.actions.setInitialState());
+    };
+  }, [dispatch, myMark]);
 
   return (
-    <div>
+    <MainLayoutWrapper>
       <CreateBtn />
       <InfinityScroll
         renderList={({ pages }) => <HomeLinkItemList data={pages} queryKey={queryKey} />}
@@ -59,8 +71,16 @@ const Home = ({ accessToken }: { accessToken: string }) => {
         }}
         config={myMark && { staleTime: 0 }}
       />
-    </div>
+    </MainLayoutWrapper>
   );
 };
+
+Home.getLayout = function getLayout(page: ReactElement) {
+  return page;
+};
+
+export const MainLayoutWrapper = styled.div`
+  position: relative;
+`;
 
 export default Home;

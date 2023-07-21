@@ -44,15 +44,7 @@ export const useToggleMark = ({
 /**
  * linkItem의 isMark와 bookMarkCount 상태 업데이트
  */
-function updateLinkItem({
-  linkList,
-  key: key_,
-  linkId,
-}: {
-  linkList: unknown;
-  key?: string;
-  linkId: number;
-}) {
+function updateLinkItem({ linkList, linkId }: { linkList: unknown; key?: string; linkId: number }) {
   const keys = ['linkArchive', 'linkList', 'markList']; // TODO key를 인자로 받도록 하드코딩 개선
 
   const list = JSON.parse(JSON.stringify(linkList));

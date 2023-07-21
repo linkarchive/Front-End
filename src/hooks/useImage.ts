@@ -18,6 +18,7 @@ export const useImage = (initialImageUrl: string) => {
           setImageUrl(response.data.profileImageFileName);
         },
         onError: () => {
+          // eslint-disable-next-line no-console
           console.error('이미지 업로드에 실패했습니다.');
         },
       }

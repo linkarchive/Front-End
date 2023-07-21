@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { getAccessToken } from '@/api/customAPI';
 
 const useAuth = () => {
-  const [isLoggedin, setIsLoggedin] = useState(!!getAccessToken());
+  const [isLoggedin] = useState(!!getAccessToken());
 
   return { isLoggedin };
 };

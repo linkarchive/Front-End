@@ -13,6 +13,7 @@ const Settings = () => {
       await API.deleteAllCookies();
       window.location.href = '/';
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error(error);
     }
   };

@@ -89,6 +89,7 @@ const NicknameModal = ({ userId }: { userId: string }) => {
     } else {
       setIsValid(null);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedNickname]);
 
   useEffect(() => {
