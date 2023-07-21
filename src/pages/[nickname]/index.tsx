@@ -20,10 +20,14 @@ const User: NextPageWithLayout = () => {
 
   const queryKey = ['linkList', nickname, item];
   const { pages, target, isFetchingNextPage } = useInfinityScroll<ILinksResponse>({
-    fetchFn: (id: string) =>
-      item === 'link'
-        ? fetchLinksFn({ nickname, linkId: id })
-        : fetchLinksFn({ nickname, markId: id }),
+    fetchFn: (id: string) => {
+      if (nickname !== '') {
+        return item === 'link'
+          ? fetchLinksFn({ nickname, linkId: id })
+          : fetchLinksFn({ nickname, markId: id });
+      }
+      return Promise.resolve(null); // 아무것도 하지 않고, Promise를 즉시 해결하는 것을 반환
+    },
     queryKey,
     getNextPageParam: (lastPage_) => {
       const hasNext = lastPage_?.hasNext;
@@ -50,7 +54,7 @@ const User: NextPageWithLayout = () => {
   return (
     <>
       <Nav handleClick={setItem} />
-      <LinkItemList data={pages} queryKey={queryKey} />
+      <LinkItemList linkInfoList={pages} queryKey={queryKey} />
       {isFetchingNextPage && <div>로딩중...</div>}
       <div ref={target} />
     </>

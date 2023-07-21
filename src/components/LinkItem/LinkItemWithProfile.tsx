@@ -36,12 +36,12 @@ const LinkWithProfile = ({
   profileImage,
   ...props
 }: LinkItemWithProfileProps) => {
-  const href = `/${nickname}`;
+  const href = `/${userId}`;
   return (
     <LinkItem
       Header={
         <Profile>
-          <Link href={href}>
+          <Link href={href} as={nickname}>
             <div className='profile'>
               <Image src={profileImage} alt='profile' fill />
             </div>
