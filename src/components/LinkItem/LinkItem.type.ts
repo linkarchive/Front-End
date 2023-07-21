@@ -39,7 +39,7 @@ interface LinkItemWithProfileProps extends LinkItemProps {}
 type ILinksResponse = Record<string, ILinkItem[]>;
 
 interface LinkItemListProps {
-  data: ILinksResponse[];
+  linkInfoList: ILinksResponse[];
   queryKey: QueryKey;
 }
 

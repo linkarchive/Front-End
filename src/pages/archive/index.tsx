@@ -48,7 +48,7 @@ const Archive = ({
 
   return (
     <Wrapper>
-      <LinkItemWithProfileList data={pages} queryKey={queryKey} />
+      <LinkItemWithProfileList linkInfoList={pages} queryKey={queryKey} />
       {isFetchingNextPage && <div>로딩중...</div>}
       <div ref={target} />
       {isLoggedin && !nickname && <NicknameModal userId={userId} />}
