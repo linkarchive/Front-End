@@ -141,11 +141,12 @@ const API = {
     return data;
   },
 
+  /** 태그 등록 */
   createTag: async (tag: string) => {
-    const response = await clientInstance.post(`tag`, {
+    const { data } = await clientInstance.post(`tag`, {
       tag,
     });
-    return response;
+    return { data };
   },
 
   /**

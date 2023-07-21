@@ -1,6 +1,6 @@
 import { rest } from 'msw';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost';
 
 export const handlers = [
   /** 프로필 조회 */

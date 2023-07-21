@@ -26,7 +26,7 @@ const Settings = () => {
       <Link href='/settings/profile'>
         <h3>프로필</h3>
       </Link>
-      <Link href=''>
+      <Link href='/settings/hashtag'>
         <h3>해시태그 관리</h3>
       </Link>
       <Link href=''>

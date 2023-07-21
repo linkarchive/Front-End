@@ -41,22 +41,25 @@ const Main = styled.main`
 
 const WaterMark = () => {
   let envText = '';
-  if (process.env.NEXT_PUBLIC_APP_ENV === 'development') {
-    envText = '개발 환경입니다.';
-  } else if (process.env.NEXT_PUBLIC_APP_ENV === 'production') {
-    envText = '프로덕션 환경입니다.';
-  } else if (process.env.NEXT_PUBLIC_APP_ENV === 'test') {
-    envText = '테스트 환경입니다람쥐.';
-  } else {
-    envText = '로컬 환경입니다.';
+  if (process.env.NEXT_PUBLIC_APP_ENV === 'production') {
+    return null;
   }
+  envText = `${process.env.NEXT_PUBLIC_APP_ENV}`;
 
   return <Wrapper>{envText}</Wrapper>;
 };
 
-const Wrapper = styled.h4`
+const Wrapper = styled.h2`
+  z-index: -1;
   display: flex;
+  position: fixed;
+  inset: 0;
+  margin: auto;
+
   justify-content: center;
+  align-items: center;
 
   color: var(--font-color-primary);
+  transform: rotate(45deg);
+  opacity: 0.2;
 `;
