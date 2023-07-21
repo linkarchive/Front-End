@@ -45,6 +45,16 @@ export const routerSlice = createSlice({
       state.current = 'PROFILE';
       state.name = '프로필';
     },
+    loadTrashPage(state) {
+      state.status = 'OTHER';
+      state.current = 'TRASH';
+      state.name = '삭제 보관함';
+    },
+    loadConfigHashtag(state) {
+      state.status = 'OTHER';
+      state.current = 'Hashtag';
+      state.name = '해시태그 관리';
+    },
     // 페이지 추가시 reducer추가
   },
 });

@@ -1,17 +1,15 @@
-import { ILinksResponse, LinkItemList } from '@/components/LinkItem';
+import { LinkItemList } from '@/components/LinkItem';
 import Nav from '@/components/Archive/User/Nav';
 import { RootState, useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
 import React, { ReactElement, useEffect } from 'react';
 import API from '@/api/API';
 import { useRouter } from 'next/router';
-import useInfinityScroll from '@/hooks/useInfinityScroll';
 import ProfileLayout from '@/layouts/ProfileLayout';
 import { NextPageWithLayout } from '../_app';
-import LinkItemListLayout from '@/layouts/LinkItemLayout';
 import { useSelector } from 'react-redux';
 import { HashTagSlice } from '@/store/slices/hashTagSlice';
-import { MainLayoutWrapper } from '..';
+import InfinityScroll from '@/components/Common/InfinityScroll';
 
 const User: NextPageWithLayout = () => {
   const dispatch = useAppDispatch();
@@ -30,26 +28,6 @@ const User: NextPageWithLayout = () => {
   };
 
   const queryKey = ['linkList', nickname, userLink, selectedTagName];
-  const { pages, target, isFetchingNextPage } = useInfinityScroll<ILinksResponse>({
-    fetchFn,
-    queryKey,
-    getNextPageParam: (lastPage_) => {
-      const hasNext = lastPage_?.hasNext;
-      if (!hasNext) return undefined;
-
-      if (userLink) {
-        const lastPage = lastPage_?.linkList;
-        const lastItem = lastPage[lastPage.length - 1].linkId;
-
-        return lastItem;
-      }
-
-      const lastPage = lastPage_?.markList;
-      const lastItem = lastPage[lastPage.length - 1].markId;
-
-      return lastItem;
-    },
-  });
 
   useEffect(() => {
     dispatch(routerSlice.actions.loadUserPage());
@@ -60,14 +38,30 @@ const User: NextPageWithLayout = () => {
   }, [dispatch, userLink]);
 
   return (
-    <MainLayoutWrapper>
+    <>
       <Nav />
-      <LinkItemListLayout>
-        <LinkItemList data={pages} queryKey={queryKey} />
-      </LinkItemListLayout>
-      {isFetchingNextPage && <div>로딩중...</div>}
-      <div ref={target} />
-    </MainLayoutWrapper>
+      <InfinityScroll
+        renderList={({ pages }) => <LinkItemList data={pages} queryKey={queryKey} />}
+        fetchFn={fetchFn}
+        queryKey={queryKey}
+        getNextPageParam={(lastPage_) => {
+          const hasNext = lastPage_?.hasNext;
+          if (!hasNext) return undefined;
+
+          if (userLink) {
+            const lastPage = lastPage_?.linkList;
+            const lastItem = lastPage[lastPage.length - 1].linkId;
+
+            return lastItem;
+          }
+
+          const lastPage = lastPage_?.markList;
+          const lastItem = lastPage[lastPage.length - 1].markId;
+
+          return lastItem;
+        }}
+      />
+    </>
   );
 };
 

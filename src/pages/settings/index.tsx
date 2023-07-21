@@ -27,11 +27,14 @@ const Settings = () => {
       <Link href='/settings/profile'>
         <h3>프로필</h3>
       </Link>
-      <Link href=''>
+      <Link href='/settings/hashtag'>
         <h3>해시태그 관리</h3>
       </Link>
       <Link href=''>
         <h3>계정</h3>
+      </Link>
+      <Link href='/settings/trash'>
+        <h3>임시 삭제 보관함</h3>
       </Link>
       <LogoutHeading onClick={Logout}>로그아웃</LogoutHeading>
     </>
