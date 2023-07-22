@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "sh init-https.sh && node server.js",
+    "prod": "next build && sh init-https.sh && NODE_ENV=production node server.js",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

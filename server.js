@@ -28,5 +28,10 @@ app.prepare().then(() => {
   }).listen(port, (err) => {
     if (err) throw err;
     console.log(`> Ready on https://${hostname}:${port}`);
+    if (dev) {
+      console.log('> 개발환경이 준비 되었습니다.');
+    } else {
+      console.log('> 프로덕션환경이 준비 되었습니다.');
+    }
   });
 });
