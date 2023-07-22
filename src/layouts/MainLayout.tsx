@@ -41,9 +41,9 @@ const Main = styled.main`
 
 const WaterMark = () => {
   let envText = '';
-  if (process.env.NEXT_PUBLIC_APP_ENV === 'production') {
-    return null;
-  }
+  // if (process.env.NEXT_PUBLIC_APP_ENV === 'production') {
+  //   return null;
+  // }
   envText = `${process.env.NEXT_PUBLIC_APP_ENV}`;
 
   return <Wrapper>{envText}</Wrapper>;
