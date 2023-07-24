@@ -1,4 +1,4 @@
-import { renderWithProviders } from '../utils/test-utils';
+import { renderWithProviders } from '@test/utils/test-utils';
 import { fireEvent, getByRole, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
@@ -7,8 +7,7 @@ import { act } from 'react-dom/test-utils';
 import type { ComponentType, ReactElement } from 'react';
 import { ImageProps, StaticImageData } from 'next/image';
 import API from '@/api/API';
-
-//
+import { setupServer } from '@test/Profile/mocks/server';
 
 /**
  * 참고한 페이지 : https://github.com/vercel/next.js/discussions/32325
@@ -55,6 +54,8 @@ jest.mock(
 );
 
 describe('프로필 페이지에서', () => {
+  setupServer();
+
   test('화면에 텍스트, 이미지, 버튼이 렌더링 되는지', async () => {
     const { unmount } = renderWithProviders(<Profile accessToken='testToken' />);
 
