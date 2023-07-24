@@ -1,9 +1,12 @@
 import API from '@/api/API';
 import Settings from '@/pages/settings';
-import { renderWithProviders } from '../utils/test-utils';
+import { renderWithProviders } from '@test/utils/test-utils';
 import { fireEvent, waitFor } from '@testing-library/react';
+import { setupServer } from '@test/Settings/mocks/server';
 
 describe('Settings 페이지에서', () => {
+  setupServer();
+
   test('최초 렌더링시 dispatch 실행 후 status는 MAIN, current는 SETTINGS인지', () => {
     const { store } = renderWithProviders(<Settings />);
 
