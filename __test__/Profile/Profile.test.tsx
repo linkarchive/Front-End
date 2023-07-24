@@ -1,4 +1,4 @@
-import { renderWithProviders } from '@/utils/test-utils';
+import { renderWithProviders } from '../utils/test-utils';
 import { fireEvent, getByRole, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
@@ -7,6 +7,8 @@ import { act } from 'react-dom/test-utils';
 import type { ComponentType, ReactElement } from 'react';
 import { ImageProps, StaticImageData } from 'next/image';
 import API from '@/api/API';
+
+//
 
 /**
  * 참고한 페이지 : https://github.com/vercel/next.js/discussions/32325

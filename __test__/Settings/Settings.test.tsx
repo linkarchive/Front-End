@@ -1,6 +1,6 @@
 import API from '@/api/API';
 import Settings from '@/pages/settings';
-import { renderWithProviders } from '@/utils/test-utils';
+import { renderWithProviders } from '../utils/test-utils';
 import { fireEvent, waitFor } from '@testing-library/react';
 
 describe('Settings 페이지에서', () => {

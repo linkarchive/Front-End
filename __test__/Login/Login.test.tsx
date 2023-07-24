@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { screen } from '@testing-library/react';
-import { renderWithProviders } from '@/utils/test-utils';
+import { renderWithProviders } from '@test/utils/test-utils';
 import Login from '@/pages/login';
 
 describe('로그인 페이지에서', () => {
