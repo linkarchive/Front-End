@@ -1,10 +1,32 @@
 import styled from 'styled-components';
 import Image from 'next/image';
 import { User } from '@/components/Archive/User/User.type';
+import { useState } from 'react';
+import Button from './Button';
+import { AlarmBellSvg, PlusSvg } from '@/components/svg/Svg';
 
-interface ProfileProps extends User {}
+interface ProfileProps extends User {
+  followerCount: number;
+  followingCount: number;
+}
 
-const Profile = ({ nickname, introduce, profileImageFileName }: ProfileProps) => {
+const Profile = ({
+  nickname,
+  introduce,
+  profileImageFileName,
+  followerCount,
+  followingCount,
+}: ProfileProps) => {
+  const [isAlarm, setIsAlarm] = useState<boolean>(false);
+  const [isFollow, setIsFollow] = useState<boolean>(false);
+
+  const handleAlarmClick = () => {
+    setIsAlarm(!isAlarm);
+  };
+  const handleFollowClick = () => {
+    setIsFollow(!isFollow);
+  };
+
   return (
     <Wrapper>
       <div className='profile-image'>
@@ -13,6 +35,25 @@ const Profile = ({ nickname, introduce, profileImageFileName }: ProfileProps) =>
       <div className='info'>
         <div className='nickname'>{nickname}</div>
         <div className='introduce'>{introduce}</div>
+      </div>
+      <div>
+        <span>팔로워 : {followerCount}</span>
+        <span>팔로잉 : {followingCount}</span>
+        <Button
+          isActive={isAlarm}
+          onClick={handleAlarmClick}
+          text='알람'
+          svg={<AlarmBellSvg />}
+          width='79px'
+        />
+
+        <Button
+          isActive={isFollow}
+          onClick={handleFollowClick}
+          text='팔로우'
+          svg={<PlusSvg />}
+          width='90px'
+        />
       </div>
     </Wrapper>
   );
