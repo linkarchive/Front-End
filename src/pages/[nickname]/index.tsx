@@ -1,70 +1,72 @@
-import { ILinksResponse, LinkItemList } from '@/components/LinkItem';
+import { LinkItemList } from '@/components/LinkItem';
 import Nav from '@/components/Archive/User/Nav';
-import Profile from '@/components/Archive/User/Profile';
-import { useAppDispatch } from '@/store';
+import { RootState, useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
-import React, { useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import React, { ReactElement, useEffect } from 'react';
 import API from '@/api/API';
 import { useRouter } from 'next/router';
-import useInfinityScroll from '@/hooks/useInfinityScroll';
-import useAuth from '@/hooks/useAuth';
-import { setAccessToken } from '@/api/customAPI';
-import { withAuth } from '@/lib/withAuth';
+import ProfileLayout from '@/layouts/ProfileLayout';
+import { NextPageWithLayout } from '../_app';
+import { useSelector } from 'react-redux';
+import { HashTagSlice } from '@/store/slices/hashTagSlice';
+import InfinityScroll from '@/components/Common/InfinityScroll';
 
-export const getServerSideProps = withAuth();
-
-const User = ({ accessToken }: { accessToken: string }) => {
-  setAccessToken(accessToken);
-
+const User: NextPageWithLayout = () => {
   const dispatch = useAppDispatch();
+  const { userLink } = useSelector((state: RootState) => state.nav);
+  const { selectedTagName } = useSelector((state: RootState) => state.hashTag);
+  const router = useRouter();
+
+  const nickname = (router.query.nickname as string) || '';
+
+  const fetchFn = (id: string) => {
+    const tag = selectedTagName === 'All' ? undefined : selectedTagName;
+
+    return userLink
+      ? API.getLinksArchiveByUserId({ nickname, linkId: id, tag })
+      : API.getMarksArchiveByUserId({ nickname, markId: id, tag });
+  };
+
+  const queryKey = ['linkList', nickname, userLink, selectedTagName];
 
   useEffect(() => {
-    dispatch(routerSlice.actions.loadProfilePage());
+    dispatch(routerSlice.actions.loadUserPage());
   }, [dispatch]);
 
-  const router = useRouter();
-  const nickname = (router.query.nickname as string) || '';
-  const [item, setItem] = useState<'link' | 'mark'>('link');
-  const { isLoggedin } = useAuth();
-
-  const { data: profile } = useQuery({
-    queryKey: ['user', nickname, item],
-    queryFn: () => API.getUserProfile(nickname),
-    enabled: !!nickname,
-  });
-
-  const fetchLinksFn = setFetchLinksFn({ isLoggedin, item });
-  const queryKey = ['linkList', nickname, item];
-  const { pages, target, isFetchingNextPage } = useInfinityScroll<ILinksResponse>({
-    fetchFn: (linkId: string) => fetchLinksFn({ nickname, linkId }),
-    queryKey,
-    getNextPageParam: (lastPage_) => {
-      if (!lastPage_?.data?.hasNext) return undefined;
-      const lastPage = lastPage_.data?.linkList;
-      const lastItem = lastPage[lastPage.length - 1].urlId;
-      return lastItem;
-    },
-  });
+  useEffect(() => {
+    dispatch(HashTagSlice.actions.setInitialState());
+  }, [dispatch, userLink]);
 
   return (
     <>
-      <Profile {...profile} />
-      <Nav handleClick={setItem} />
-      <LinkItemList data={pages} queryKey={queryKey} />
-      {isFetchingNextPage && <div>로딩중...</div>}
-      <div ref={target} />
+      <Nav />
+      <InfinityScroll
+        renderList={({ pages }) => <LinkItemList data={pages} queryKey={queryKey} />}
+        fetchFn={fetchFn}
+        queryKey={queryKey}
+        getNextPageParam={(lastPage_) => {
+          const hasNext = lastPage_?.hasNext;
+          if (!hasNext) return undefined;
+
+          if (userLink) {
+            const lastPage = lastPage_?.linkList;
+            const lastItem = lastPage[lastPage.length - 1].linkId;
+
+            return lastItem;
+          }
+
+          const lastPage = lastPage_?.markList;
+          const lastItem = lastPage[lastPage.length - 1].markId;
+
+          return lastItem;
+        }}
+      />
     </>
   );
 };
 
 export default User;
 
-const setFetchLinksFn = ({ isLoggedin, item }: { isLoggedin: boolean; item: 'link' | 'mark' }) => {
-  if (isLoggedin) {
-    if (item === 'link') return API.getAuthLinksArchiveByUserId;
-    return API.getAuthMarksArchiveByUserId;
-  }
-  if (item === 'link') return API.getLinksArchiveByUserId;
-  return API.getMarksArchiveByUserId;
+User.getLayout = function getLayout(page: ReactElement) {
+  return <ProfileLayout>{page}</ProfileLayout>;
 };

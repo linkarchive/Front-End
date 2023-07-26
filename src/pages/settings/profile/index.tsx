@@ -3,7 +3,6 @@ import { routerSlice } from '@/store/slices/routerSlice';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import PhotoSvgIcon from 'public/assets/svg/photo.svg';
 import { useImage } from '@/hooks/useImage';
 import API from '@/api/API';
 import useDebounce from '@/hooks/useDebounce';
@@ -14,7 +13,8 @@ import { withAuth } from '@/lib/withAuth';
 import { setAccessToken } from '@/api/customAPI';
 import { MessageWrapperProps } from '@/components/Archive/NicknameModal';
 import { createToastBar } from '@/store/slices/toastBarSlice';
-import Router from 'next/router';
+import PhotoSvgIcon from '@/components/svg/PhotoSvgIcon';
+import { cancelSource } from '@/utils/cancelToken';
 
 interface ErrorMessage {
   message: string;
@@ -110,7 +110,6 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
 
           await API.setCookie({ name: 'nickname', value: debouncedNickname });
           dispatch(createToastBar({ text: '프로필이 수정되었습니다.' }));
-          Router.push('/');
         },
         onError: (error: AxiosError<ErrorMessage>) => {
           // eslint-disable-next-line no-alert
@@ -130,11 +129,11 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
     const data = await getMyProfile();
 
     setProfile({
-      nickname: { value: data.nickname, initialValue: data.nickname },
-      introduce: { value: data.introduce, initialValue: data.introduce },
+      nickname: { value: data?.nickname, initialValue: data?.nickname },
+      introduce: { value: data?.introduce, initialValue: data?.introduce },
     });
 
-    setImageUrl(data.profileImageFileName);
+    setImageUrl(data?.profileImageFileName);
   };
 
   const validateNicknameMutation = useMutation(API.validateNickname, {
@@ -161,12 +160,13 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
 
   useEffect(() => {
     setMyProfile();
-    console.log(imageUrl);
-  }, []);
 
-  useEffect(() => {
     dispatch(routerSlice.actions.loadProfileDetailPage());
-  }, [dispatch]);
+    return () => {
+      // axios 요청 취소
+      cancelSource();
+    };
+  }, []);
 
   useEffect(() => {
     if (isNicknameChanged && !profile.nickname.value) {
@@ -185,6 +185,7 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
     } else {
       setIsNicknameValid(null);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedNickname]);
 
   useEffect(() => {
@@ -196,14 +197,14 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
   }, [profile.introduce]);
 
   useEffect(() => {
-    if (profile.introduce.value.length > 20) {
+    if (profile.introduce.value?.length > 20) {
       setMessage2('자기소개는 20자 이하로 작성해주세요.');
       setIsIntroduceValid(false);
     } else {
       setMessage2('');
       setIsIntroduceValid(true);
     }
-  }, [profile.introduce.value.length]);
+  }, [profile.introduce.value?.length]);
 
   return (
     <FormWrapper onSubmit={handleSubmit}>
@@ -213,9 +214,10 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
             <Image src={imageUrl} alt='cat' fill />
             <input
               type='file'
-              accept='image/png'
+              accept='image/png, image/jpeg, image/jpg, image/gif'
               style={{ display: 'none' }}
               id='imageInput'
+              data-testid='imageInput'
               onChange={(e) => onImageChange(e)}
             />
           </ImgContent>

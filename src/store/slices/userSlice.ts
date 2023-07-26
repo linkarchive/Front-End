@@ -1,24 +1,34 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface UserState {
-  id: number;
-  name: string;
+  myId: string | null;
+  myNickname: string | null;
 }
 
 const initialState: UserState = {
-  id: 1,
-  name: '',
+  myId: null,
+  myNickname: null,
 };
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    getSelectedUserData(state, action) {
-      state.id = action.payload.id;
-      state.name = action.payload.name;
+    setUserId: (state, action: PayloadAction<string | null>) => {
+      state.myId = action.payload;
+    },
+    setNickname: (state, action: PayloadAction<string | null>) => {
+      state.myNickname = action.payload;
     },
   },
-  // 비동기 액션용
-  extraReducers: () => {},
 });
+
+export const userState = (state) => state.user;
+export const { setUserId, setNickname } = userSlice.actions;
+
+export const setUser =
+  ({ myId, myNickname }: { myId: string | null; myNickname: string | null }) =>
+  (dispatch) => {
+    dispatch(setUserId(myId));
+    dispatch(setNickname(myNickname));
+  };

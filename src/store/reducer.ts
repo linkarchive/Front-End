@@ -1,13 +1,17 @@
 import { combineReducers } from 'redux';
 import { HYDRATE } from 'next-redux-wrapper';
 import { routerSlice } from './slices/routerSlice';
-import { userSlice } from './slices/userSlice';
 import { toastBarSlice } from './slices/toastBarSlice';
+import { HashTagSlice } from './slices/hashTagSlice';
+import { userSlice } from './slices/userSlice';
+import { navSlice } from './slices/navSlice';
 
 const combinedReducer = combineReducers({
   router: routerSlice.reducer,
-  user: userSlice.reducer,
+  nav: navSlice.reducer,
   toastBar: toastBarSlice.reducer,
+  hashTag: HashTagSlice.reducer,
+  user: userSlice.reducer,
 });
 
 const rootReducer: typeof combinedReducer = (state, action) => {

@@ -13,7 +13,10 @@ import { setAccessToken } from '@/api/customAPI';
 import { withAuth } from '@/lib/withAuth';
 import Spinner from '@/components/Spinner';
 import { createToastBar } from '@/store/slices/toastBarSlice';
-// import HashTagList from '@/components/Create/HashTagList'; TODO mvp 이후 개발 */
+import HashTagList from '@/components/Create/HashTagList';
+import FavoriteTagList from '@/components/Create/FavoriteTagList';
+import { validateHashTag } from '@/utils/validation';
+import { useFetchTagsByNickname } from '@/queries';
 
 const defaultErrorMessages = {
   url: '',
@@ -23,7 +26,7 @@ const defaultErrorMessages = {
 
 export const getServerSideProps = withAuth();
 
-const Create = ({ accessToken }: { accessToken: string }) => {
+const Create = ({ nickname, accessToken }: { nickname: string; accessToken: string }) => {
   setAccessToken(accessToken);
 
   const dispatch = useAppDispatch();
@@ -36,10 +39,8 @@ const Create = ({ accessToken }: { accessToken: string }) => {
 
   const urlInput = useRef('');
   const [title, setTitle] = useState('');
-  /**  // TODO mvp 이후 개발
   const [hashtagInput, setHashTagInput] = useState('');
-  const [hashtags, setHashtags] = useState<string[]>([]);
-  */
+  const [hashtagList, setHashtagList] = useState<string[]>([]);
   const [metaData, setMetaData] = useState<MetaData>(null);
   const [errorMessages, setErrorMessages] = useState(defaultErrorMessages);
   const [isValid, setIsValid] = useState(false);
@@ -64,14 +65,8 @@ const Create = ({ accessToken }: { accessToken: string }) => {
     setErrorMessages(errmsgs);
   };
 
-  // TODO api 통신 작업
-  /** MVP 이후 개발
-    const {
-      data: freqTags,
-      isLoading,
-      isError,
-    } = useQuery(['freqTagList'], { queryFn: () => API.tagsByUserId(''), enabled: false });
-  */
+  const { data: tagListData } = useFetchTagsByNickname({ nickname });
+  const tagList = tagListData?.tagList || [];
 
   const { mutate: fetchMetaData, isLoading } = useMutation({
     mutationFn: API.getLinkMetadata,
@@ -99,43 +94,40 @@ const Create = ({ accessToken }: { accessToken: string }) => {
     }
   };
 
-  /** 
-   * // TODO mvp 이후 개발
-  const handleAddTags = (text) => {
-    let message = '';
-    if (hashtags.length === 5) {
-      message = ERROR_MESSAGE.HASHTAG.MAXIMUM;
-      handleErrorMessage({ key: 'hashtag', message });
+  const handleAddTags = (text: string) => {
+    const newHashTagList = [...hashtagList];
+    if (text.length > 0 && !hashtagList.includes(text)) newHashTagList.push(text);
+
+    const hashtagErrMsg = validateHashTagList(newHashTagList);
+
+    if (hashtagErrMsg) {
+      setErrorMessage({ key: 'hashtag', message: hashtagErrMsg });
       return;
     }
-    message = validateHashTag(text);
-    if (message) {
-      handleErrorMessage({ key: 'hashtag', message });
-      return;
-    }
-    setHashtags((prev) => [...prev, text]);
-    initErrorMessage({ key: 'hashtag' });
+    setHashtagList(newHashTagList);
+    setHashTagInput('');
+    setErrorMessage({ key: 'hashtag', message: '' });
   };
-  */
 
   const createLink = useMutation({ mutationFn: API.createLink });
 
   const handleCreate = () => {
     if (createLink.isLoading) return;
 
-    const titleErrMsg = validateTitle(title);
-    if (titleErrMsg) {
-      setErrorMessage({ key: 'title', message: titleErrMsg });
-      return;
-    }
-
-    const [url, thumbnail, description] = [
+    const [url, thumbnail, description, tags] = [
       urlInput.current,
       metaData?.metaThumbnail,
       truncateDesc(metaData?.metaDescription),
+      [...hashtagList],
     ];
 
-    const tags = []; //  [...hashtags];
+    const errorMessage = validateForm({ title, tags });
+    const isFormValid = Object.values(errorMessage).every((err) => err === '');
+    if (!isFormValid) {
+      setErrorMessages(errorMessage);
+      return;
+    }
+
     createLink.mutate(
       { url, title, description, thumbnail, tags },
       {
@@ -177,18 +169,17 @@ const Create = ({ accessToken }: { accessToken: string }) => {
             setTitle(value);
           }}
         />
-        <Bottom>
+        <Bottom style={{ marginBottom: '29px' }}>
           <p className='info'>미리보기</p>
           <LinkInfo {...(metaData as MetaData)} />
         </Bottom>
       </InputBlock>
-      {/** 
+
       <InputBlock>
         <InputWithButton
           label='해시태그'
           value={hashtagInput}
           onKeyDown={(e) => {
-            // FIXME 한글 입력시 'ㅁㄴㅇㄹ ' 공백 입력 이슈
             if (e.key === ' ') e.preventDefault();
           }}
           onChange={(e) => {
@@ -199,20 +190,17 @@ const Create = ({ accessToken }: { accessToken: string }) => {
           onClick={() => {
             if (!hashtagInput) return;
             handleAddTags(hashtagInput.trim());
-            setHashTagInput('');
           }}
         />
-        <Bottom>
-           // TODO MVP 제외
-            <p className='info'>자주 사용하는 태그</p>
-            <TagLabelList /> 
-          <HashTagList
-            tags={hashtags}
-            handleDelete={(value) => setHashtags((prev) => prev.filter((v) => v !== value))}
-          />
+        <Bottom style={{ marginBottom: '12px' }}>
+          <p className='info'>자주 사용하는 태그</p>
+          <FavoriteTagList tags={tagList} onClick={({ tagName }) => handleAddTags(tagName)} />
         </Bottom>
+        <HashTagList
+          tags={hashtagList}
+          handleDelete={(value) => setHashtagList((prev) => prev.filter((v) => v !== value))}
+        />
       </InputBlock>
-    */}
 
       <ButtonBlock>
         <Button type='submit' disabled={!isValid}>
@@ -236,8 +224,8 @@ const InputBlock = styled.div`
 `;
 
 const Bottom = styled.div`
-  position: relative;
-  top: 12px;
+  width: 276px;
+  margin: 0 auto;
 
   > p {
     margin-bottom: 5px;
@@ -286,32 +274,46 @@ const ERROR_MESSAGE = {
     INVALID: '제목을 입력해주세요',
   },
   HASHTAG: {
-    TOO_LONG: '너무 길어요',
-    TOO_SHORT: '너무 짧아요',
-    NO_SPECIAL: '특수기호는 안돼요',
-    MAXIMUM: '5개까지 등록할 수 있어요',
+    MAXIMUM: '최대 10개까지 등록할 수 있어요',
   },
 };
 
-const validateHashTag = (text: string): string => {
-  const encoder = new TextEncoder();
-  const byteLength = encoder.encode(text).length;
-  const isValidLength = !(byteLength < 4 || byteLength > 16); // 최소 4바이트, 최대 16바이트
-  const noSpecialSybmols = /^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]+$/; // 특수기호, 이모지 불가
+const validateForm = ({
+  title,
+  tags: hashtagList,
+}: {
+  title: string;
+  tags: string[];
+}): typeof defaultErrorMessages => {
+  const titleErrMsg = validateTitle(title);
+  const hashtagErrMsg = validateHashTagList(hashtagList);
 
-  if (!isValidLength) {
-    return ERROR_MESSAGE.HASHTAG.TOO_LONG;
+  const errorMsg = {
+    title: titleErrMsg,
+    hashtag: hashtagErrMsg,
+    url: '',
+  };
+
+  return errorMsg;
+};
+
+const validateHashTagList = (hashtagList: string[]): string => {
+  const MAX_HASHTAG = 10; // 최대 10개 등록 가능
+
+  if (hashtagList.length >= MAX_HASHTAG) {
+    return ERROR_MESSAGE.HASHTAG.MAXIMUM;
   }
 
-  if (!noSpecialSybmols.test(text)) {
-    return ERROR_MESSAGE.HASHTAG.NO_SPECIAL;
-  }
+  const errors = hashtagList
+    .map((hashtag) => validateHashTag(hashtag))
+    .filter((errMesg) => errMesg !== '');
 
-  return '';
+  return errors[0] || '';
 };
 
 const validateUrl = (url: string): string => {
   const urlRegex =
+    // eslint-disable-next-line no-useless-escape
     /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
   if (!urlRegex.test(url)) return ERROR_MESSAGE.URL.INVALID;
 

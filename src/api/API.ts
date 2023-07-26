@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { clientInstance, nextInstance } from './customAPI';
 import { KakaoType } from './types';
+import { createSource } from '@/utils/cancelToken';
 
 const API = {
   /** NEXT api 쿠키 저장, 삭제 */
@@ -44,6 +45,7 @@ const API = {
     return data;
   },
 
+  /** 링크 추가 */
   createLink: async (data: {
     url: string;
     title: string;
@@ -57,18 +59,29 @@ const API = {
     return response;
   },
 
-  /** 링크 둘러보기 */
-  getLinksArchive: async (linkId?: string) => {
-    const { data } = await clientInstance.get(`links/archive/public`, {
+  /** 링크 임시 삭제 */
+  deleteLinkTemp: async (id: number) => {
+    const { data } = await clientInstance.patch(`link/${id}`);
+    return data;
+  },
+
+  /** 임시 삭제 보관함 조회 */
+  getTrashedLinks: async ({ linkId, tag }: { linkId?: string; tag?: string }) => {
+    const { data } = await clientInstance.get(`/links/trash`, {
       params: {
         linkId,
+        tag,
       },
     });
     return data;
   },
 
-  getAuthLinksArchive: async (linkId?: string) => {
-    const { data } = await clientInstance.get(`links/archive/authentication`, {
+  /** 링크 삭제 */
+  // TODO
+
+  /** 링크 둘러보기 */
+  getLinksArchive: async (linkId?: string) => {
+    const { data } = await clientInstance.get(`links/archive`, {
       params: {
         linkId,
       },
@@ -77,70 +90,60 @@ const API = {
   },
 
   /** 사용자별 링크 둘러보기 */
-  getLinksArchiveByUserId: async ({ nickname, linkId }: { nickname: string; linkId?: string }) => {
-    const { data } = await clientInstance.get(`links/public/user/${nickname}`, {
-      params: {
-        linkId,
-      },
-    });
-    return data;
-  },
-
-  getAuthLinksArchiveByUserId: async ({
+  getLinksArchiveByUserId: async ({
     nickname,
     linkId,
+    tag,
   }: {
     nickname: string;
     linkId?: string;
+    tag?: string;
   }) => {
-    const { data } = await clientInstance.get(`links/authentication/user/${nickname}`, {
+    const { data } = await clientInstance.get(`links/user/${nickname}`, {
       params: {
         linkId,
+        tag,
       },
     });
     return data;
   },
 
   /** 사용자별 북마크 둘러보기 */
-  getMarksArchiveByUserId: async ({ nickname, linkId }: { nickname: string; linkId?: string }) => {
-    const { data } = await clientInstance.get(`mark/links/public/user/${nickname}`, {
-      params: {
-        linkId,
-      },
-    });
-    return data;
-  },
-
-  getAuthMarksArchiveByUserId: async ({
+  getMarksArchiveByUserId: async ({
     nickname,
-    linkId,
+    markId,
+    tag,
   }: {
     nickname: string;
-    linkId?: string;
+    markId?: string;
+    tag?: string;
   }) => {
-    const { data } = await clientInstance.get(`mark/links/authentication/user/${nickname}`, {
+    const { data } = await clientInstance.get(`mark/links/user/${nickname}`, {
       params: {
-        linkId,
+        markId,
+        tag,
       },
     });
     return data;
   },
 
   /** 내 링크 둘러보기 */
-  getUserLinksArchive: async (linkId?: string) => {
+  getUserLinksArchive: async (linkId: string, tag?: string) => {
     const { data } = await clientInstance.get(`links/user`, {
       params: {
         linkId,
+        tag,
       },
     });
     return data;
   },
 
   /** 내 마크 둘러보기 */
-  getUserMarksArchive: async (linkId?: string) => {
+  getUserMarksArchive: async (markId: string, tag?: string) => {
     const { data } = await clientInstance.get(`mark/links/user`, {
       params: {
-        linkId,
+        markId,
+        tag,
       },
     });
     return data;
@@ -158,16 +161,24 @@ const API = {
     return data;
   },
 
+  /** 태그 등록 */
   createTag: async (tag: string) => {
-    const response = await clientInstance.post(`tag`, {
+    const { data } = await clientInstance.post(`tag`, {
       tag,
     });
-    return response;
+    return { data };
   },
 
-  getTagsByUserId: async (userId: string) => {
-    const response = await clientInstance.get(`tags/userId${userId}`);
-    return response;
+  /**
+   * 사용자 해시태그 리스트
+   * @param usernickname 조회할 사용자 닉네임
+   * @param size 조회할 해시태그 수
+   */
+  getTagsByNickname: async ({ usernickname, size }: { usernickname: string; size?: number }) => {
+    const { data } = size
+      ? await clientInstance.get(`limited-tags/user/${usernickname}?size=${size}`)
+      : await clientInstance.get(`tags/user/${usernickname}`);
+    return data;
   },
 
   uploadImage: async ({ file }: { file: File }): Promise<AxiosResponse> => {
@@ -179,8 +190,18 @@ const API = {
   },
 
   getMyProfile: async () => {
-    const response = await clientInstance.get(`user`);
-    return response.data;
+    const source = createSource();
+    try {
+      const response = await clientInstance.get('user', {
+        cancelToken: source.token,
+      });
+      return response.data;
+    } catch (error) {
+      if (axios.isCancel(error)) {
+        return null;
+      }
+      throw error;
+    }
   },
 
   getUserProfile: async (nickname: string) => {
@@ -227,6 +248,19 @@ const API = {
       }
     );
     return response;
+  },
+
+  /** 사용자별 해시태그 리스트 조회 */
+  getUsersLinksTagList: async (nickname: string) => {
+    const { data } = await clientInstance.get(`/tags/user/${nickname}`);
+
+    return data.tagList;
+  },
+
+  getUsersMarksTagList: async (nickname: string) => {
+    const { data } = await clientInstance.get(`/mark/tags/user/${nickname}`);
+
+    return data.tagList;
   },
 };
 

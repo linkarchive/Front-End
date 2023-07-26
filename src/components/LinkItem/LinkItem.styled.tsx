@@ -1,5 +1,26 @@
 import styled from 'styled-components';
 
+const LinkItem = styled.div`
+  width: 317px;
+  margin: 0 auto;
+`;
+
+const InfoWrapper = styled(LinkItem)`
+  display: flex;
+  flex-direction: row;
+
+  min-height: 84px;
+  gap: 10px;
+`;
+
+const LinkMetaWrapper = styled.div`
+  overflow: hidden;
+
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+`;
+
 const Desc = styled.p`
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -24,22 +45,39 @@ const Thumb = styled.div`
   }
 `;
 
-const LinkContents = styled.div`
-  overflow: hidden;
+const UtilsWrapper = styled(LinkItem)`
+  .utils {
+    display: flex;
+    justify-content: flex-end;
 
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 14px;
+    .read,
+    .mark {
+      display: flex;
+      flex-direction: row;
+
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 14px;
+      color: #858585;
+    }
+
+    .read {
+      margin-right: 8px;
+    }
+
+    .mark {
+      cursor: pointer;
+    }
+
+    .icon {
+      position: relative;
+
+      width: 12px;
+      height: 12px;
+      margin-right: 4px;
+    }
+  }
 `;
 
-const InfoWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-
-  width: 317px;
-  min-height: 84px;
-  margin: 0 auto;
-  gap: 10px;
-`;
-
-export { Desc, Thumb, LinkContents, InfoWrapper };
+export { Desc, Thumb, LinkMetaWrapper, InfoWrapper, UtilsWrapper };

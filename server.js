@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const { createServer } = require('https');
 const { parse } = require('url');
 const next = require('next');
@@ -28,5 +29,8 @@ app.prepare().then(() => {
   }).listen(port, (err) => {
     if (err) throw err;
     console.log(`> Ready on https://${hostname}:${port}`);
+    console.log(`> NEXT_PUBLIC_API_BASE_URL : ${process.env.NEXT_PUBLIC_API_BASE_URL}`);
+    console.log(`> NEXT_PUBLIC_APP_ENV : ${process.env.NEXT_PUBLIC_APP_ENV}`);
+    console.log(`> NEXT_PUBLIC_DOMAIN : ${process.env.NEXT_PUBLIC_DOMAIN}`);
   });
 });
