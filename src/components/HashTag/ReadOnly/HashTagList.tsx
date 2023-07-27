@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import API from '@/api/API';
 import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
-import ChevronUpAndDown from '@/components/svg/ChevronDown';
+import { ChevronUpAndDownSvg } from '@/components/svg/Svg';
 
 type HashTagListProps = {
   children: React.ReactNode;
@@ -55,7 +55,7 @@ const HashTagList = ({ children }: HashTagListProps) => {
   return (
     <>
       <Toggle onClick={handleButtonClick}>
-        <ChevronUpAndDown isButtonClicked={isButtonClicked} />
+        <ChevronUpAndDownSvg isButtonClicked={isButtonClicked} />
       </Toggle>
       <Wrapper isButtonClicked={isButtonClicked}>
         <Content isButtonClicked={isButtonClicked}>

@@ -13,8 +13,8 @@ import { withAuth } from '@/lib/withAuth';
 import { setAccessToken } from '@/api/customAPI';
 import { MessageWrapperProps } from '@/components/Archive/NicknameModal';
 import { createToastBar } from '@/store/slices/toastBarSlice';
-import PhotoSvgIcon from '@/components/svg/PhotoSvgIcon';
 import { cancelSource } from '@/utils/cancelToken';
+import { PhotoSvgIcon } from '@/components/svg/Svg';
 
 interface ErrorMessage {
   message: string;
