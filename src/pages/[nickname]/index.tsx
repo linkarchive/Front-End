@@ -10,8 +10,13 @@ import { NextPageWithLayout } from '../_app';
 import { useSelector } from 'react-redux';
 import { HashTagSlice } from '@/store/slices/hashTagSlice';
 import InfinityScroll from '@/components/Common/InfinityScroll';
+import { withAuth } from '@/lib/withAuth';
+import { setAccessToken } from '@/api/customAPI';
 
-const User: NextPageWithLayout = () => {
+export const getServerSideProps = withAuth();
+
+const User: NextPageWithLayout = ({ accessToken }: { accessToken: string }) => {
+  setAccessToken(accessToken);
   const dispatch = useAppDispatch();
   const { userLink } = useSelector((state: RootState) => state.nav);
   const { selectedTagName } = useSelector((state: RootState) => state.hashTag);
