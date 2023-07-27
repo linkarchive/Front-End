@@ -16,7 +16,7 @@ import { createToastBar } from '@/store/slices/toastBarSlice';
 import { cancelSource } from '@/utils/cancelToken';
 import { PhotoSvgIcon } from '@/components/svg/Svg';
 
-interface ErrorMessage {
+export interface ErrorMessage {
   message: string;
 }
 
