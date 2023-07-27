@@ -28,34 +28,51 @@ const Profile = ({
   };
 
   return (
-    <Wrapper>
-      <div className='profile-image'>
-        <Image alt='' src={profileImageFileName} fill />
-      </div>
-      <div className='info'>
-        <div className='nickname'>{nickname}</div>
-        <div className='introduce'>{introduce}</div>
-      </div>
-      <div>
+    <>
+      <Wrapper>
+        <div className='profile-image'>
+          <Image alt='' src={profileImageFileName} fill />
+        </div>
+        <div className='info'>
+          <div className='nickname'>{nickname}</div>
+          <div className='introduce'>{introduce}</div>
+        </div>
+      </Wrapper>
+      <Content>
         <span>팔로워 : {followerCount}</span>
         <span>팔로잉 : {followingCount}</span>
         <Button
           isActive={isAlarm}
           onClick={handleAlarmClick}
           text='알람'
-          svg={<AlarmBellSvg />}
+          svg={
+            <AlarmBellSvg
+              color={
+                isAlarm
+                  ? 'var(--hashtag-color-active-border)'
+                  : 'var(--hashtag-color-inactive-border)'
+              }
+            />
+          }
           width='79px'
         />
-
         <Button
           isActive={isFollow}
           onClick={handleFollowClick}
           text='팔로우'
-          svg={<PlusSvg />}
+          svg={
+            <PlusSvg
+              color={
+                isFollow
+                  ? 'var(--hashtag-color-active-border)'
+                  : 'var(--hashtag-color-inactive-border)'
+              }
+            />
+          }
           width='90px'
         />
-      </div>
-    </Wrapper>
+      </Content>
+    </>
   );
 };
 
@@ -92,6 +109,12 @@ const Wrapper = styled.div`
     font-size: 12px;
     line-height: 14px;
   }
+`;
+
+const Content = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default Profile;

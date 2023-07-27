@@ -48,31 +48,31 @@ export const ChevronUpAndDownSvg = ({ isButtonClicked }: { isButtonClicked: bool
   );
 };
 
-export const AlarmBellSvg = () => {
+export const AlarmBellSvg = ({ color }: { color: string }) => {
   return (
     <svg width='19' height='19' viewBox='0 0 19 19' fill='none' xmlns='http://www.w3.org/2000/svg'>
       <path
         fillRule='evenodd'
         clipRule='evenodd'
         d='M14.4902 7.56909C14.4902 5.08381 12.4755 3.06909 9.99023 3.06909C7.50495 3.06909 5.49023 5.08381 5.49023 7.56909V12.0691L3.99023 13.5691H15.9902L14.4902 12.0691V7.56909Z'
-        stroke='#858585'
+        stroke={color}
         strokeWidth='2'
         strokeLinejoin='round'
       />
       <path
         d='M9.99023 17.3191C11.2329 17.3191 12.2402 16.3117 12.2402 15.0691H7.74023C7.74023 16.3117 8.74759 17.3191 9.99023 17.3191Z'
-        fill='#858585'
+        fill={color}
       />
     </svg>
   );
 };
 
-export const PlusSvg = () => {
+export const PlusSvg = ({ color }: { color: string }) => {
   return (
     <svg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'>
       <path
         d='M6.9873 1.56909V12.0691M1.7373 6.81909H12.2373'
-        stroke='#858585'
+        stroke={color}
         strokeWidth='2'
         strokeLinecap='round'
         strokeLinejoin='round'
