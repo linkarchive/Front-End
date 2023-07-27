@@ -1,9 +1,15 @@
 import styled from 'styled-components';
 import Image from 'next/image';
 import { User } from '@/components/Archive/User/User.type';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from './Button';
 import { AlarmBellSvg, PlusSvg } from '@/components/svg/Svg';
+import API from '@/api/API';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useAppDispatch } from '@/store';
+import { createToastBar } from '@/store/slices/toastBarSlice';
+import { AxiosError } from 'axios';
+import { ErrorMessage } from '@/pages/settings/profile';
 
 interface ProfileProps extends User {
   followerCount: number;
@@ -11,6 +17,7 @@ interface ProfileProps extends User {
 }
 
 const Profile = ({
+  id,
   nickname,
   introduce,
   profileImageFileName,
@@ -18,15 +25,55 @@ const Profile = ({
   followingCount,
 }: ProfileProps) => {
   const [isAlarm, setIsAlarm] = useState<boolean>(false);
-  const [isFollow, setIsFollow] = useState<boolean>(false);
+  const [isFollow, setIsFollow] = useState<boolean>(true);
+  const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
+
+  const followMutation = useMutation({
+    mutationFn: API.followUser,
+    onSuccess: () => {
+      setIsFollow(true);
+    },
+    onError: (error: AxiosError<ErrorMessage>) => {
+      const errorMessage = error.response.data.message;
+      setIsFollow(false);
+      dispatch(createToastBar({ text: errorMessage }));
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(['user', nickname]);
+    },
+  });
+
+  const unfollowMutation = useMutation({
+    mutationFn: API.unFollowUser,
+    onSuccess: () => {
+      setIsFollow(false);
+    },
+    onError: (error: AxiosError<ErrorMessage>) => {
+      const errorMessage = error.response.data.message;
+      setIsFollow(true);
+      dispatch(createToastBar({ text: errorMessage }));
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(['user', nickname]);
+    },
+  });
 
   const handleAlarmClick = () => {
     setIsAlarm(!isAlarm);
+    dispatch(createToastBar({ text: '개발중' }));
   };
-  const handleFollowClick = () => {
-    setIsFollow(!isFollow);
+  const handleFollowClick = async () => {
+    try {
+      if (isFollow) {
+        await unfollowMutation.mutateAsync(id);
+      } else {
+        await followMutation.mutateAsync(id);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
-
   return (
     <>
       <Wrapper>
