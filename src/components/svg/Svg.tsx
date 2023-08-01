@@ -50,18 +50,19 @@ export const ChevronUpAndDownSvg = ({ isButtonClicked }: { isButtonClicked: bool
 
 export const AlarmBellSvg = ({ color }: { color: string }) => {
   return (
-    <svg width='19' height='19' viewBox='0 0 19 19' fill='none' xmlns='http://www.w3.org/2000/svg'>
+    <svg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'>
       <path
-        fillRule='evenodd'
-        clipRule='evenodd'
-        d='M14.4902 7.56909C14.4902 5.08381 12.4755 3.06909 9.99023 3.06909C7.50495 3.06909 5.49023 5.08381 5.49023 7.56909V12.0691L3.99023 13.5691H15.9902L14.4902 12.0691V7.56909Z'
+        d='M12.4713 12.636H12.7668C13.7508 12.636 14.5482 11.8386 14.5482 10.8546C14.5482 9.92372 13.8336 9.15952 12.9232 9.08029V6.61594C12.9232 3.84285 10.6751 1.59473 7.902 1.59473C5.1289 1.59473 2.88078 3.84285 2.88078 6.61594V9.10431C2.05627 9.26022 1.43213 9.98403 1.43213 10.854C1.43213 11.838 2.22955 12.6355 3.21355 12.6355H12.571'
         stroke={color}
         strokeWidth='2'
-        strokeLinejoin='round'
+        strokeMiterlimit='10'
       />
       <path
-        d='M9.99023 17.3191C11.2329 17.3191 12.2402 16.3117 12.2402 15.0691H7.74023C7.74023 16.3117 8.74759 17.3191 9.99023 17.3191Z'
-        fill={color}
+        d='M9.24344 13.5674C9.24344 14.3188 8.63412 14.9281 7.8827 14.9281C7.13129 14.9281 6.52197 14.3188 6.52197 13.5674'
+        stroke={color}
+        strokeWidth='2'
+        strokeMiterlimit='10'
+        strokeLinecap='round'
       />
     </svg>
   );

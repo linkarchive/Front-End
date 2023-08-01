@@ -31,10 +31,10 @@ const Wrapper = styled.span<WrapperProps>`
   justify-content: space-around;
   align-items: center;
   border-radius: 20px;
-  padding: 10px 14px;
   border: 1px solid ${({ theme }) => theme.gray.lightGray};
   border-color: ${({ isActive, theme }) => (isActive ? theme.primary.main : theme.gray.lightGray)};
-  margin-right: 3px;
+  padding: 16px;
+  gap: 4px;
   width: ${(props) => props.width};
   height: 38px;
 
@@ -47,5 +47,5 @@ const Wrapper = styled.span<WrapperProps>`
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
-  line-height: 19px;
+  line-height: 18.2px;
 `;

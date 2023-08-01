@@ -1,4 +1,3 @@
-// ${({ theme }) => theme.primary.main}
 const palette = {
   primary: {
     light: '#FFECE5',
@@ -37,34 +36,10 @@ const palette = {
   gray: {
     lightBlack: '#f5f5f5',
     darkGray: '#888888',
-    mediumGray: '#a1a1a1',
+    mediumGray: '#858585',
     lightGray: '#aaaaaa',
     lighterGray: '#DDDDDD',
   },
 };
 
 export default palette;
-
-// default: {
-//   width: '375px',
-// },
-
-// fontSize: {
-//   xxxl: '32px',
-//   xxl: '24px',
-//   xl: '20px',
-//   lg: '18px',
-//   md: '16px',
-//   sm: '10px',
-//   xs: '8px',
-// },
-
-// SvgIconSize: {
-//   xxxl: '28px',
-//   xxl: '24px',
-//   xl: '20px',
-//   lg: '16px',
-//   md: '14px',
-//   sm: '12px',
-//   xs: '8px',
-// },
