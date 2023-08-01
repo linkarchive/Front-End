@@ -6,14 +6,16 @@ import Button from './Button';
 import { AlarmBellSvg, PlusSvg } from '@/components/svg/Svg';
 import API from '@/api/API';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useAppDispatch } from '@/store';
+import { RootState, useAppDispatch } from '@/store';
 import { createToastBar } from '@/store/slices/toastBarSlice';
 import { AxiosError } from 'axios';
 import { ErrorMessage } from '@/pages/settings/profile';
+import { useSelector } from 'react-redux';
 
 interface ProfileProps extends User {
   followerCount: number;
   followingCount: number;
+  isFollow: boolean;
 }
 
 const Profile = ({
@@ -23,20 +25,18 @@ const Profile = ({
   profileImageFileName,
   followerCount,
   followingCount,
+  isFollow,
 }: ProfileProps) => {
   const [isAlarm, setIsAlarm] = useState<boolean>(false);
-  const [isFollow, setIsFollow] = useState<boolean>(true);
   const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
+  const { myId } = useSelector((state: RootState) => state.user);
 
   const followMutation = useMutation({
     mutationFn: API.followUser,
-    onSuccess: () => {
-      setIsFollow(true);
-    },
+    onSuccess: () => {},
     onError: (error: AxiosError<ErrorMessage>) => {
       const errorMessage = error.response.data.message;
-      setIsFollow(false);
       dispatch(createToastBar({ text: errorMessage }));
     },
     onSettled: () => {
@@ -46,12 +46,9 @@ const Profile = ({
 
   const unfollowMutation = useMutation({
     mutationFn: API.unFollowUser,
-    onSuccess: () => {
-      setIsFollow(false);
-    },
+    onSuccess: () => {},
     onError: (error: AxiosError<ErrorMessage>) => {
       const errorMessage = error.response.data.message;
-      setIsFollow(true);
       dispatch(createToastBar({ text: errorMessage }));
     },
     onSettled: () => {
@@ -60,8 +57,9 @@ const Profile = ({
   });
 
   const handleAlarmClick = () => {
-    setIsAlarm(!isAlarm);
-    dispatch(createToastBar({ text: '개발중' }));
+    setIsAlarm((prev) => !prev);
+    // eslint-disable-next-line no-alert
+    alert('서비스 개발중');
   };
   const handleFollowClick = async () => {
     try {
@@ -71,6 +69,7 @@ const Profile = ({
         await followMutation.mutateAsync(id);
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error(error);
     }
   };
@@ -99,22 +98,24 @@ const Profile = ({
           </FollowingBox>
         </FollowGroup>
 
-        <ButtonGroup>
-          <Button
-            isActive={isAlarm}
-            onClick={handleAlarmClick}
-            text='알림'
-            svg={<AlarmBellSvg color={isAlarm ? '#FF5248' : '#aaaaaa'} />}
-            width='79px'
-          />
-          <Button
-            isActive={isFollow}
-            onClick={handleFollowClick}
-            text='팔로우'
-            svg={<PlusSvg color={isFollow ? '#FF5248' : '#aaaaaa'} />}
-            width='91px'
-          />
-        </ButtonGroup>
+        {myId !== id && (
+          <ButtonGroup>
+            <Button
+              isActive={isAlarm}
+              onClick={handleAlarmClick}
+              text='알림'
+              svg={<AlarmBellSvg color={isAlarm ? '#FF5248' : '#aaaaaa'} />}
+              width='79px'
+            />
+            <Button
+              isActive={isFollow}
+              onClick={handleFollowClick}
+              text='팔로우'
+              svg={<PlusSvg color={isFollow ? '#FF5248' : '#aaaaaa'} />}
+              width='91px'
+            />
+          </ButtonGroup>
+        )}
       </InteractiveWrapper>
     </Container>
   );
