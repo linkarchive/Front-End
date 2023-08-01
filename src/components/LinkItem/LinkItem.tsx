@@ -46,7 +46,7 @@ const LinkItemInfoWrapper = styled(InfoWrapper)`
 
 const Mark = styled.span<{ isActivated: boolean }>`
   svg path {
-    fill: ${({ isActivated }) => (isActivated ? 'var(--svg-color-active)' : '')};
+    fill: ${({ isActivated, theme }) => (isActivated ? theme.primary.main : '')};
   }
 `;
 

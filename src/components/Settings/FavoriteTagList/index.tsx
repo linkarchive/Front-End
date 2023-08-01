@@ -12,7 +12,7 @@ const Title = styled.p`
   font-weight: 600;
   font-size: 18px;
   line-height: 21px;
-  color: var(--font-color-darkGray);
+  color: ${({ theme }) => theme.gray.darkGray};
 `;
 
 const List = styled.ul`

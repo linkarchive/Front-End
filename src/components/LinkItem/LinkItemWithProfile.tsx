@@ -15,7 +15,8 @@ const Profile = styled.div`
 
   a,
   a:visited {
-    color: var(--font-color-darkgray);
+    color: ${({ theme }) => theme.gray.darkGray};
+
     text-decoration: none;
   }
 

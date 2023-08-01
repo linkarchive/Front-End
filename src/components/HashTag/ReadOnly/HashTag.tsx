@@ -30,23 +30,24 @@ const Wrapper = styled.span<WrapperProps>`
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  border-radius: 5px;
-  padding: 3px 5px;
-  border: 1px solid var(--hashtag-color-inactive-border);
-  border-color: ${(props) =>
-    props.isActive ? 'var(--hashtag-color-active-border)' : 'var(--hashtag-color-inactive-border)'};
-  margin-right: 3px;
+  border-radius: 20px;
+  padding: 8px 16px;
+  gap: 8px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: ${({ isActive, theme }) =>
+    isActive ? theme.common.white : theme.gray.lighterGray};
+  margin-right: 8px;
   min-width: 40px;
 
-  background-color: var(--hashtag-color-background);
+  background-color: ${({ isActive, theme }) =>
+    isActive ? theme.common.black : theme.common.white};
 
-  color: ${(props) =>
-    props.isActive ? 'var(--hashtag-color-active-border)' : 'var(--hashtag-color-inactive-border)'};
+  color: ${({ isActive, theme }) => (isActive ? theme.common.white : theme.gray.darkGray)};
 
   cursor: pointer;
 
-  font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 14px;
-  line-height: 19px;
+  line-height: 18.2px;
 `;

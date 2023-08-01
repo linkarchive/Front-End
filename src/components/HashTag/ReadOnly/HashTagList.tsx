@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import API from '@/api/API';
 import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
-import ChevronUpAndDown from '@/components/svg/ChevronDown';
+import { ChevronUpAndDownSvg } from '@/components/svg/Svg';
 
 type HashTagListProps = {
   children: React.ReactNode;
@@ -55,7 +55,7 @@ const HashTagList = ({ children }: HashTagListProps) => {
   return (
     <>
       <Toggle onClick={handleButtonClick}>
-        <ChevronUpAndDown isButtonClicked={isButtonClicked} />
+        <ChevronUpAndDownSvg isButtonClicked={isButtonClicked} />
       </Toggle>
       <Wrapper isButtonClicked={isButtonClicked}>
         <Content isButtonClicked={isButtonClicked}>
@@ -74,10 +74,10 @@ export default HashTagList;
 
 const Wrapper = styled.div<{ isButtonClicked: boolean }>`
   position: relative;
-  padding: 6px 20px;
-  border-bottom: 1px solid #c8c8c8;
+  padding: 4px;
+  border-bottom: 8px solid ${({ theme }) => theme.gray.lightBlack};
   overflow-x: hidden;
-  max-height: ${({ isButtonClicked }) => (isButtonClicked ? '100px' : '50px')};
+  max-height: ${({ isButtonClicked }) => (isButtonClicked ? '100px' : '62px')};
   transition: max-height 0.5s ease;
 
   ::-webkit-scrollbar {
