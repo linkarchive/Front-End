@@ -39,6 +39,7 @@ const palette = {
     mediumGray: '#858585',
     lightGray: '#aaaaaa',
     lighterGray: '#DDDDDD',
+    darkWhite: '#F5F5F5',
   },
 };
 

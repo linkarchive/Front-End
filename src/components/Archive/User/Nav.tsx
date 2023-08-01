@@ -2,7 +2,7 @@ import { RootState, useAppDispatch } from '@/store';
 import { navSlice } from '@/store/slices/navSlice';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 const Nav = () => {
   const dispatch = useAppDispatch();
@@ -16,7 +16,7 @@ const Nav = () => {
 
   return (
     <Wrapper>
-      <ul className='nav'>
+      <StyledUl>
         <Item
           isActive={userLink}
           onClick={() => {
@@ -33,46 +33,44 @@ const Nav = () => {
         >
           마크
         </Item>
-      </ul>
+      </StyledUl>
     </Wrapper>
   );
 };
 
-const Wrapper = styled.nav`
-  box-sizing: border-box;
-  border-bottom: 1px solid ${({ theme }) => theme.gray.lightGray};
+const Wrapper = styled.nav``;
 
-  .nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
+const StyledUl = styled.ul`
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
 
-    height: 38px;
-    list-style: none;
-  }
+  height: 38px;
+  list-style: none;
 `;
 
 const Item = styled.li<{ isActive?: boolean }>`
+  /* background-color: aquamarine; */
   display: flex;
   align-items: center;
   justify-content: center;
+  border-bottom: 2px solid ${({ theme }) => theme.gray.darkWhite};
 
-  width: 72px;
+  width: 100%;
   height: 100%;
 
   cursor: pointer;
 
-  font-size: 12px;
-  line-height: 14px;
+  font-size: 16px;
+  line-height: 20.8px;
   color: ${({ theme }) => theme.gray.lightGray};
 
-  ${({ isActive }) =>
+  ${({ isActive, theme }) =>
     isActive &&
-    css`
-      border-bottom: 2px solid ${({ theme }) => theme.primary.main};
-
-      color: ${({ theme }) => theme.primary.main};
-    `};
+    `
+      border-bottom: 2px solid ${theme.common.black};
+      color: ${theme.common.black};
+    `}
 `;
 
 export default Nav;
