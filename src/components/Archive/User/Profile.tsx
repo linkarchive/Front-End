@@ -76,10 +76,10 @@ const Profile = ({
   return (
     <Container>
       <ProfileWrapper>
-        <ProfileInfoBox>
+        <div>
           <ProfileNickname>{nickname}</ProfileNickname>
           <ProfileIntro>{introduce}</ProfileIntro>
-        </ProfileInfoBox>
+        </div>
 
         <ProfileImage>
           <Image alt='profile_image' src={profileImageFileName} fill />
@@ -138,8 +138,6 @@ const ProfileWrapper = styled.div`
   color: ${({ theme }) => theme.common.black};
 `;
 
-const ProfileInfoBox = styled.div``;
-
 const ProfileNickname = styled.div`
   margin-bottom: 4px;
 
@@ -150,7 +148,6 @@ const ProfileNickname = styled.div`
 const ProfileIntro = styled.div`
   font-size: 14px;
   line-height: 18.2px;
-
   color: ${({ theme }) => theme.gray.lightGray};
 `;
 

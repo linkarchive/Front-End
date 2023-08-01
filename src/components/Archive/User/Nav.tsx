@@ -15,7 +15,7 @@ const Nav = () => {
   }, [dispatch]);
 
   return (
-    <Wrapper>
+    <nav>
       <StyledUl>
         <Item
           isActive={userLink}
@@ -34,11 +34,9 @@ const Nav = () => {
           마크
         </Item>
       </StyledUl>
-    </Wrapper>
+    </nav>
   );
 };
-
-const Wrapper = styled.nav``;
 
 const StyledUl = styled.ul`
   display: flex;
