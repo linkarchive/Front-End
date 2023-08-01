@@ -2,93 +2,7 @@ import LinkItem, { LinkItemWithProfile, LinkItemListProps } from '@/components/L
 import React from 'react';
 import styled from 'styled-components';
 import { DeleteButton } from './DeleteButton';
-
-const LinkItemList = ({ data, queryKey }: LinkItemListProps) => {
-  const isEmpty =
-    data[0]?.linkArchive?.length <= 0 ||
-    data[0]?.linkList?.length <= 0 ||
-    data[0]?.markList?.length <= 0 ||
-    data[0]?.trashLinkList?.length <= 0;
-  if (isEmpty) {
-    return <Block>링크가 없습니다.</Block>;
-  }
-
-  return (
-    <>
-      {data.map((data_) => {
-        const linkList =
-          data_.linkList || data_.linkArchive || data_.markList || data_.trashLinkList;
-
-        return (
-          <>
-            {linkList.map((linkItem) => (
-              <LinkItem key={linkItem.linkId} queryKey={queryKey} {...linkItem} />
-            ))}
-          </>
-        );
-      })}
-    </>
-  );
-};
-
-const LinkItemWithProfileList = ({ data, queryKey }: LinkItemListProps) => {
-  const isEmpty =
-    data[0]?.linkArchive?.length <= 0 ||
-    data[0]?.linkList?.length <= 0 ||
-    data[0]?.markList?.length <= 0;
-
-  if (isEmpty) {
-    return <Block>링크가 없습니다.</Block>;
-  }
-  return (
-    <>
-      {data.map((data_) => {
-        const linkList = data_.linkList || data_.linkArchive || data_.markList;
-
-        return (
-          <>
-            {linkList.map((linkItem) => (
-              <LinkItemWithProfile key={linkItem.linkId} queryKey={queryKey} {...linkItem} />
-            ))}
-          </>
-        );
-      })}
-    </>
-  );
-};
-
-const HomeLinkItemList = ({ data, queryKey }: LinkItemListProps) => {
-  const isEmpty =
-    data[0]?.linkArchive?.length <= 0 ||
-    data[0]?.linkList?.length <= 0 ||
-    data[0]?.markList?.length <= 0;
-
-  if (isEmpty) {
-    return <Block>링크가 없습니다.</Block>;
-  }
-
-  return (
-    <>
-      {data.map((data_) => {
-        const linkList =
-          data_.linkList || data_.linkArchive || data_.markList || data_.trashLinkList;
-
-        return (
-          <>
-            {linkList.map((linkItem) => (
-              <>
-                <LinkItem key={linkItem.linkId} queryKey={queryKey} {...linkItem} />
-                <DeleteButton id={linkItem.linkId} queryKey={queryKey} />
-              </>
-            ))}
-          </>
-        );
-      })}
-    </>
-  );
-};
-
-export { LinkItemList, LinkItemWithProfileList, HomeLinkItemList };
+import LinkItemListLayout from '@/layouts/LinkItemLayout';
 
 const Block = styled.div`
   display: flex;
@@ -97,31 +11,60 @@ const Block = styled.div`
   height: 100px;
 `;
 
-/** 
- // TODO HOC 개선 
-import { ComponentType } from 'react';
-
-interface LinkItemProps {
-  [key: string]: string;
-}
-interface LinkItemListProps {
-  linkList: LinkItemProps[];
+interface LinkItemListRendererProps extends LinkItemListProps {
+  ItemComponent: React.ComponentType;
+  showDelete?: boolean;
 }
 
-const withLinkItemList = <P extends object>(
-  WrappedComponent: ComponentType<P & LinkItemListProps>
-): React.FC<LinkItemListProps & P> => {
-  // eslint-disable-next-line react/display-name, @typescript-eslint/no-explicit-any, react/prop-types
-  return ({ linkList, ...props }) => {
-    return (
+const LinkItemListRenderer = ({
+  data,
+  queryKey,
+  ItemComponent,
+  showDelete,
+}: LinkItemListRendererProps) => {
+  const isEmpty =
+    data[0]?.linkArchive?.length <= 0 ||
+    data[0]?.linkList?.length <= 0 ||
+    data[0]?.markList?.length <= 0 ||
+    (showDelete && data[0]?.trashLinkList?.length <= 0);
+
+  if (isEmpty) {
+    return <Block>링크가 없습니다.</Block>;
+  }
+
+  const linkItems = data.flatMap((data_) => {
+    const linkList =
+      data_.linkList || data_.linkArchive || data_.markList || (showDelete && data_.trashLinkList);
+
+    return linkList.map((linkItem) => ({
+      key: linkItem.linkId,
+      queryKey,
+      ...linkItem,
+    }));
+  });
+
+  return (
+    <LinkItemListLayout>
       <>
-        {linkList.map((linkItem, idx) => (
-          <WrappedComponent {...linkItem} {...props} key={idx} />
+        {linkItems.map((item) => (
+          <>
+            <ItemComponent {...item} />
+            {showDelete && <DeleteButton id={item.key} queryKey={item.queryKey} />}
+          </>
         ))}
       </>
-    );
-  };
+    </LinkItemListLayout>
+  );
 };
 
-export default withLinkItemList;
-*/
+const LinkItemList = (props: LinkItemListProps) => (
+  <LinkItemListRenderer {...props} ItemComponent={LinkItem} showDelete /> // 휴지통에서의 삭제는 어떻게 할지 모르겠음
+);
+const LinkItemWithProfileList = (props: LinkItemListProps) => (
+  <LinkItemListRenderer {...props} ItemComponent={LinkItemWithProfile} showDelete />
+);
+const HomeLinkItemList = (props: LinkItemListProps) => (
+  <LinkItemListRenderer {...props} ItemComponent={LinkItem} showDelete />
+);
+
+export { LinkItemList, LinkItemWithProfileList, HomeLinkItemList };

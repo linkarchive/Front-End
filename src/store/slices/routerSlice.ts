@@ -55,6 +55,11 @@ export const routerSlice = createSlice({
       state.current = 'Hashtag';
       state.name = '해시태그 관리';
     },
+    loadArchiveUser(state) {
+      state.status = 'OTHER';
+      state.current = 'ArchiveUser';
+      state.name = '';
+    },
     // 페이지 추가시 reducer추가
   },
 });

@@ -39,7 +39,7 @@ const Title = styled.span`
   left: 50%;
   transform: translate(-50%, 0);
 
-  color: --var(--font-color-darkgray);
+  color: ${({ theme }) => theme.gray.darkGray};
   text-align: center;
   font-weight: 600;
   font-size: 18px;

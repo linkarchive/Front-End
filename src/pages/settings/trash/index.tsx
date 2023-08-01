@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { setAccessToken } from '@/api/customAPI';
-import { withAuth } from '@/lib/withAuth';
+import { withAuth, withAuthProps } from '@/lib/withAuth';
 import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
 import API from '@/api/API';
@@ -9,7 +9,7 @@ import InfinityScroll from '@/components/Common/InfinityScroll';
 
 export const getServerSideProps = withAuth();
 
-const Page = ({ accessToken }: { accessToken: string }) => {
+const Page = ({ accessToken }: withAuthProps) => {
   setAccessToken(accessToken);
 
   const dispatch = useAppDispatch();
