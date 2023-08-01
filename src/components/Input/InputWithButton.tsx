@@ -28,9 +28,9 @@ const Button = styled.button`
   width: 108px;
   margin-left: 4px;
 
-  background: var(--button-color-primary);
+  background: ${({ theme }) => theme.primary.main};
   border: none;
   border-radius: 4px;
 
-  color: var(--font-color-white);
+  color: ${({ theme }) => theme.common.white};
 `;

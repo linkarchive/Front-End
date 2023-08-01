@@ -244,7 +244,7 @@ const ButtonBlock = styled.div`
   justify-content: center;
   bottom: ${BottomNavHight};
 
-  width: var(--default-width);
+  width: '40px';
   padding-bottom: 29px;
 `;
 
@@ -253,9 +253,9 @@ const Button = styled.button`
   height: 53px;
   border-radius: 4px;
 
-  background: var(--button-color-primary);
+  background: ${({ theme }) => theme.primary.main};
 
-  color: var(--font-color-white);
+  color: ${({ theme }) => theme.common.white};
   font-weight: 600;
   font-size: 18px;
   line-height: 21px;

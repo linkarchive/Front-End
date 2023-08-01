@@ -40,7 +40,7 @@ const Nav = () => {
 
 const Wrapper = styled.nav`
   box-sizing: border-box;
-  border-bottom: 1px solid var(--font-color-lightgray);
+  border-bottom: 1px solid ${({ theme }) => theme.gray.lightGray};
 
   .nav {
     display: flex;
@@ -64,14 +64,14 @@ const Item = styled.li<{ isActive?: boolean }>`
 
   font-size: 12px;
   line-height: 14px;
-  color: var(--font-color-lightgray);
+  color: ${({ theme }) => theme.gray.lightGray};
 
   ${({ isActive }) =>
     isActive &&
     css`
-      border-bottom: 2px solid var(--font-color-primary);
+      border-bottom: 2px solid ${({ theme }) => theme.primary.main};
 
-      color: var(--font-color-primary);
+      color: ${({ theme }) => theme.primary.main};
     `};
 `;
 

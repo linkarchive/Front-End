@@ -59,7 +59,7 @@ const Wrapper = styled.h2`
   justify-content: center;
   align-items: center;
 
-  color: var(--font-color-primary);
+  color: ${({ theme }) => theme.primary.main};
   transform: rotate(45deg);
   opacity: 0.2;
 `;

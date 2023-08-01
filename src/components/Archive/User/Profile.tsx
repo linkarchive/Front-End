@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Image from 'next/image';
 import { User } from '@/components/Archive/User/User.type';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Button from './Button';
 import { AlarmBellSvg, PlusSvg } from '@/components/svg/Svg';
 import API from '@/api/API';
@@ -75,93 +75,94 @@ const Profile = ({
     }
   };
   return (
-    <>
-      <Wrapper>
-        <div className='profile-image'>
-          <Image alt='' src={profileImageFileName} fill />
-        </div>
-        <div className='info'>
-          <div className='nickname'>{nickname}</div>
-          <div className='introduce'>{introduce}</div>
-        </div>
-      </Wrapper>
-      <Content>
-        <span>팔로워 : {followerCount}</span>
-        <span>팔로잉 : {followingCount}</span>
-        <Button
-          isActive={isAlarm}
-          onClick={handleAlarmClick}
-          text='알람'
-          svg={
-            <AlarmBellSvg
-              color={
-                isAlarm
-                  ? 'var(--hashtag-color-active-border)'
-                  : 'var(--hashtag-color-inactive-border)'
-              }
-            />
-          }
-          width='79px'
-        />
-        <Button
-          isActive={isFollow}
-          onClick={handleFollowClick}
-          text='팔로우'
-          svg={
-            <PlusSvg
-              color={
-                isFollow
-                  ? 'var(--hashtag-color-active-border)'
-                  : 'var(--hashtag-color-inactive-border)'
-              }
-            />
-          }
-          width='90px'
-        />
-      </Content>
-    </>
+    <Container>
+      <ProfileWrapper>
+        <ProfileInfoBox>
+          <ProfileNickname>{nickname}</ProfileNickname>
+          <ProfileIntro>{introduce}</ProfileIntro>
+        </ProfileInfoBox>
+
+        <ProfileImage>
+          <Image alt='profile_image' src={profileImageFileName} fill />
+        </ProfileImage>
+      </ProfileWrapper>
+
+      <InteractiveWrapper>
+        <FollowGroup>
+          <FollowerContent>팔로워 : {followerCount}</FollowerContent>
+          <FollowingContent>팔로잉 : {followingCount}</FollowingContent>
+        </FollowGroup>
+
+        <ButtonGroup>
+          <Button
+            isActive={isAlarm}
+            onClick={handleAlarmClick}
+            text='알람'
+            svg={<AlarmBellSvg color={isAlarm ? '#FF5248' : '#aaaaaa'} />}
+            width='79px'
+          />
+          <Button
+            isActive={isFollow}
+            onClick={handleFollowClick}
+            text='팔로우'
+            svg={<PlusSvg color={isFollow ? '#FF5248' : '#aaaaaa'} />}
+            width='90px'
+          />
+        </ButtonGroup>
+      </InteractiveWrapper>
+    </Container>
   );
 };
 
-const Wrapper = styled.div`
+const Container = styled.main`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  background-color: aliceblue;
+  padding-bottom: 20px;
+`;
+
+const ProfileWrapper = styled.div`
+  background-color: #878228;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
 
   height: 86px;
   padding: 0 26px;
 
-  color: var(--font-color-darkgray);
-
-  .profile-image {
-    position: relative;
-    overflow: hidden;
-
-    width: 48px;
-    height: 48px;
-    margin-right: 8px;
-    border-radius: 100%;
-  }
-
-  .nickname {
-    margin-bottom: 4px;
-
-    font-weight: 700;
-    font-size: 12px;
-    line-height: 14px;
-  }
-
-  .introduce {
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 14px;
-  }
+  color: ${({ theme }) => theme.common.black};
 `;
 
-const Content = styled.div`
+const ProfileInfoBox = styled.div``;
+
+const ProfileNickname = styled.div`
+  margin-bottom: 4px;
+
+  font-size: 16px;
+`;
+
+const ProfileIntro = styled.div`
+  font-size: 10px;
+`;
+
+const ProfileImage = styled.div`
+  position: relative;
+  overflow: hidden;
+
+  width: '56px';
+  height: '56px';
+  margin-right: 8px;
+  border-radius: 100%;
+`;
+
+const InteractiveWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
 `;
+const FollowerContent = styled.div``;
+const FollowingContent = styled.div``;
+const FollowGroup = styled.div``;
+const ButtonGroup = styled.div``;
 
 export default Profile;

@@ -32,17 +32,15 @@ const Wrapper = styled.span<WrapperProps>`
   align-items: center;
   border-radius: 20px;
   padding: 10px 14px;
-  border: 1px solid var(--hashtag-color-inactive-border);
-  border-color: ${(props) =>
-    props.isActive ? 'var(--hashtag-color-active-border)' : 'var(--hashtag-color-inactive-border)'};
+  border: 1px solid ${({ theme }) => theme.gray.lightGray};
+  border-color: ${({ isActive, theme }) => (isActive ? theme.primary.main : theme.gray.lightGray)};
   margin-right: 3px;
   width: ${(props) => props.width};
   height: 38px;
 
-  background-color: var(--hashtag-color-background);
+  background-color: ${({ theme }) => theme.common.white};
 
-  color: ${(props) =>
-    props.isActive ? 'var(--hashtag-color-active-border)' : 'var(--hashtag-color-inactive-border)'};
+  color: ${({ isActive, theme }) => (isActive ? theme.primary.main : theme.gray.lightGray)};
 
   cursor: pointer;
 

@@ -6,8 +6,6 @@ import HomeBtn from './HomeBtn';
 import SettingsBtn from './SettingsBtn';
 import { zIndex } from '@/constants/zIndex';
 
-const BottomNavHight = '70px';
-
 const BottomNav = () => {
   const router = useRouter();
   const [activeItem, setActiveItem] = useState<string>('home');
@@ -41,11 +39,11 @@ const FooterWrapper = styled.footer`
   z-index: ${zIndex.BottomNav};
 
   box-sizing: border-box;
-  width: var(--default-width);
-  height: ${BottomNavHight};
-  border-top: 1px solid var(--border-color-lighter-gray);
+  width: 375px;
+  height: 70px;
+  border-top: 1px solid ${({ theme }) => theme.gray.lighterGray};
 
-  background-color: var(--background-color-default);
+  background-color: ${({ theme }) => theme.common.white};
 `;
 
 const Nav = styled.nav`
@@ -55,4 +53,3 @@ const Nav = styled.nav`
 `;
 
 export default BottomNav;
-export { BottomNavHight };

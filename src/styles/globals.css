@@ -12,7 +12,7 @@ html {
 
 body {
   margin: 0 auto;
-  width: var(--default-width);
+  width: 375px;
   min-height: 100%;
 
   font-family: 'Pretendard';

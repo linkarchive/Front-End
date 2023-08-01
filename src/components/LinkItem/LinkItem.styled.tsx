@@ -41,7 +41,7 @@ const Thumb = styled.div`
     height: 100%;
     object-fit: cover;
 
-    font-size: var(--font-size-sm);
+    font-size: 10px;
   }
 `;
 
