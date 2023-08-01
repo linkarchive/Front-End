@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import styled from 'styled-components';
 import API from '@/api/API';
-import { BottomNavHight } from '@/components/BottomNav/BottomNav';
 import Input, { InputWithButton } from '@/components/Input';
 import LinkInfo from '@/components/Create/LinkInfo';
 import { MetaData } from '@/components/LinkItem';
@@ -242,7 +241,7 @@ const ButtonBlock = styled.div`
   position: fixed;
   display: flex;
   justify-content: center;
-  bottom: ${BottomNavHight};
+  bottom: 70px;
 
   width: '40px';
   padding-bottom: 29px;

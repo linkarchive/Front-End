@@ -1,5 +1,5 @@
 import React from 'react';
-import BottomNav, { BottomNavHight } from '@/components/BottomNav/BottomNav';
+import BottomNav from '@/components/BottomNav/BottomNav';
 import styled from 'styled-components';
 import HomeHeader from '@/components/Home/HomeHeader';
 import { useSelector } from 'react-redux';
@@ -36,7 +36,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
 export default MainLayout;
 
 const Main = styled.main`
-  padding-bottom: ${BottomNavHight};
+  padding-bottom: 70px;
 `;
 
 const WaterMark = () => {
