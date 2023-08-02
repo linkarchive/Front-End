@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import styled from 'styled-components';
 import API from '@/api/API';
-import { BottomNavHight } from '@/components/BottomNav/BottomNav';
 import Input, { InputWithButton } from '@/components/Input';
 import LinkInfo from '@/components/Create/LinkInfo';
 import { MetaData } from '@/components/LinkItem';
@@ -242,9 +241,9 @@ const ButtonBlock = styled.div`
   position: fixed;
   display: flex;
   justify-content: center;
-  bottom: ${BottomNavHight};
+  bottom: 70px;
 
-  width: var(--default-width);
+  width: '40px';
   padding-bottom: 29px;
 `;
 
@@ -253,9 +252,9 @@ const Button = styled.button`
   height: 53px;
   border-radius: 4px;
 
-  background: var(--button-color-primary);
+  background: ${({ theme }) => theme.primary.main};
 
-  color: var(--font-color-white);
+  color: ${({ theme }) => theme.common.white};
   font-weight: 600;
   font-size: 18px;
   line-height: 21px;

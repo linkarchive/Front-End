@@ -17,3 +17,10 @@ export const withAuth = (gssp?: GetServerSideProps) => {
     };
   };
 };
+
+export type withAuthProps = {
+  accessToken: string | null;
+  userId?: string | null;
+  nickname?: string | null;
+  refreshToken?: string | null;
+};

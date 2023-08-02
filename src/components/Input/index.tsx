@@ -53,7 +53,7 @@ const Wrapper = styled.div`
     font-weight: 600;
     font-size: 18px;
     line-height: 21px;
-    color: var(--font-color-darkGray);
+    color: ${({ theme }) => theme.gray.darkGray};
   }
 
   .input-wrapper {
@@ -75,6 +75,6 @@ const Wrapper = styled.div`
     font-weight: 400;
     font-size: 12px;
     line-height: 14px;
-    color: var(--font-color-warn);
+    color: ${({ theme }) => theme.warning.main};
   }
 `;

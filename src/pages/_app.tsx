@@ -3,13 +3,13 @@ import MainLayout from '@/layouts/MainLayout';
 import type { AppProps } from 'next/app';
 import '@/styles/globals.css';
 import { ThemeProvider } from 'styled-components';
-import { GlobalStyle, theme } from '@/styles';
 import wrapper, { persistor } from '@/store';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { System } from '@/layouts/System';
 import { ReactElement, ReactNode } from 'react';
 import { NextPage } from 'next';
+import palette from '@/styles/palette';
 
 export const queryClient = new QueryClient();
 
@@ -29,8 +29,7 @@ const App = ({ Component, ...rest }: AppPropsWithLayout) => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <ThemeProvider theme={theme}>
-          <GlobalStyle />
+        <ThemeProvider theme={palette}>
           <System />
           <MainLayout>
             <QueryClientProvider client={queryClient}>
