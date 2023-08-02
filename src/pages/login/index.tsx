@@ -34,6 +34,8 @@ const Login = () => {
         <input type='checkbox' onChange={handleClientIdChange} />
         <span>클라이언트 ID 변경</span>
         <span>{clientId}</span>
+        <div>api주소</div>
+        <span>{process.env.NEXT_PUBLIC_API_BASE_URL}</span>
       </div>
       <Link href={KakaoAuthUrl}>
         <Content>
