@@ -15,9 +15,9 @@ const Login = () => {
   }, [dispatch]);
 
   const [clientId, setClientId] = useState('6d4215acd0b9bb536446d9a6b50e0eb8');
-
+  const domain = 'https://stage.link-archive.com';
   const { apiUrl } = useSelector(toastBarState); // 현재 apiUrl 상태를 조회합니다.
-  const RedirectUri = `${apiUrl}/auth/kakao`;
+  const RedirectUri = `${domain}/auth/kakao`;
 
   const handleApiBaseUrlChange = () => {
     const newApiUrl =
