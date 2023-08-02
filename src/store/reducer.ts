@@ -5,10 +5,12 @@ import { toastBarSlice } from './slices/toastBarSlice';
 import { HashTagSlice } from './slices/hashTagSlice';
 import { userSlice } from './slices/userSlice';
 import { navSlice } from './slices/navSlice';
+import { followerTabSlice } from './slices/tabSlice';
 
 const combinedReducer = combineReducers({
   router: routerSlice.reducer,
   nav: navSlice.reducer,
+  followerTab: followerTabSlice.reducer,
   toastBar: toastBarSlice.reducer,
   hashTag: HashTagSlice.reducer,
   user: userSlice.reducer,
