@@ -16,12 +16,21 @@ const Login = () => {
   const RedirectUri = `${domain}/auth/kakao`;
 
   const [clientId, setClientId] = useState('6d4215acd0b9bb536446d9a6b50e0eb8');
+  const [apiBaseUrl, setApiBaseUrl] = useState(process.env.NEXT_PUBLIC_API_BASE_URL);
 
   const handleClientIdChange = () => {
     setClientId((prevClientId) =>
       prevClientId === '6d4215acd0b9bb536446d9a6b50e0eb8'
         ? '007ec5398a74c54203469840f4a3370e'
         : '6d4215acd0b9bb536446d9a6b50e0eb8'
+    );
+  };
+
+  const handleApiBaseUrlChange = () => {
+    setApiBaseUrl((prevApiBaseUrl) =>
+      prevApiBaseUrl === 'https://api.link-archive.com'
+        ? 'https://product.link-archive.com'
+        : 'https://api.link-archive.com'
     );
   };
 
@@ -34,8 +43,11 @@ const Login = () => {
         <input type='checkbox' onChange={handleClientIdChange} />
         <span>클라이언트 ID 변경</span>
         <span>{clientId}</span>
-        <div>api주소</div>
-        <span>{process.env.NEXT_PUBLIC_API_BASE_URL}</span>
+        <div>
+          <input type='checkbox' onChange={handleApiBaseUrlChange} />
+          <span>API 주소 변경</span>
+          <span>{apiBaseUrl}</span>
+        </div>
       </div>
       <Link href={KakaoAuthUrl}>
         <Content>
@@ -45,6 +57,8 @@ const Login = () => {
     </Wrapper>
   );
 };
+
+// 나머지 코드...
 
 // 나머지 코드...
 
