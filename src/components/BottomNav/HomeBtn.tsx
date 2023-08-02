@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
-import HomeSvgIcon from 'public/assets/svg/home.svg';
 import { SvgIcon, SvgWrapper } from '../SvgStyle.styled';
+import { HomeSvg } from '../svg/Svg';
 
 type HomeBtnProps = {
   activeItem: string;
@@ -12,7 +12,7 @@ const HomeBtn = ({ activeItem }: HomeBtnProps) => {
     <SvgWrapper>
       <Link href='/'>
         <SvgIcon isActive={activeItem === 'home'}>
-          <HomeSvgIcon />
+          <HomeSvg />
         </SvgIcon>
       </Link>
     </SvgWrapper>
