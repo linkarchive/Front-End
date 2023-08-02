@@ -13,9 +13,13 @@ const TabWrapper = styled.div`
 `;
 
 const TabItemWrapper = styled.span<{ isActive?: boolean }>`
+  justify-content: center;
+  align-items: center;
+  display: flex;
   flex-grow: 1;
 
-  padding: 16px 0;
+  height: 53px;
+
   border-bottom: 2px solid #f5f5f5;
 
   color: #a1a1a1;
