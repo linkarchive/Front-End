@@ -1,3 +1,4 @@
+import useTabs from '@/hooks/useFollowerTabs';
 import styled, { css } from 'styled-components';
 
 const Block = styled.div`
@@ -32,20 +33,41 @@ const TabItemWrapper = styled.span<{ isActive?: boolean }>`
     `};
 `;
 
-const TabItem = ({ text, isActive }: { text: string; isActive?: boolean }) => {
+const TabItem = ({
+  text,
+  isActive,
+  onClick,
+}: {
+  text: string;
+  isActive?: boolean;
+  onClick: (e: undefined) => void;
+}) => {
   return (
-    <TabItemWrapper isActive={isActive}>
+    <TabItemWrapper isActive={isActive} onClick={onClick}>
       <span>{text}</span>
     </TabItemWrapper>
   );
 };
 
-const Tab = () => {
+interface TabProps {
+  tabs: {
+    text: string;
+  }[];
+}
+
+const Tab = ({ tabs }: TabProps) => {
+  const { activeItem, handleClick } = useTabs('팔로워');
   return (
     <Block>
       <TabWrapper>
-        <TabItem text='팔로워' isActive />
-        <TabItem text='팔로잉' />
+        {tabs.map(({ text }) => (
+          <TabItem
+            key={text}
+            text={text}
+            isActive={activeItem === text}
+            onClick={() => handleClick(text)}
+          />
+        ))}
       </TabWrapper>
     </Block>
   );
