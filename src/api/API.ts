@@ -26,14 +26,14 @@ const API = {
     return data;
   },
 
-  kakaoLogin: async ({ code }: KakaoType): Promise<AxiosResponse> => {
-    const response = await clientInstance.post(`auth/kakao`, null, {
-      params: {
-        code,
-      },
-    });
-    return response;
-  },
+  // kakaoLogin: async ({ code }: KakaoType): Promise<AxiosResponse> => {
+  //   const response = await clientInstance.post(`auth/kakao`, null, {
+  //     params: {
+  //       code,
+  //     },
+  //   });
+  //   return response;
+  // },
 
   getLinkMetadata: async (url: string) => {
     const { data } = await clientInstance.get(`link/metadata`, {

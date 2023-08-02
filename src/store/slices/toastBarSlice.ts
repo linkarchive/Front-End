@@ -4,14 +4,14 @@ interface ToastBar {
   text?: string;
   children?: React.ReactNode;
   show: boolean;
+  apiUrl?: string; // 추가된 상태
 }
-
-// type ToastBarProps = Pick<ToastBar, 'text' | 'children'>;
 
 const initialState: ToastBar = {
   text: '',
   children: '',
   show: false,
+  apiUrl: 'https://api.link-archive.com', // 초기값
 };
 
 export const toastBarSlice = createSlice({
@@ -26,11 +26,15 @@ export const toastBarSlice = createSlice({
     destroyToastBar(state) {
       state.show = false;
     },
+    setApiUrl(state, action) {
+      // 추가된 액션
+      state.apiUrl = action.payload;
+    },
   },
 });
 
 export const toastBarState = (state) => state.toastBar;
-export const { setToastBar, destroyToastBar } = toastBarSlice.actions;
+export const { setToastBar, destroyToastBar, setApiUrl } = toastBarSlice.actions;
 export const createToastBar = (props) => (dispatch) => {
   dispatch(setToastBar(props));
 };

@@ -1,16 +1,34 @@
 import API from '@/api/API';
+import { clientInstance } from '@/api/customAPI';
 import Spinner from '@/components/Spinner';
 import { useAppDispatch } from '@/store';
+import { toastBarState } from '@/store/slices/toastBarSlice';
 import { setUser } from '@/store/slices/userSlice';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 const KakaoAuth = () => {
   const router = useRouter();
-  const loginMutation = useMutation({ mutationFn: API.kakaoLogin });
+  const { apiUrl } = useSelector(toastBarState);
+
+  useEffect(() => {
+    console.log(apiUrl);
+  }, [apiUrl]);
+
+  // API 호출 함수 정의
+  const kakaoLogin = async ({ code }) => {
+    const response = await clientInstance.post(`${apiUrl}/auth/kakao`, null, {
+      params: {
+        code,
+      },
+    });
+    return response;
+  };
   const dispatch = useAppDispatch();
+  const loginMutation = useMutation({ mutationFn: kakaoLogin });
 
   const handleKakaoLogin = useCallback(() => {
     if (router.query.code) {

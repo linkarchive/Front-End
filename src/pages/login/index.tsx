@@ -4,6 +4,8 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import { routerSlice } from '@/store/slices/routerSlice';
 import { useAppDispatch } from '@/store';
+import { useSelector } from 'react-redux';
+import { setApiUrl, toastBarState } from '@/store/slices/toastBarSlice';
 
 const Login = () => {
   const dispatch = useAppDispatch();
@@ -12,25 +14,24 @@ const Login = () => {
     dispatch(routerSlice.actions.loadLoginPage());
   }, [dispatch]);
 
-  const domain = process.env.NEXT_PUBLIC_DOMAIN;
-  const RedirectUri = `${domain}/auth/kakao`;
-
   const [clientId, setClientId] = useState('6d4215acd0b9bb536446d9a6b50e0eb8');
-  const [apiBaseUrl, setApiBaseUrl] = useState(process.env.NEXT_PUBLIC_API_BASE_URL);
+
+  const { apiUrl } = useSelector(toastBarState); // 현재 apiUrl 상태를 조회합니다.
+  const RedirectUri = `${apiUrl}/auth/kakao`;
+
+  const handleApiBaseUrlChange = () => {
+    const newApiUrl =
+      apiUrl === 'https://api.link-archive.com'
+        ? 'https://product.link-archive.com'
+        : 'https://api.link-archive.com';
+    dispatch(setApiUrl(newApiUrl)); // 새로운 apiUrl로 상태를 변경합니다.
+  };
 
   const handleClientIdChange = () => {
     setClientId((prevClientId) =>
       prevClientId === '6d4215acd0b9bb536446d9a6b50e0eb8'
         ? '007ec5398a74c54203469840f4a3370e'
         : '6d4215acd0b9bb536446d9a6b50e0eb8'
-    );
-  };
-
-  const handleApiBaseUrlChange = () => {
-    setApiBaseUrl((prevApiBaseUrl) =>
-      prevApiBaseUrl === 'https://api.link-archive.com'
-        ? 'https://product.link-archive.com'
-        : 'https://api.link-archive.com'
     );
   };
 
@@ -46,7 +47,7 @@ const Login = () => {
         <div>
           <input type='checkbox' onChange={handleApiBaseUrlChange} />
           <span>API 주소 변경</span>
-          <span>{apiBaseUrl}</span>
+          <span>{apiUrl}</span>
         </div>
       </div>
       <Link href={KakaoAuthUrl}>
@@ -57,10 +58,6 @@ const Login = () => {
     </Wrapper>
   );
 };
-
-// 나머지 코드...
-
-// 나머지 코드...
 
 const Wrapper = styled.div`
   display: flex;
