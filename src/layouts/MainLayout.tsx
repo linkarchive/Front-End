@@ -6,14 +6,12 @@ import { useSelector } from 'react-redux';
 import Header from '@/components/Header/Header';
 import { RootState } from '@/store';
 import ArchiveHeader from '@/components/Archive/ArchiveHeader';
-import SettingsHeader from '@/components/Settings/SettingsHeader';
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const { status, current } = useSelector((state: RootState) => state.router);
   const main = status === 'MAIN';
   const home = current === 'HOME';
   const Archive = current === 'ARCHIVE';
-  const settings = current === 'SETTINGS';
   const none = current === 'NONE';
   return (
     <>
@@ -23,7 +21,6 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
         <>
           {home && <HomeHeader />}
           {Archive && <ArchiveHeader />}
-          {settings && <SettingsHeader />}
           {none}
         </>
       )}

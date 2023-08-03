@@ -5,9 +5,9 @@ const palette = {
     dark: '#FFC7C3',
   },
   secondary: {
-    // light: '#',
-    // main: '#',
-    // dark: '#',
+    light: '#',
+    main: '#FFDBD9',
+    dark: '#',
   },
   error: {
     light: '#e57373',
@@ -39,7 +39,7 @@ const palette = {
     mediumGray: '#858585',
     lightGray: '#aaaaaa',
     lighterGray: '#DDDDDD',
-    darkWhite: '#F5F5F5',
+    darkWhite: '#EEEEEE',
   },
 };
 
