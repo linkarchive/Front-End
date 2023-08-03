@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import Image from 'next/image';
 import { User } from '@/components/Archive/User/User.type';
 import { useState } from 'react';
 import Button from './Button';
@@ -11,6 +10,7 @@ import { createToastBar } from '@/store/slices/toastBarSlice';
 import { AxiosError } from 'axios';
 import { ErrorMessage } from '@/pages/settings/profile';
 import { useSelector } from 'react-redux';
+import ProfileImage from './ProfileImage';
 
 interface ProfileProps extends User {
   followerCount: number;
@@ -81,9 +81,7 @@ const Profile = ({
           <ProfileIntro>{introduce}</ProfileIntro>
         </div>
 
-        <ProfileImage>
-          <Image alt='profile_image' src={profileImageFileName} fill />
-        </ProfileImage>
+        <ProfileImage src={profileImageFileName} size='72px' />
       </ProfileWrapper>
 
       <InteractiveWrapper>
@@ -149,16 +147,6 @@ const ProfileIntro = styled.div`
   font-size: 14px;
   line-height: 18.2px;
   color: ${({ theme }) => theme.gray.lightGray};
-`;
-
-const ProfileImage = styled.div`
-  position: relative;
-  overflow: hidden;
-
-  width: 72px;
-  height: 72px;
-  margin-right: 8px;
-  border-radius: 100%;
 `;
 
 const InteractiveWrapper = styled.div`
