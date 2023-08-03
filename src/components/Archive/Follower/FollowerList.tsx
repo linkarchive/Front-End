@@ -136,9 +136,11 @@ const Follower = ({
   const handleFollowClick = async () => {
     try {
       if (isFollow) {
-        await unfollowMutation.mutateAsync(`${userId}`);
-      } else {
-        await followMutation.mutateAsync(`${userId}`);
+        await unfollowMutation.mutateAsync(userId);
+      }
+
+      if (!isFollow) {
+        await followMutation.mutateAsync(userId);
       }
     } catch (error) {
       // eslint-disable-next-line no-console
