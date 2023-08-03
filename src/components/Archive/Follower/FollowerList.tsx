@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 import Image from 'next/image';
 import { IFollower } from './Follower.type';
+import Link from 'next/link';
 
 const Block = styled.div`
   width: 100%;
@@ -89,27 +90,47 @@ const Button = styled.button<{ isfollow: boolean }>`
     `};
 `;
 
-const Follower = ({ nickname, introduce, profileImageFileName, isfollow }: IFollower) => {
+const Follower = ({
+  nickname,
+  userId,
+  introduce,
+  profileImageFileName,
+  isfollow,
+  isUser,
+}: IFollower & { isUser: boolean }) => {
   const buttonText = isfollow ? '팔로잉' : '팔로우';
   return (
     <Block>
       <Wrapper>
-        <Box>
-          <ProfileImage>
-            <Image alt='' src={profileImageFileName} fill />
-          </ProfileImage>
-          <TextInfoBox>
-            <Nickname>{nickname}</Nickname>
-            <Introduce>{introduce}</Introduce>
-          </TextInfoBox>
-        </Box>
-        <Button isfollow={isfollow}>{buttonText}</Button>
+        {/** // FIXME 임시 라우팅 */}
+        <Link href={`/${userId}`}>
+          <Box>
+            <ProfileImage>
+              <Image alt='' src={profileImageFileName} fill />
+            </ProfileImage>
+            <TextInfoBox>
+              <Nickname>{nickname}</Nickname>
+              <Introduce>{introduce}</Introduce>
+            </TextInfoBox>
+          </Box>
+        </Link>
+        {/* 본인인 경우 팔로우 버튼 노출을 막음 */}
+        {!isUser && <Button isfollow={isfollow}>{buttonText}</Button>}
       </Wrapper>
     </Block>
   );
 };
 
-const FollowerList = ({ followerList }: { followerList: IFollower[] }) => {
+/**
+ * @param authUserId 현재 로그인한 사용자 아이디
+ */
+const FollowerList = ({
+  authUserId,
+  followerList,
+}: {
+  authUserId?: string;
+  followerList: IFollower[];
+}) => {
   if (followerList.length === 0) {
     return <Block>목록이 없습니다.</Block>;
   }
@@ -117,7 +138,11 @@ const FollowerList = ({ followerList }: { followerList: IFollower[] }) => {
   return (
     <>
       {followerList.map((follower) => (
-        <Follower key={follower.userId} {...follower} />
+        <Follower
+          key={follower.userId}
+          {...follower}
+          isUser={parseInt(authUserId, 10) === follower.userId}
+        />
       ))}
     </>
   );
