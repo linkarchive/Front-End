@@ -81,3 +81,16 @@ export const PlusSvg = ({ color }: { color: string }) => {
     </svg>
   );
 };
+
+export const ChevronRight = () => {
+  return (
+    <svg width='21' height='21' viewBox='0 0 21 21' fill='none' xmlns='http://www.w3.org/2000/svg'>
+      <path
+        fillRule='evenodd'
+        clipRule='evenodd'
+        d='M7.54901 17.1336C7.87445 17.459 8.40208 17.459 8.72752 17.1336L14.5609 11.3003C14.8863 10.9748 14.8863 10.4472 14.5609 10.1218L8.72752 4.28843C8.40209 3.96299 7.87445 3.96299 7.54901 4.28843C7.22357 4.61386 7.22357 5.1415 7.54901 5.46694L12.7931 10.711L7.54901 15.9551C7.22357 16.2805 7.22357 16.8082 7.54901 17.1336Z'
+        fill='#DDDDDD'
+      />
+    </svg>
+  );
+};
