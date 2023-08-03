@@ -2,6 +2,12 @@ import styled, { css } from 'styled-components';
 import Image from 'next/image';
 import { IFollower } from './Follower.type';
 import Link from 'next/link';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import API from '@/api/API';
+import { AxiosError } from 'axios';
+import { ErrorMessage } from '@/pages/settings/profile';
+import { createToastBar } from '@/store/slices/toastBarSlice';
+import { useAppDispatch } from '@/store';
 
 const Block = styled.div`
   width: 100%;
@@ -66,7 +72,7 @@ const Introduce = styled.span`
   -webkit-box-orient: vertical;
 `;
 
-const Button = styled.button<{ isfollow: boolean }>`
+const Button = styled.button<{ isFollow: boolean }>`
   width: 69px;
   min-width: 69px;
   height: 34px;
@@ -81,8 +87,8 @@ const Button = styled.button<{ isfollow: boolean }>`
   font-weight: 500;
   line-height: 130%;
 
-  ${({ isfollow }) =>
-    isfollow &&
+  ${({ isFollow }) =>
+    isFollow &&
     css`
       background: #a1a1a1;
 
@@ -95,10 +101,51 @@ const Follower = ({
   userId,
   introduce,
   profileImageFileName,
-  isfollow,
+  isFollow,
   isUser,
 }: IFollower & { isUser: boolean }) => {
-  const buttonText = isfollow ? '팔로잉' : '팔로우';
+  const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
+
+  const buttonText = isFollow ? '팔로잉' : '팔로우';
+
+  const followMutation = useMutation({
+    mutationFn: API.followUser,
+    onSuccess: () => {},
+    onError: (error: AxiosError<ErrorMessage>) => {
+      const errorMessage = error.response.data.message;
+      dispatch(createToastBar({ text: errorMessage }));
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(['user', userId]);
+    },
+  });
+
+  const unfollowMutation = useMutation({
+    mutationFn: API.unFollowUser,
+    onSuccess: () => {},
+    onError: (error: AxiosError<ErrorMessage>) => {
+      const errorMessage = error.response.data.message;
+      dispatch(createToastBar({ text: errorMessage }));
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(['user', nickname]);
+    },
+  });
+
+  const handleFollowClick = async () => {
+    try {
+      if (isFollow) {
+        await unfollowMutation.mutateAsync(`${userId}`);
+      } else {
+        await followMutation.mutateAsync(`${userId}`);
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+    }
+  };
+
   return (
     <Block>
       <Wrapper>
@@ -115,7 +162,11 @@ const Follower = ({
           </Box>
         </Link>
         {/* 본인인 경우 팔로우 버튼 노출을 막음 */}
-        {!isUser && <Button isfollow={isfollow}>{buttonText}</Button>}
+        {!isUser && (
+          <Button isFollow={isFollow} onClick={handleFollowClick}>
+            {buttonText}
+          </Button>
+        )}
       </Wrapper>
     </Block>
   );
