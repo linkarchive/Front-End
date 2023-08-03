@@ -3,7 +3,7 @@ import { setAccessToken } from '@/api/customAPI';
 import InfinityScroll from '@/components/Common/InfinityScroll';
 import CreateBtn from '@/components/Home/CreateBtn';
 import { HomeLinkItemList } from '@/components/LinkItem/LinkItemList';
-import { withAuth } from '@/lib/withAuth';
+import { withAuth, withAuthProps } from '@/lib/withAuth';
 import { RootState, useAppDispatch } from '@/store';
 import { HashTagSlice } from '@/store/slices/hashTagSlice';
 import { routerSlice } from '@/store/slices/routerSlice';
@@ -13,7 +13,7 @@ import styled from 'styled-components';
 
 export const getServerSideProps = withAuth();
 
-const Home = ({ accessToken }: { accessToken: string }) => {
+const Home = ({ accessToken }: withAuthProps) => {
   setAccessToken(accessToken);
 
   const dispatch = useAppDispatch();

@@ -20,11 +20,11 @@ const Wrapper = styled.div<{ show?: boolean }>`
   border-radius: 6px;
   border: none;
 
-  background: var(--toast-background);
+  background: ${({ theme }) => theme.success.main};
 
   font-weight: 600;
   font-size: 18px;
-  color: var(--font-color-white);
+  color: ${({ theme }) => theme.common.white};
 
   transition: all ${showTime}s;
 

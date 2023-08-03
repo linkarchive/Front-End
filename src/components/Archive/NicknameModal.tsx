@@ -148,7 +148,7 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
 
-  background-color: var(--background-color-popup);
+  background-color: ${({ theme }) => theme.gray.lighterGray};
 `;
 
 const Content = styled.div`
@@ -159,14 +159,14 @@ const Content = styled.div`
 
   border-radius: 5px;
 
-  background-color: var(--background-color-default);
+  background-color: ${({ theme }) => theme.common.white};
   box-shadow: 6px 6px 2px 1px rgba(0 0 0 20%);
 
   gap: 1rem;
 `;
 
 const H3 = styled.h3`
-  color: var(--font-color-primary);
+  color: ${({ theme }) => theme.primary.main};
 `;
 
 const InputWrapper = styled.div`
@@ -194,10 +194,10 @@ const Form = styled.form`
 const Input = styled.input`
   width: 170px;
   padding: 5px;
-  border: 1px solid var(--border-color-gray);
+  border: 1px solid ${({ theme }) => theme.gray.mediumGray};
   border-radius: 3px;
 
-  color: var(--font-color-darkgray);
+  color: ${({ theme }) => theme.gray.darkGray};
 
   outline: none;
 `;
@@ -212,19 +212,19 @@ const Button = styled.button`
 `;
 
 const CancelButton = styled(Button)`
-  background: var(--button-color-cancel);
+  background: ${({ theme }) => theme.warning.main};
 
-  color: var(--font-color-white);
+  color: ${({ theme }) => theme.common.white};
 `;
 
 const AcceptButton = styled(Button)`
-  background: var(--button-color-disabled);
+  background: ${({ theme }) => theme.warning.main};
 
-  color: var(--font-color-white);
+  color: ${({ theme }) => theme.common.white};
   cursor: not-allowed;
 
   &:enabled {
-    background: var(--button-color-primary);
+    background: ${({ theme }) => theme.primary.main};
     cursor: pointer;
   }
 `;
@@ -253,8 +253,8 @@ const MessageWrapper = styled.div<MessageWrapperProps>`
   width: 165px;
   margin-top: 5px;
 
-  color: ${(props) => (props.isValid ? 'var(--font-color-primary)' : 'var(--font-color-warn)')};
-  font-size: var(--font-size-sm);
+  color: ${({ isValid, theme }) => (isValid ? theme.primary.main : theme.warning.main)};
+  font-size: 10px;
 `;
 
 export default NicknameModal;

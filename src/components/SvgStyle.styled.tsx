@@ -10,13 +10,14 @@ export const SvgIcon = styled.span<SvgIconProps>`
     display: flex;
     justify-content: center;
     margin: auto;
-    width: var(--svg-width-xxl);
-    height: var(--svg-height-xxl);
-    fill: ${({ isActive }) => (isActive ? 'var(--svg-color-active)' : 'var(--svg-color-default)')};
+    width: 28px;
+    height: 28px;
+    fill: ${({ isActive, theme }) => (isActive ? theme.primary.main : theme.gray.mediumGray)};
+
     cursor: pointer;
 
     &:hover {
-      fill: var(--svg-color-hover);
+      fill: ${({ theme }) => theme.primary.main};
     }
   }
 `;
@@ -26,6 +27,6 @@ export const SvgWrapper = styled.div`
   justify-content: center;
 
   a {
-    width: var(--svg-width-xxl);
+    width: 28px;
   }
 `;

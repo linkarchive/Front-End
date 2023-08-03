@@ -43,7 +43,7 @@ const Wrapper = styled.span<{ variant: Variant; isDeletable?: boolean }>`
   border-radius: 5px;
   padding: 6px 10px;
 
-  background-color: var(--hashtag-color-background);
+  background-color: ${({ theme }) => theme.common.white};
 
   ${({ variant }) => HashTagVariant[variant]};
 
@@ -57,19 +57,19 @@ const Wrapper = styled.span<{ variant: Variant; isDeletable?: boolean }>`
 
 const HashTagVariant = {
   active: css`
-    border: 1px solid var(--hashtag-color-active-border);
+    border: 1px solid ${({ theme }) => theme.primary.main};
 
-    color: var(--hashtag-color-active-text);
+    color: ${({ theme }) => theme.primary.main};
   `,
   inactive: css`
-    border: 1px solid var(--hashtag-color-inactive-border);
+    border: 1px solid ${({ theme }) => theme.gray.lightGray};
 
-    color: var(--hashtag-color-inactive-text);
+    color: ${({ theme }) => theme.gray.lightGray};
   `,
   neutral: css`
-    border: 1px solid var(--hashtag-color-neutral-border);
+    border: 1px solid ${({ theme }) => theme.gray.darkGray};
 
-    color: var(--hashtag-color-neutral-text);
+    color: ${({ theme }) => theme.gray.darkGray};
   `,
 };
 

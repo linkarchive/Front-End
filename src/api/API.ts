@@ -263,6 +263,19 @@ const API = {
     return data.tagList;
   },
 
+  /** 팔로우/언팔로우 요청 */
+  followUser: async (followeeId: string) => {
+    const { data } = await clientInstance.post(`/follow/${followeeId}`);
+
+    return data;
+  },
+
+  unFollowUser: async (followeeId: string) => {
+    const { data } = await clientInstance.delete(`/unfollow/${followeeId}`);
+
+    return data;
+  },
+
   /** 팔로워 리스트 조회 */
   getFollowerList: async (userId: string | number) => {
     const { data } = await clientInstance.get(`/follower-list/${userId}`);

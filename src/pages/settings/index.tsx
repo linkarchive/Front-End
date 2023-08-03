@@ -1,5 +1,5 @@
 import API from '@/api/API';
-import { useAppDispatch } from '@/store';
+import { persistor, useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
 import Link from 'next/link';
 import React, { useEffect } from 'react';
@@ -11,6 +11,7 @@ const Settings = () => {
   const Logout = async () => {
     try {
       await API.deleteAllCookies();
+      persistor.purge();
       window.location.href = '/';
     } catch (error) {
       // eslint-disable-next-line no-console

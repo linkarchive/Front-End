@@ -13,10 +13,10 @@ import { withAuth } from '@/lib/withAuth';
 import { setAccessToken } from '@/api/customAPI';
 import { MessageWrapperProps } from '@/components/Archive/NicknameModal';
 import { createToastBar } from '@/store/slices/toastBarSlice';
-import PhotoSvgIcon from '@/components/svg/PhotoSvgIcon';
 import { cancelSource } from '@/utils/cancelToken';
+import { PhotoSvgIcon } from '@/components/svg/Svg';
 
-interface ErrorMessage {
+export interface ErrorMessage {
   message: string;
 }
 
@@ -251,7 +251,7 @@ const FormWrapper = styled.form`
     margin: 10px 0;
     height: 30px;
 
-    font-size: var(--font-size-md);
+    font-size: 16px;
     outline: none;
   }
 `;
@@ -278,7 +278,7 @@ const ImgContent = styled.span`
   display: flex;
   overflow: hidden;
   position: relative;
-  border: 1px solid var(--border-color-darkgray);
+  border: 1px solid ${({ theme }) => theme.gray.darkGray};
   justify-content: center;
   align-items: center;
   border-radius: 100%;
@@ -292,9 +292,9 @@ const InputWrapper = styled.input<{ isChanged: boolean }>`
   border-bottom: 1px solid black;
   padding-bottom: 10px;
 
-  color: var(--font-color-darkgray);
-  border-color: ${({ isChanged }) =>
-    isChanged ? `var(--border-color-primary)` : `var(--border-color-gray)`};
+  color: ${({ theme }) => theme.gray.darkGray};
+  border-color: ${({ isChanged, theme }) =>
+    isChanged ? theme.primary.main : theme.gray.mediumGray};
 `;
 
 const SvgIcon = styled.span`
@@ -304,20 +304,20 @@ const SvgIcon = styled.span`
   border-radius: 100%;
   padding: 6px;
 
-  background-color: var(--border-color-darkgray);
+  background-color: ${({ theme }) => theme.gray.darkGray};
   cursor: pointer;
 
   svg {
     display: flex;
     justify-content: center;
     margin: auto;
-    width: var(--svg-width-sm);
-    height: var(--svg-height-sm);
-    fill: var(--svg-color-lightGray);
+    width: 12px;
+    height: 12px;
+    fill: ${({ theme }) => theme.gray.lightGray};
   }
 
   &:hover svg {
-    fill: var(--svg-color-hover);
+    fill: ${({ theme }) => theme.primary.main};
   }
 `;
 
@@ -326,8 +326,8 @@ const NicknameMessageWrapper = styled.div<MessageWrapperProps>`
   width: 165px;
   margin-top: 5px;
 
-  color: ${(props) => (props.isValid ? 'var(--font-color-primary)' : 'var(--font-color-warn)')};
-  font-size: var(--font-size-sm);
+  color: ${({ isValid, theme }) => (isValid ? theme.primary.main : theme.warning.main)};
+  font-size: 10px;
 `;
 
 const IntroduceMessageWrapper = styled.div<MessageWrapperProps>`
@@ -335,8 +335,8 @@ const IntroduceMessageWrapper = styled.div<MessageWrapperProps>`
   width: 165px;
   margin-top: 5px;
 
-  color: ${(props) => (props.isValid ? 'var(--font-color-primary)' : 'var(--font-color-warn)')};
-  font-size: var(--font-size-sm);
+  color: ${({ isValid, theme }) => (isValid ? theme.primary.main : theme.warning.main)};
+  font-size: 10px;
 `;
 
 const Button = styled.button`
@@ -344,15 +344,15 @@ const Button = styled.button`
   height: 30px;
   margin-top: 15px;
 
-  background: var(--button-color-primary);
+  background: ${({ theme }) => theme.primary.main};
   border: none;
   border-radius: 4px;
 
-  color: var(--font-color-white);
+  color: ${({ theme }) => theme.common.white};
   cursor: pointer;
 
   &:disabled {
-    background: var(--button-color-disabled);
+    background: ${({ theme }) => theme.warning.main};
     cursor: not-allowed;
   }
 `;
