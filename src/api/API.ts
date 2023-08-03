@@ -278,14 +278,14 @@ const API = {
 
   /** 팔로워 리스트 조회 */
   getFollowerList: async (userId: string | number) => {
-    const { data } = await clientInstance.get(`/follower-list/${userId}`);
+    const { data } = await clientInstance.get(`/follower-list/user/${userId}`);
 
     return data;
   },
 
   /** 팔로잉 리스트 조회 */
   getFollowingList: async (userId: string | number) => {
-    const { data } = await clientInstance.get(`/following-list/${userId}`);
+    const { data } = await clientInstance.get(`/following-list/user/${userId}`);
 
     return data;
   },
