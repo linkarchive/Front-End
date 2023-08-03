@@ -265,13 +265,13 @@ const API = {
 
   /** 팔로우/언팔로우 요청 */
   followUser: async (followeeId: string) => {
-    const { data } = await clientInstance.post(`/follow/${followeeId}`);
+    const { data } = await clientInstance.post(`/follow/user/${followeeId}`);
 
     return data;
   },
 
   unFollowUser: async (followeeId: string) => {
-    const { data } = await clientInstance.delete(`/unfollow/${followeeId}`);
+    const { data } = await clientInstance.delete(`/unfollow/user/${followeeId}`);
 
     return data;
   },
