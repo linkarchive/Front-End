@@ -17,7 +17,7 @@ const palette = {
   warning: {
     light: '#ffb74d',
     main: '#ffa726',
-    dark: '#f57c00',
+    dark: '#DDDDDD',
   },
   info: {
     light: '#4fc3f7',
