@@ -1,4 +1,5 @@
 import API from '@/api/API';
+import { setAccessToken } from '@/api/customAPI';
 import FollowerList from '@/components/Archive/Follower/FollowerList';
 import Tab from '@/components/Archive/Follower/Tab';
 import useTabs from '@/hooks/useFollowerTabs';
@@ -7,7 +8,8 @@ import { useQuery } from '@tanstack/react-query';
 
 export const getServerSideProps = withAuth();
 
-const Page = ({ userId: authUserId }: withAuthProps) => {
+const Page = ({ accessToken, userId: authUserId }: withAuthProps) => {
+  setAccessToken(accessToken);
   const userId = 3; // TODO 조회할 유저의 userId 필요
   const { activeItem } = useTabs();
   const { data } = useQuery({

@@ -3,7 +3,7 @@ interface IFollower {
   nickname: string;
   introduce: string;
   profileImageFileName: string;
-  isfollow: boolean;
+  isFollow: boolean;
 }
 
 export type { IFollower };
