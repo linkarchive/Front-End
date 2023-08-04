@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
-import UserSvgIcon from 'public/assets/svg/user.svg';
 import { SvgIcon, SvgWrapper } from '../SvgStyle.styled';
+import { FollowSvg } from '../svg/Svg';
 
 type SettingsBtnProps = {
   activeItem: string;
@@ -12,7 +12,7 @@ const SettingsBtn = ({ activeItem }: SettingsBtnProps) => {
     <SvgWrapper>
       <Link href='/settings'>
         <SvgIcon isActive={activeItem === 'settings'}>
-          <UserSvgIcon />
+          <FollowSvg />
         </SvgIcon>
       </Link>
     </SvgWrapper>

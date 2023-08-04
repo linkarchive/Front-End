@@ -1,4 +1,4 @@
-export const PhotoSvgIcon = () => {
+const PhotoSvgIcon = () => {
   return (
     <svg width='24' height='24' viewBox='0 0 25 25' fill='none' xmlns='http://www.w3.org/2000/svg'>
       <path
@@ -10,7 +10,7 @@ export const PhotoSvgIcon = () => {
   );
 };
 
-export const ChevronUpAndDownSvg = ({ isButtonClicked }: { isButtonClicked: boolean }) => {
+const ChevronUpAndDownSvg = ({ isButtonClicked }: { isButtonClicked: boolean }) => {
   return !isButtonClicked ? (
     <svg width='35' height='35' viewBox='0 0 35 35' fill='none' xmlns='http://www.w3.org/2000/svg'>
       <rect x='0.891968' y='0.833008' width='33' height='33' rx='16.5' fill='white' />
@@ -52,7 +52,7 @@ export const ChevronUpAndDownSvg = ({ isButtonClicked }: { isButtonClicked: bool
   );
 };
 
-export const AlarmBellSvg = ({ color }: { color: string }) => {
+const AlarmBellSvg = ({ color }: { color: string }) => {
   return (
     <svg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'>
       <path
@@ -72,7 +72,7 @@ export const AlarmBellSvg = ({ color }: { color: string }) => {
   );
 };
 
-export const PlusSvg = ({ color }: { color: string }) => {
+const PlusSvg = ({ color }: { color: string }) => {
   return (
     <svg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'>
       <path
@@ -86,7 +86,47 @@ export const PlusSvg = ({ color }: { color: string }) => {
   );
 };
 
-export const ChevronRight = () => {
+const ArchiveSvg = () => {
+  return (
+    <svg width='28' height='28' viewBox='0 0 31 31' fill='none' xmlns='http://www.w3.org/2000/svg'>
+      <path d='M15.293 2.50977C8.39025 2.50977 2.79297 8.10704 2.79297 15.0098C2.79297 21.9125 8.39025 27.5098 15.293 27.5098C22.1957 27.5098 27.793 21.9125 27.793 15.0098C27.793 8.10704 22.1975 2.50977 15.293 2.50977ZM19.1048 11.9472L18.0828 16.5933C17.9729 17.0893 17.5956 17.4843 17.1032 17.6118L12.3013 18.8606C11.8212 18.9845 11.3784 18.5612 11.4812 18.0776L12.5014 13.265C12.6112 12.7478 13.0115 12.3422 13.5288 12.2271L18.3077 11.1537C18.7842 11.0474 19.2093 11.4707 19.1048 11.9472Z' />
+    </svg>
+  );
+};
+
+const FollowSvg = () => {
+  return (
+    <svg
+      width='22.5'
+      height='25'
+      viewBox='0 0 23 26'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+    >
+      <path
+        fillRule='evenodd'
+        clipRule='evenodd'
+        d='M0.0429688 10.5098C0.0429688 5.79602 0.0429686 3.43852 1.50797 1.97477C2.97172 0.509765 5.32922 0.509766 10.043 0.509766H12.543C17.2567 0.509766 19.6142 0.509765 21.078 1.97477C22.543 3.43852 22.543 5.79602 22.543 10.5098V15.5098C22.543 20.2235 22.543 22.581 21.078 24.0448C19.6142 25.5098 17.2567 25.5098 12.543 25.5098H10.043C5.32922 25.5098 2.97172 25.5098 1.50797 24.0448C0.0429686 22.581 0.0429688 20.2235 0.0429688 15.5098V10.5098ZM3.79297 13.0098C3.79297 11.2423 3.79297 10.3585 4.34297 9.80976C4.89047 9.25976 5.77422 9.25977 7.54297 9.25977H15.043C16.8105 9.25977 17.6942 9.25976 18.243 9.80976C18.793 10.3585 18.793 11.2423 18.793 13.0098V18.0098C18.793 19.7773 18.793 20.661 18.243 21.2098C17.6942 21.7598 16.8105 21.7598 15.043 21.7598H7.54297C5.77547 21.7598 4.89172 21.7598 4.34297 21.2098C3.79297 20.6623 3.79297 19.7785 3.79297 18.0098V13.0098ZM5.04297 4.57227C4.79433 4.57227 4.55587 4.67104 4.38006 4.84685C4.20424 5.02267 4.10547 5.26113 4.10547 5.50977C4.10547 5.75841 4.20424 5.99686 4.38006 6.17268C4.55587 6.34849 4.79433 6.44727 5.04297 6.44727H11.293C11.5416 6.44727 11.7801 6.34849 11.9559 6.17268C12.1317 5.99686 12.2305 5.75841 12.2305 5.50977C12.2305 5.26113 12.1317 5.02267 11.9559 4.84685C11.7801 4.67104 11.5416 4.57227 11.293 4.57227H5.04297Z'
+      />
+    </svg>
+  );
+};
+
+const HomeSvg = () => {
+  return (
+    <svg
+      width='24.75'
+      height='25'
+      viewBox='0 0 26 26'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+    >
+      <path d='M21.1162 5.7863H15.2951C13.3367 5.80763 10.8452 2.79129 10.1547 1.95479C9.46419 1.11664 8.2488 0.509766 7.20234 0.509766H5.5687C2.72458 0.509766 0.418457 2.81589 0.418457 5.66001V21.4585C0.418457 23.6957 2.23252 25.5098 4.46976 25.5098H21.1162C23.3534 25.5098 25.1675 23.6957 25.1675 21.4585V9.83761C25.1675 7.60037 23.3534 5.7863 21.1162 5.7863ZM20.8341 11.3384H13.5467C13.094 11.3384 12.7266 10.971 12.7266 10.5183C12.7266 10.0656 13.094 9.69819 13.5467 9.69819H20.8341C21.2868 9.69819 21.6542 10.0656 21.6542 10.5183C21.6542 10.971 21.2868 11.3384 20.8341 11.3384Z' />
+    </svg>
+  );
+};
+
+const ChevronRight = () => {
   return (
     <svg width='21' height='21' viewBox='0 0 21 21' fill='none' xmlns='http://www.w3.org/2000/svg'>
       <path
@@ -99,7 +139,7 @@ export const ChevronRight = () => {
   );
 };
 
-export const CheckIcon = () => {
+const CheckIcon = () => {
   return (
     <svg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'>
       <path
@@ -112,4 +152,16 @@ export const CheckIcon = () => {
       />
     </svg>
   );
+};
+
+export {
+  PhotoSvgIcon,
+  ChevronUpAndDownSvg,
+  AlarmBellSvg,
+  PlusSvg,
+  ArchiveSvg,
+  FollowSvg,
+  HomeSvg,
+  ChevronRight,
+  CheckIcon,
 };

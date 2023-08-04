@@ -1,7 +1,7 @@
 import API from '@/api/API';
 import { setAccessToken } from '@/api/customAPI';
 import InfinityScroll from '@/components/Common/InfinityScroll';
-import CreateBtn from '@/components/Home/CreateBtn';
+import CreateBtn from '@/components/BottomNav/CreateBtn';
 import { HomeLinkItemList } from '@/components/LinkItem/LinkItemList';
 import { withAuth, withAuthProps } from '@/lib/withAuth';
 import { RootState, useAppDispatch } from '@/store';
@@ -48,7 +48,6 @@ const Home = ({ accessToken }: withAuthProps) => {
 
   return (
     <MainLayoutWrapper>
-      <CreateBtn />
       <InfinityScroll
         renderList={({ pages }) => <HomeLinkItemList data={pages} queryKey={queryKey} />}
         fetchFn={fetchFn}
