@@ -1,7 +1,6 @@
 import API from '@/api/API';
 import { setAccessToken } from '@/api/customAPI';
 import InfinityScroll from '@/components/Common/InfinityScroll';
-import CreateBtn from '@/components/BottomNav/CreateBtn';
 import { HomeLinkItemList } from '@/components/LinkItem/LinkItemList';
 import { withAuth, withAuthProps } from '@/lib/withAuth';
 import { RootState, useAppDispatch } from '@/store';
@@ -10,6 +9,7 @@ import { routerSlice } from '@/store/slices/routerSlice';
 import { ReactElement, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import BottomNav from '@/components/BottomNav/BottomNav';
 
 export const getServerSideProps = withAuth();
 
@@ -36,6 +36,7 @@ const Home = ({ accessToken }: withAuthProps) => {
 
   useEffect(() => {
     fetchFn('');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -47,30 +48,33 @@ const Home = ({ accessToken }: withAuthProps) => {
   }, [dispatch, myMark]);
 
   return (
-    <MainLayoutWrapper>
-      <InfinityScroll
-        renderList={({ pages }) => <HomeLinkItemList data={pages} queryKey={queryKey} />}
-        fetchFn={fetchFn}
-        queryKey={queryKey}
-        getNextPageParam={(lastPage_) => {
-          const hasNext = lastPage_?.hasNext;
-          if (!hasNext) return undefined;
+    <>
+      <MainLayoutWrapper>
+        <InfinityScroll
+          renderList={({ pages }) => <HomeLinkItemList data={pages} queryKey={queryKey} />}
+          fetchFn={fetchFn}
+          queryKey={queryKey}
+          getNextPageParam={(lastPage_) => {
+            const hasNext = lastPage_?.hasNext;
+            if (!hasNext) return undefined;
 
-          if (myLink) {
-            const lastPage = lastPage_?.linkList;
-            const lastItem = lastPage[lastPage.length - 1].linkId;
+            if (myLink) {
+              const lastPage = lastPage_?.linkList;
+              const lastItem = lastPage[lastPage.length - 1].linkId;
+
+              return lastItem;
+            }
+
+            const lastPage = lastPage_?.markList;
+            const lastItem = lastPage[lastPage.length - 1].markId;
 
             return lastItem;
-          }
-
-          const lastPage = lastPage_?.markList;
-          const lastItem = lastPage[lastPage.length - 1].markId;
-
-          return lastItem;
-        }}
-        config={myMark && { staleTime: 0 }}
-      />
-    </MainLayoutWrapper>
+          }}
+          config={myMark && { staleTime: 0 }}
+        />
+      </MainLayoutWrapper>
+      <BottomNav />
+    </>
   );
 };
 
