@@ -3,6 +3,7 @@ import React from 'react';
 const Logo = () => {
   return (
     <svg
+      data-testid='logo'
       width='195'
       height='43'
       viewBox='0 0 195 43'

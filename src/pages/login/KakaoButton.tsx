@@ -3,6 +3,7 @@ import React from 'react';
 const KakaoButton = () => {
   return (
     <svg
+      data-testid='kakao-button'
       width='301'
       height='55'
       viewBox='0 0 301 55'
