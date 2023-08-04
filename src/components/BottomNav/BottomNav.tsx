@@ -45,7 +45,7 @@ const FooterWrapper = styled.footer`
 
   box-sizing: border-box;
   width: 375px;
-  height: 111px;
+  height: 91px;
 
   background-color: transparent;
 `;
@@ -53,7 +53,7 @@ const FooterWrapper = styled.footer`
 const Nav = styled.nav`
   display: flex;
   width: 100%;
-  height: 90%;
+  height: 70px;
   justify-content: space-around;
   padding-right: 20px;
 `;

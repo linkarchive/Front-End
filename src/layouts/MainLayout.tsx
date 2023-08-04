@@ -38,20 +38,20 @@ const Main = styled.main`
 
 const WaterMark = () => {
   let envText = '';
-  // if (process.env.NEXT_PUBLIC_APP_ENV === 'production') {
-  //   return null;
-  // }
+  if (process.env.NEXT_PUBLIC_APP_ENV === 'production') {
+    return null;
+  }
   envText = `${process.env.NEXT_PUBLIC_APP_ENV}`;
 
   return <Wrapper>{envText}</Wrapper>;
 };
 
 const Wrapper = styled.h2`
-  z-index: -1;
-  display: flex;
+  display: inline-flex;
   position: fixed;
   inset: 0;
   margin: auto;
+  width: 0;
 
   justify-content: center;
   align-items: center;
