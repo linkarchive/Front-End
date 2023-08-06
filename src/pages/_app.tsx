@@ -15,6 +15,7 @@ export const queryClient = new QueryClient();
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
+  getFullLayout?: (page: ReactElement) => ReactNode;
 };
 
 type AppPropsWithLayout = AppProps & {
@@ -24,18 +25,24 @@ type AppPropsWithLayout = AppProps & {
 const App = ({ Component, ...rest }: AppPropsWithLayout) => {
   const { store, props } = wrapper.useWrappedStore(rest);
 
-  const getLayout = Component.getLayout ?? ((page) => page);
+  const getLayout = Component.getLayout || ((page) => page);
+  const getFullLayout = Component.getFullLayout || getLayout;
+
+  const isFullLayout = !!Component.getFullLayout;
+
+  const PageLayout = {
+    MainLayout: <MainLayout>{getLayout(<Component {...props.pageProps} />)}</MainLayout>,
+    FullLayout: getFullLayout(<Component {...props.pageProps} />),
+  };
 
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <ThemeProvider theme={palette}>
           <System />
-          <MainLayout>
-            <QueryClientProvider client={queryClient}>
-              {getLayout(<Component {...props.pageProps} />)}
-            </QueryClientProvider>
-          </MainLayout>
+          <QueryClientProvider client={queryClient}>
+            {isFullLayout ? PageLayout.FullLayout : PageLayout.MainLayout}
+          </QueryClientProvider>
         </ThemeProvider>
       </PersistGate>
     </Provider>
