@@ -13,6 +13,11 @@ const useTabs = (init?: string) => {
       dispatch(followerTabSlice.actions.onClick(init));
     };
     initTab();
+
+    // eslint-disable-next-line consistent-return
+    return () => {
+      dispatch(followerTabSlice.actions.onClick(init));
+    };
   }, [dispatch, init]);
 
   const handleClick = (item: string) => dispatch(followerTabSlice.actions.onClick(item));
