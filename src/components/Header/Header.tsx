@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 
-const Header = () => {
+const Header = ({ title }: { title?: string }) => {
   const name = useSelector((state: RootState) => state.router.name);
 
   return (
@@ -11,7 +11,7 @@ const Header = () => {
       <nav>
         {/* FIXME: 뒤로가기 버튼 크기 조정 */}
         <GoBackBtn />
-        <Title>{name}</Title>
+        <Title>{title || name}</Title>
       </nav>
     </Wrapper>
   );
@@ -24,8 +24,8 @@ const Wrapper = styled.header`
   display: flex;
   align-items: center;
 
-  height: 48px;
-  padding: 0 26px;
+  height: 58px;
+  padding: 16px;
 
   nav {
     display: flex;
@@ -39,9 +39,10 @@ const Title = styled.span`
   left: 50%;
   transform: translate(-50%, 0);
 
-  color: ${({ theme }) => theme.gray.darkGray};
+  color: ${({ theme }) => theme.common.black};
   text-align: center;
+  font-size: 20px;
+  font-style: normal;
   font-weight: 600;
-  font-size: 18px;
-  line-height: 21px;
+  line-height: 130%; /* 26px */
 `;
