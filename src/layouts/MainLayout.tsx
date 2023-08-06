@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import HomeHeader from '@/components/Home/HomeHeader';
 import { useSelector } from 'react-redux';
-import Header from '@/components/Header/Header';
+import Header from '@/components/Common/Header/Header';
 import { RootState } from '@/store';
 import ArchiveHeader from '@/components/Archive/ArchiveHeader';
 
