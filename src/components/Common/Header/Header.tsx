@@ -1,4 +1,4 @@
-import GoBackBtn from '@/components/Header/GoBackBtn';
+import GoBackBtn from '@/components/Common/Header/GoBackBtn';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';

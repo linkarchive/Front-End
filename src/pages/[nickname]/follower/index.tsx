@@ -2,7 +2,7 @@ import API from '@/api/API';
 import { setAccessToken } from '@/api/customAPI';
 import FollowerList from '@/components/Archive/Follower/FollowerList';
 import Tab from '@/components/Archive/Follower/Tab';
-import Header from '@/components/Header/Header';
+import Header from '@/components/Common/Header/Header';
 import useTabs from '@/hooks/useFollowerTabs';
 import { withAuth, withAuthProps } from '@/lib/withAuth';
 import { useQuery } from '@tanstack/react-query';
