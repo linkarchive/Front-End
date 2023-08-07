@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import { KakaoAuthUrl } from '../../constants';
 import Link from 'next/link';
-import Image from 'next/image';
 import styled from 'styled-components';
 import { routerSlice } from '@/store/slices/routerSlice';
 import { useAppDispatch } from '@/store';
+import KakaoButton from './KakaoButton';
+import Logo from './Logo';
 
 const Login = () => {
   const dispatch = useAppDispatch();
@@ -14,31 +15,55 @@ const Login = () => {
   }, [dispatch]);
 
   return (
-    <Wrapper>
-      <h2>로그인 해주세요.</h2>
-      <Link href={KakaoAuthUrl}>
-        <Content>
-          <Image src='/kakao_login.png' alt='kakao_login' fill />
-        </Content>
-      </Link>
-    </Wrapper>
+    <Container>
+      <LogoWrapper>
+        <Logo />
+      </LogoWrapper>
+
+      <AuthWrapper>
+        <div>
+          <KakaoAuthBox>
+            <Link href={KakaoAuthUrl}>
+              <KakaoButton />
+            </Link>
+          </KakaoAuthBox>
+        </div>
+      </AuthWrapper>
+    </Container>
   );
 };
 
-const Wrapper = styled.div`
+const Container = styled.div`
+  position: absolute;
   display: flex;
+  width: 375px;
+
+  /* FIXME: header 높이 변수화 해서 동적으로 처리해야함 */
+  height: calc(100% - 48px);
+  margin: auto;
+
+  background-color: #f8f6ef;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  inset: 0 0 20%;
-  margin: auto;
 `;
 
-const Content = styled.div`
-  position: relative;
-  width: 200px;
-  height: 50px;
+const LogoWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 3;
+`;
+
+const AuthWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+`;
+
+const KakaoAuthBox = styled.div`
+  padding: 8px;
 
   img {
     :hover {
