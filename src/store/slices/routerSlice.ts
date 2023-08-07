@@ -25,8 +25,9 @@ export const routerSlice = createSlice({
       state.current = 'ARCHIVE';
     },
     loadProfilePage(state) {
-      state.status = 'MAIN';
+      state.status = 'OTHER';
       state.current = 'SETTINGS';
+      state.name = '';
     },
     loadUserPage(state) {
       state.status = 'MAIN';

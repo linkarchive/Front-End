@@ -19,7 +19,7 @@ export default CreateBtn;
 
 const Wrapper = styled.div`
   z-index: ${zIndex.CreateBtn};
-  transform: translate(-9px, 1px);
+  transform: translate(-9px, -18px);
 `;
 
 const StyledButton = styled.div`

@@ -8,6 +8,7 @@ import { setAccessToken } from '@/api/customAPI';
 import { withAuth } from '@/lib/withAuth';
 import NicknameModal from '@/components/Archive/NicknameModal';
 import InfinityScroll from '@/components/Common/InfinityScroll';
+import BottomNav from '@/components/BottomNav/BottomNav';
 
 export const getServerSideProps = withAuth();
 
@@ -48,6 +49,7 @@ const Archive = ({
         }}
       />
       {isLoggedin && !nickname && <NicknameModal userId={userId} />}
+      <BottomNav />
     </>
   );
 };
