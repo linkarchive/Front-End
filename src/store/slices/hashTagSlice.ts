@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 interface HashTag {
-  tagId: number;
+  selectedTagId: number;
   selectedTagName: string;
 }
 
 const initialState: HashTag = {
-  tagId: 0,
+  selectedTagId: 0,
   selectedTagName: 'All',
 };
 
@@ -15,9 +15,11 @@ export const HashTagSlice = createSlice({
   initialState,
   reducers: {
     setInitialState(state) {
+      state.selectedTagId = 0;
       state.selectedTagName = 'All';
     },
     onClickHashTag(state, action) {
+      state.selectedTagId = action.payload.tagId;
       state.selectedTagName = action.payload.tagName;
     },
   },
