@@ -2,20 +2,20 @@ import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
 import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import styled from 'styled-components';
 import API from '@/api/API';
 import Input, { InputWithButton } from '@/components/Input';
 import LinkInfo from '@/components/Create/LinkInfo';
 import { MetaData } from '@/components/LinkItem';
 import { setAccessToken } from '@/api/customAPI';
-import { withAuth } from '@/lib/withAuth';
 import Spinner from '@/components/Spinner';
 import { createToastBar } from '@/store/slices/toastBarSlice';
 import HashTagList from '@/components/Create/HashTagList';
 import FavoriteTagList from '@/components/Create/FavoriteTagList';
 import { validateHashTag } from '@/utils/validation';
-import { useFetchTagsByNickname } from '@/queries';
+import { useFetchTagsByUserId } from '@/queries';
+import { withAuthProps, withAuth } from '@/lib/withAuth';
 
 const defaultErrorMessages = {
   url: '',
@@ -25,7 +25,7 @@ const defaultErrorMessages = {
 
 export const getServerSideProps = withAuth();
 
-const Create = ({ nickname, accessToken }: { nickname: string; accessToken: string }) => {
+const Create = ({ userId, accessToken }: withAuthProps) => {
   setAccessToken(accessToken);
 
   const dispatch = useAppDispatch();
@@ -64,7 +64,7 @@ const Create = ({ nickname, accessToken }: { nickname: string; accessToken: stri
     setErrorMessages(errmsgs);
   };
 
-  const { data: tagListData } = useFetchTagsByNickname({ nickname });
+  const { data: tagListData } = useFetchTagsByUserId({ userId });
   const tagList = tagListData?.tagList || [];
 
   const { mutate: fetchMetaData, isLoading } = useMutation({

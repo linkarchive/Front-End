@@ -15,7 +15,7 @@ export interface MessageWrapperProps {
   isValid: boolean;
 }
 
-const NicknameModal = ({ userId }: { userId: string }) => {
+const NicknameModal = ({ userId }: { userId: number }) => {
   const router = useRouter();
   const [nickname, setNickname] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
