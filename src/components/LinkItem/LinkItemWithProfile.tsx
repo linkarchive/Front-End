@@ -31,18 +31,31 @@ const Profile = styled.div`
   }
 `;
 
-const LinkWithProfile = ({ nickname, profileImage, ...props }: LinkItemWithProfileProps) => {
-  const href = `/${nickname}`;
+const LinkWithProfile = ({ ...props }: LinkItemWithProfileProps) => {
+  const { nickname, profileImage, userId } = props;
+
   return (
     <LinkItem
       Header={
         <Profile>
-          <Link href={href}>
+          <Link
+            href={{
+              pathname: `${nickname}`,
+              query: { userId },
+            }}
+            as={nickname}
+          >
             <div className='profile'>
               <Image src={profileImage} alt='profile' fill />
             </div>
           </Link>
-          <Link className='name' href={href}>
+          <Link
+            href={{
+              pathname: `${nickname}`,
+              query: { userId },
+            }}
+            as={nickname}
+          >
             {nickname}
           </Link>
         </Profile>
