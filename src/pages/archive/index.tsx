@@ -12,7 +12,7 @@ import useAuth from '@/hooks/useAuth';
 
 export const getServerSideProps = withAuth();
 
-const Archive = ({ accessToken, userId }: withAuthProps) => {
+const Archive = ({ accessToken, userId, nickname }: withAuthProps) => {
   setAccessToken(accessToken);
 
   const dispatch = useAppDispatch();
@@ -40,7 +40,7 @@ const Archive = ({ accessToken, userId }: withAuthProps) => {
           return lastItem;
         }}
       />
-      {isLoggedin && !userId && <NicknameModal userId={userId} />}
+      {isLoggedin && !nickname && <NicknameModal userId={userId} />}
       <BottomNav />
     </>
   );
