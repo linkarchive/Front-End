@@ -215,8 +215,16 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
           value={profile.nickname.value}
           isChanged={profile.nickname.value !== profile.nickname.initialValue}
           onChange={handleChange}
+          placeholder={profile.nickname.initialValue}
         />
-        {isNicknameChanged && <MessageToaster isValid={isNicknameValid} message={message1} icon />}
+        {isNicknameChanged && (
+          <MessageToaster
+            isEmpty={profile.nickname.value === ''}
+            isValid={isNicknameValid}
+            message={message1}
+            icon={isNicknameValid}
+          />
+        )}
       </ProfileInputWrapper>
 
       <ProfileInputWrapper>
@@ -245,7 +253,7 @@ const FormWrapper = styled.form`
   height: 100%;
 `;
 
-const StyledH3 = styled.h3`
+export const StyledH3 = styled.h3`
   padding: 15px 0;
 
   font-weight: 500;
@@ -253,7 +261,7 @@ const StyledH3 = styled.h3`
   line-height: 18.2px;
 `;
 
-const StyledSpan = styled.span`
+export const StyledSpan = styled.span`
   font-weight: 500;
   font-size: 14px;
   line-height: 18.2px;
@@ -267,7 +275,7 @@ const ImgWrapper = styled.div`
   align-items: center;
 `;
 
-const ProfileInputWrapper = styled.div`
+export const ProfileInputWrapper = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100px;
@@ -283,7 +291,6 @@ const ImgContent = styled.span`
   display: flex;
   overflow: hidden;
   position: relative;
-  border: 1px solid ${({ theme }) => theme.secondary.main};
   justify-content: center;
   align-items: center;
   border-radius: 100%;
@@ -292,7 +299,7 @@ const ImgContent = styled.span`
   height: 100px;
 `;
 
-const InputWrapper = styled.input<{ isChanged: boolean }>`
+export const InputWrapper = styled.input<{ isChanged: boolean }>`
   border: none;
   border-bottom: 1px solid black;
   padding-bottom: 10px;
@@ -306,7 +313,11 @@ const InputWrapper = styled.input<{ isChanged: boolean }>`
 
   color: ${({ theme }) => theme.common.black};
   border-color: ${({ isChanged, theme }) =>
-    isChanged ? theme.primary.main : theme.gray.mediumGray};
+    isChanged ? theme.primary.main : theme.gray.lighterGray};
+
+  ::placeholder {
+    color: ${({ theme }) => theme.gray.lighterGray};
+  }
 `;
 
 const TextAreaWrapper = styled.textarea<{ isChanged: boolean }>`
