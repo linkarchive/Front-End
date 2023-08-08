@@ -13,31 +13,36 @@ type HashTagListProps = {
   children: React.ReactNode;
 };
 
+export type TagProps = {
+  id: number;
+  name: string;
+};
+
 const HashTagList = ({ children }: HashTagListProps) => {
   const [hashTagList, setHashTagList] = useState([]);
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { myLink, userLink } = useSelector((state: RootState) => state.nav);
-  const { myNickname } = useSelector((state: RootState) => state.user);
+  const { myId } = useSelector((state: RootState) => state.user);
   const { current } = useSelector((state: RootState) => state.router);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
 
-  const userNickname = (router.query.nickname as string) || myNickname;
+  const userId = Number(router.query.userId) || myId;
   const home = current === 'HOME';
 
   const useLink = home ? myLink : userLink;
 
-  const fetchFn = (nickname: string) => {
-    return useLink ? API.getUsersLinksTagList(nickname) : API.getUsersMarksTagList(nickname);
+  const fetchFn = (id: number) => {
+    return useLink ? API.getUsersLinksTagList(id) : API.getUsersMarksTagList(id);
   };
 
   const { data: tagList } = useQuery({
-    queryKey: ['tagList', userNickname, myLink, userLink, current],
-    queryFn: () => fetchFn(userNickname),
+    queryKey: ['tagList', myLink, userLink, current],
+    queryFn: () => fetchFn(userId),
   });
 
-  const handleClickTag = (tagName: string) => {
-    dispatch(onClickHashTag({ tagName }));
+  const handleClickTag = ({ id, name }: TagProps) => {
+    dispatch(onClickHashTag({ tagId: id, tagName: name }));
   };
 
   const handleButtonClick = () => {
@@ -59,9 +64,16 @@ const HashTagList = ({ children }: HashTagListProps) => {
       </Toggle>
       <Wrapper isButtonClicked={isButtonClicked}>
         <Content isButtonClicked={isButtonClicked}>
-          <HashTag tagName='All' onClickTag={handleClickTag} />
+          <HashTag tagId={0} tagName='All' onClickTag={handleClickTag} />
           {hashTagList.map((tag) => {
-            return <HashTag key={tag.tagId} tagName={tag.tagName} onClickTag={handleClickTag} />;
+            return (
+              <HashTag
+                key={tag.tagId}
+                tagId={tag.tagId}
+                tagName={tag.tagName}
+                onClickTag={handleClickTag}
+              />
+            );
           })}
         </Content>
       </Wrapper>

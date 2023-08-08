@@ -40,7 +40,7 @@ const Profile = ({
       dispatch(createToastBar({ text: errorMessage }));
     },
     onSettled: () => {
-      queryClient.invalidateQueries(['user', nickname]);
+      queryClient.invalidateQueries(['user', id]);
     },
   });
 
@@ -52,7 +52,7 @@ const Profile = ({
       dispatch(createToastBar({ text: errorMessage }));
     },
     onSettled: () => {
-      queryClient.invalidateQueries(['user', nickname]);
+      queryClient.invalidateQueries(['user', id]);
     },
   });
 
@@ -65,7 +65,9 @@ const Profile = ({
     try {
       if (isFollow) {
         await unfollowMutation.mutateAsync(id);
-      } else {
+      }
+
+      if (!isFollow) {
         await followMutation.mutateAsync(id);
       }
     } catch (error) {

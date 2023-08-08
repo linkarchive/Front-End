@@ -19,25 +19,20 @@ const Home = ({ accessToken }: withAuthProps) => {
   const dispatch = useAppDispatch();
 
   const { myLink } = useSelector((state: RootState) => state.nav);
-  const { selectedTagName } = useSelector((state: RootState) => state.hashTag);
+  const { selectedTagId } = useSelector((state: RootState) => state.hashTag);
   const myMark = !myLink;
 
-  const fetchFn = (id: string) => {
-    const tag = selectedTagName === 'All' ? undefined : selectedTagName;
+  const fetchFn = (id: number) => {
+    const tagId = selectedTagId === 0 ? undefined : selectedTagId;
 
-    return myLink ? API.getUserLinksArchive(id, tag) : API.getUserMarksArchive(id, tag);
+    return myLink ? API.getUserLinksArchive(id, tagId) : API.getUserMarksArchive(id, tagId);
   };
 
-  const queryKey = ['linkList', 'user', 'link', 'mark', myLink, selectedTagName];
+  const queryKey = ['linkList', 'user', 'link', 'mark', myLink, selectedTagId];
 
   useEffect(() => {
     dispatch(routerSlice.actions.loadHomePage());
   }, [dispatch]);
-
-  useEffect(() => {
-    fetchFn('');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     dispatch(routerSlice.actions.loadHomePage());

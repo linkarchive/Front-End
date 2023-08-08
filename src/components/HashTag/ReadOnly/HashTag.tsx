@@ -2,18 +2,20 @@ import { RootState } from '@/store';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { TagProps } from './HashTagList';
 
 interface HashTagProps {
+  tagId: number;
   tagName: string;
-  onClickTag: (tag: string) => void;
+  onClickTag: ({ id, name }: TagProps) => void;
 }
 
-const HashTag = ({ tagName, onClickTag }: HashTagProps) => {
-  const { selectedTagName } = useSelector((state: RootState) => state.hashTag);
-  const isActive = tagName === selectedTagName;
+const HashTag = ({ tagId, tagName, onClickTag }: HashTagProps) => {
+  const { selectedTagId } = useSelector((state: RootState) => state.hashTag);
+  const isActive = tagId === selectedTagId;
 
   return (
-    <Wrapper isActive={isActive} onClick={() => onClickTag(tagName)}>
+    <Wrapper isActive={isActive} onClick={() => onClickTag({ id: tagId, name: tagName })}>
       {tagName}
     </Wrapper>
   );

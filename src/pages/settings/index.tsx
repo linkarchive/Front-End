@@ -11,7 +11,7 @@ import { useQuery } from '@tanstack/react-query';
 
 export const getServerSideProps = withAuth();
 
-const Settings = ({ accessToken, nickname }: withAuthProps) => {
+const Settings = ({ accessToken, userId }: withAuthProps) => {
   setAccessToken(accessToken);
   const dispatch = useAppDispatch();
 
@@ -27,9 +27,9 @@ const Settings = ({ accessToken, nickname }: withAuthProps) => {
   };
 
   const { data } = useQuery({
-    queryKey: ['user', nickname],
-    queryFn: () => API.getUserProfile(nickname),
-    enabled: !!nickname,
+    queryKey: ['user', userId],
+    queryFn: () => API.getUserProfile(userId),
+    enabled: !!userId,
   });
 
   useEffect(() => {

@@ -14,20 +14,22 @@ type ProfileLayoutProps = {
 const ProfileLayout = ({ children }: ProfileLayoutProps) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const nickname = (router.query.nickname as string) || '';
+  const userId = Number(router.query.userId);
 
   const { data: profile } = useQuery({
-    queryKey: ['user', nickname],
-    queryFn: () => API.getUserProfile(nickname),
-    enabled: !!nickname,
+    queryKey: ['user', userId],
+    queryFn: () => API.getUserProfile(userId),
+    enabled: !!userId,
   });
 
   useEffect(() => {
     dispatch(routerSlice.actions.loadArchiveUser());
+
     return () => {
       // axios 요청 취소
       cancelSource();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

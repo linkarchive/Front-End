@@ -29,7 +29,7 @@ const Page = ({ accessToken, userId: authUserId }: withAuthProps) => {
     <>
       <Header title={nickname} />
       <Tab tabs={[{ text: '팔로워' }, { text: '팔로잉' }]} />
-      <FollowerList authUserId={authUserId} followerList={followerList} />
+      <FollowerList authUserId={String(authUserId)} followerList={followerList} />
     </>
   );
 };

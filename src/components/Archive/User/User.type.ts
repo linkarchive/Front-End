@@ -1,5 +1,5 @@
 type User = {
-  id: string;
+  id: number;
   profileImageFileName: string;
   nickname: string;
   introduce: string;
