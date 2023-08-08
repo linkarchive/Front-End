@@ -35,11 +35,6 @@ const Home = ({ accessToken }: withAuthProps) => {
   }, [dispatch]);
 
   useEffect(() => {
-    fetchFn('');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
     dispatch(routerSlice.actions.loadHomePage());
 
     return () => {
