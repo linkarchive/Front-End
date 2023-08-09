@@ -1,7 +1,7 @@
 import { CheckIcon } from '@/components/svg/Svg';
 import React from 'react';
 import styled from 'styled-components';
-import { MessageWrapperProps } from './set-nickname';
+import { MessageWrapperProps } from './nickname';
 
 interface MessageToasterProps {
   isEmpty?: boolean;
