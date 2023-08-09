@@ -282,6 +282,13 @@ const API = {
     return data.tagList;
   },
 
+  /** 둘러보기 해시태그 리스트 조회 */
+  getArchiveTagList: async () => {
+    const { data } = await clientInstance.get(`/tags/archive`);
+
+    return data.tagList;
+  },
+
   /** 팔로우 요청 */
   followUser: async (followeeId: number) => {
     const { data } = await clientInstance.post(`/follow/user/${followeeId}`);

@@ -29,15 +29,28 @@ const HashTagList = ({ children }: HashTagListProps) => {
 
   const userId = Number(router.query.userId) || myId;
   const home = current === 'HOME';
+  const archive = current === 'ARCHIVE';
 
   const useLink = home ? myLink : userLink;
 
   const fetchFn = (id: number) => {
-    return useLink ? API.getUsersLinksTagList(id) : API.getUsersMarksTagList(id);
+    if (archive) {
+      return API.getArchiveTagList();
+    }
+
+    if (useLink) {
+      return API.getUsersLinksTagList(id);
+    }
+
+    if (!useLink) {
+      return API.getUsersMarksTagList(id);
+    }
+
+    return null;
   };
 
   const { data: tagList } = useQuery({
-    queryKey: ['tagList', myLink, userLink, current],
+    queryKey: ['tagList', myLink, userLink, current, archive],
     queryFn: () => fetchFn(userId),
   });
 
