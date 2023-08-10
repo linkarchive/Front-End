@@ -7,17 +7,13 @@ import { setAccessToken } from '@/api/customAPI';
 import { withAuth, withAuthProps } from '@/lib/withAuth';
 import InfinityScroll from '@/components/Common/InfinityScroll';
 import BottomNav from '@/components/BottomNav/BottomNav';
-import NicknameModal from '@/components/Archive/NicknameModal';
-import useAuth from '@/hooks/useAuth';
 
 export const getServerSideProps = withAuth();
 
-const Archive = ({ accessToken, userId, nickname }: withAuthProps) => {
+const Archive = ({ accessToken }: withAuthProps) => {
   setAccessToken(accessToken);
 
   const dispatch = useAppDispatch();
-
-  const isLoggedin = useAuth();
 
   useEffect(() => {
     dispatch(routerSlice.actions.loadArchivePage());
@@ -40,7 +36,6 @@ const Archive = ({ accessToken, userId, nickname }: withAuthProps) => {
           return lastItem;
         }}
       />
-      {isLoggedin && !nickname && <NicknameModal userId={userId} />}
       <BottomNav />
     </>
   );

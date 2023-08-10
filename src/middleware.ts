@@ -6,19 +6,21 @@ export function middleware(request: NextRequest) {
   const nickname = request.cookies.get(NICKNAME)?.value || '';
 
   // 비로그인 둘러보기 허용
-  if (!isLoggedIn) {
-    if (request.nextUrl.pathname === '/archive') {
+  if (!isLoggedIn && request.nextUrl.pathname === '/archive') {
+    return NextResponse.next();
+  }
+
+  if (isLoggedIn) {
+    // 닉네임 설정 페이지 허용
+    if (!nickname && request.nextUrl.pathname === `/settings/profile/set-nickname`) {
       return NextResponse.next();
     }
-  } else if (isLoggedIn) {
-    // 닉네임 설정 페이지로 이동 허용
-    if (!nickname && request.nextUrl.pathname === '/archive') {
-      return NextResponse.next();
-    }
+
     // 닉네임 설정 페이지로 이동
     if (!nickname) {
-      return NextResponse.redirect(`${request.nextUrl.origin}/archive`);
+      return NextResponse.redirect(`${request.nextUrl.origin}/settings/profile/set-nickname`);
     }
+
     // 로그인 페이지 접근 불가
     if (request.nextUrl.pathname === '/login') {
       return NextResponse.redirect(`${request.nextUrl.origin}/${nickname}`);

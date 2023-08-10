@@ -61,6 +61,11 @@ export const routerSlice = createSlice({
       state.current = 'ArchiveUser';
       state.name = '';
     },
+    loadSetNickname(state) {
+      state.status = 'OTHER';
+      state.current = 'SetNickname';
+      state.name = '';
+    },
     // 페이지 추가시 reducer추가
   },
 });

@@ -1,17 +1,18 @@
-import { MessageWrapperProps } from '@/components/Archive/NicknameModal';
 import { CheckIcon } from '@/components/svg/Svg';
 import React from 'react';
 import styled from 'styled-components';
+import { MessageWrapperProps } from '../../pages/settings/profile/nickname';
 
 interface MessageToasterProps {
+  isEmpty?: boolean;
   isValid: boolean;
   message: string;
   icon?: boolean;
 }
 
-const MessageToaster = ({ isValid, message, icon }: MessageToasterProps) => {
+const MessageToaster = ({ isEmpty, isValid, message, icon }: MessageToasterProps) => {
   return (
-    <MessageWrapper isValid={isValid}>
+    <MessageWrapper isEmpty={isEmpty} isValid={isValid}>
       {icon ? (
         <>
           <CheckIcon />
@@ -32,8 +33,12 @@ const MessageWrapper = styled.div<MessageWrapperProps>`
   height: 18px;
   margin-top: 5px;
 
-  color: ${({ isValid, theme }) => (isValid ? theme.primary.main : theme.warning.main)};
-  font-size: 16px;
+  color: ${({ isEmpty, isValid, theme }) => {
+    if (isEmpty) return theme.gray.lightGray;
+    if (isValid) return theme.primary.main;
+    return theme.warning.main;
+  }};
+  font-size: 14px;
 `;
 
 const StyledSpan = styled.span`
