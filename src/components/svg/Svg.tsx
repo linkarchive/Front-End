@@ -1,3 +1,5 @@
+import styled from 'styled-components';
+
 const PhotoSvgIcon = () => {
   return (
     <svg width='24' height='24' viewBox='0 0 25 25' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -10,9 +12,22 @@ const PhotoSvgIcon = () => {
   );
 };
 
-const ChevronUpAndDownSvg = ({ isButtonClicked }: { isButtonClicked: boolean }) => {
+const ChevronUpAndDownSvg = ({
+  onClick,
+  isButtonClicked,
+}: {
+  onClick: () => void;
+  isButtonClicked: boolean;
+}) => {
   return !isButtonClicked ? (
-    <svg width='35' height='35' viewBox='0 0 35 35' fill='none' xmlns='http://www.w3.org/2000/svg'>
+    <svg
+      width='35'
+      height='35'
+      viewBox='0 0 35 35'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      onClick={onClick}
+    >
       <rect x='0.891968' y='0.833008' width='33' height='33' rx='16.5' fill='white' />
       <path
         fillRule='evenodd'
@@ -23,7 +38,14 @@ const ChevronUpAndDownSvg = ({ isButtonClicked }: { isButtonClicked: boolean }) 
       <rect x='0.891968' y='0.833008' width='33' height='33' rx='16.5' stroke='#DDDDDD' />
     </svg>
   ) : (
-    <svg width='35' height='35' viewBox='0 0 35 35' fill='none' xmlns='http://www.w3.org/2000/svg'>
+    <svg
+      width='35'
+      height='35'
+      viewBox='0 0 35 35'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      onClick={onClick}
+    >
       <rect
         x='33.892'
         y='33.833'
@@ -154,6 +176,21 @@ const CheckIcon = () => {
   );
 };
 
+const CircleXMark = ({ background, fill }: { background: string; fill: string }) => {
+  return (
+    <CircleXMarkWrapper background={background}>
+      <svg width='7' height='7' viewBox='0 0 8 8' fill='none' xmlns='http://www.w3.org/2000/svg'>
+        <path
+          fillRule='evenodd'
+          clipRule='evenodd'
+          d='M6.64645 7.70658C6.84171 7.90184 7.15829 7.90184 7.35355 7.70658C7.54882 7.51132 7.54882 7.19474 7.35355 6.99948L4.70711 4.35303L7.35355 1.70658C7.54882 1.51132 7.54882 1.19474 7.35355 0.999474C7.15829 0.804212 6.84171 0.804212 6.64645 0.999474L4 3.64592L1.35355 0.999474C1.15829 0.804212 0.841709 0.804212 0.646447 0.999474C0.451185 1.19474 0.451185 1.51132 0.646447 1.70658L3.29289 4.35303L0.646447 6.99947C0.451184 7.19474 0.451184 7.51132 0.646447 7.70658C0.841709 7.90184 1.15829 7.90184 1.35355 7.70658L4 5.06013L6.64645 7.70658Z'
+          fill={fill}
+        />
+      </svg>
+    </CircleXMarkWrapper>
+  );
+};
+
 export {
   PhotoSvgIcon,
   ChevronUpAndDownSvg,
@@ -164,4 +201,16 @@ export {
   HomeSvg,
   ChevronRight,
   CheckIcon,
+  CircleXMark,
 };
+
+const CircleXMarkWrapper = styled.span<{ background: string }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 100%;
+
+  background-color: ${({ background }) => background};
+`;

@@ -51,7 +51,7 @@ const API = {
     title: string;
     description: string;
     thumbnail: string;
-    tags: string[];
+    tagList: string[];
   }) => {
     const response = await clientInstance.post(`link`, {
       ...data,
