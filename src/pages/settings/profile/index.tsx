@@ -14,7 +14,7 @@ import { setAccessToken } from '@/api/customAPI';
 import { createToastBar } from '@/store/slices/toastBarSlice';
 import { cancelSource } from '@/utils/cancelToken';
 import { PhotoSvgIcon } from '@/components/svg/Svg';
-import MessageToaster from './MessageToaster';
+import MessageToaster from '../../../components/Settings/MessageToaster';
 
 export interface ErrorMessage {
   message: string;

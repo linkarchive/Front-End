@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BottomButton, InputWrapper, ProfileInputWrapper, StyledH3, StyledSpan } from '..';
-import MessageToaster from '../MessageToaster';
+import MessageToaster from '../../../../components/Settings/MessageToaster';
 import styled from 'styled-components';
 import { useMutation } from '@tanstack/react-query';
 import API from '@/api/API';
