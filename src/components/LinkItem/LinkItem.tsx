@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import Image from 'next/image';
 import { useToggleMark } from '@/hooks/useToggleMark';
 import { LinkItemProps } from '@/components/LinkItem/LinkItem.type';
-import TagLabelList from '@/components/LinkItem/TagLabelList';
 import IcoMark from 'public/assets/svg/link.svg';
 import {
   Desc,
@@ -11,6 +10,8 @@ import {
   Thumb,
   UtilsWrapper,
 } from '@/components/LinkItem/LinkItem.styled';
+import HashTagList from '../Common/Tag/HashTagList';
+import HashTag from '../Common/Tag/HashTag';
 
 const Wrapper = styled.div`
   padding: 24px 0 16px;
@@ -84,7 +85,12 @@ const LinkItem = ({ Header, queryKey, ...props }: LinkItemProps) => {
         </LinkItemInfoWrapper>
 
         <UtilsWrapper>
-          <TagLabelList className='tag-list' tags={tagList} />
+          <HashTagList
+            tagList={tagList}
+            TagComponent={HashTag}
+            // eslint-disable-next-line no-console
+            handleClick={(tag) => console.log(tag.tagName)} // tag 클릭시 상호작용 추가?
+          />
           <div className='utils'>
             {isRead && (
               <div className='read'>

@@ -11,11 +11,13 @@ import { MetaData } from '@/components/LinkItem';
 import { setAccessToken } from '@/api/customAPI';
 import Spinner from '@/components/Spinner';
 import { createToastBar } from '@/store/slices/toastBarSlice';
-import HashTagList from '@/components/Create/HashTagList';
-import FavoriteTagList from '@/components/Create/FavoriteTagList';
+import HashTagList from '@/components/Common/Tag/HashTagList';
 import { validateHashTag } from '@/utils/validation';
 import { useFetchTagsByUserId } from '@/queries';
 import { withAuthProps, withAuth } from '@/lib/withAuth';
+import { Tag } from '@/components/Common/Tag/BaseTag';
+import HashTag from '@/components/Common/Tag/HashTag';
+import AddTag from '@/components/Common/Tag/AddTag';
 
 const defaultErrorMessages = {
   url: '',
@@ -29,20 +31,26 @@ const Create = ({ userId, accessToken }: withAuthProps) => {
   setAccessToken(accessToken);
 
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(routerSlice.actions.loadCreatePage());
-  }, [dispatch]);
-
   const router = useRouter();
 
   const urlInput = useRef('');
   const [title, setTitle] = useState('');
   const [hashtagInput, setHashTagInput] = useState('');
-  const [hashtagList, setHashtagList] = useState<string[]>([]);
+  const [hashtagList, setHashtagList] = useState<Tag[]>([]);
   const [metaData, setMetaData] = useState<MetaData>(null);
   const [errorMessages, setErrorMessages] = useState(defaultErrorMessages);
   const [isValid, setIsValid] = useState(false);
+  const [nextTagId, setNextTagId] = React.useState(0);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleInputBlur = () => {
+    setIsEditing(false);
+    setHashTagInput('');
+  };
+
+  const handleAddTagClick = () => {
+    setIsEditing(true);
+  };
 
   const initErrorMessage = () => {
     setErrorMessages(defaultErrorMessages);
@@ -64,8 +72,12 @@ const Create = ({ userId, accessToken }: withAuthProps) => {
     setErrorMessages(errmsgs);
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setHashTagInput(e.target.value);
+  };
+
   const { data: tagListData } = useFetchTagsByUserId({ userId });
-  const tagList = tagListData?.tagList || [];
+  const savedTagList = tagListData?.tagList || [];
 
   const { mutate: fetchMetaData, isLoading } = useMutation({
     mutationFn: API.getLinkMetadata,
@@ -95,14 +107,24 @@ const Create = ({ userId, accessToken }: withAuthProps) => {
 
   const handleAddTags = (text: string) => {
     const newHashTagList = [...hashtagList];
-    if (text.length > 0 && !hashtagList.includes(text)) newHashTagList.push(text);
 
-    const hashtagErrMsg = validateHashTagList(newHashTagList);
+    if (text.length > 0 && !hashtagList.some((tag) => tag.tagName === text)) {
+      const newTag = {
+        tagId: nextTagId, // 현재 nextTagId 값을 사용
+        tagName: text,
+      };
+      newHashTagList.push(newTag);
+
+      setNextTagId((prevId) => prevId + 1); // tagId를 1 증가시킵니다.
+    }
+
+    const hashtagErrMsg = validateHashTagList(newHashTagList.map((tag) => tag.tagName));
 
     if (hashtagErrMsg) {
       setErrorMessage({ key: 'hashtag', message: hashtagErrMsg });
       return;
     }
+
     setHashtagList(newHashTagList);
     setHashTagInput('');
     setErrorMessage({ key: 'hashtag', message: '' });
@@ -113,14 +135,16 @@ const Create = ({ userId, accessToken }: withAuthProps) => {
   const handleCreate = () => {
     if (createLink.isLoading) return;
 
-    const [url, thumbnail, description, tags] = [
+    const tagNameList = hashtagList.map((tag) => tag.tagName);
+
+    const [url, thumbnail, description, tagList] = [
       urlInput.current,
       metaData?.metaThumbnail,
       truncateDesc(metaData?.metaDescription),
-      [...hashtagList],
+      [...tagNameList],
     ];
 
-    const errorMessage = validateForm({ title, tags });
+    const errorMessage = validateForm({ title, tagList });
     const isFormValid = Object.values(errorMessage).every((err) => err === '');
     if (!isFormValid) {
       setErrorMessages(errorMessage);
@@ -128,7 +152,7 @@ const Create = ({ userId, accessToken }: withAuthProps) => {
     }
 
     createLink.mutate(
-      { url, title, description, thumbnail, tags },
+      { url, title, description, thumbnail, tagList },
       {
         onSuccess: () => {
           dispatch(createToastBar({ text: '링크가 추가되었습니다.' }));
@@ -137,6 +161,15 @@ const Create = ({ userId, accessToken }: withAuthProps) => {
       }
     );
   };
+
+  const handleClick = (tag) => {
+    setHashtagList((prev) => prev.filter((t) => t.tagName !== tag.tagName));
+  };
+
+  useEffect(() => {
+    dispatch(routerSlice.actions.loadCreatePage());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Form
@@ -175,6 +208,13 @@ const Create = ({ userId, accessToken }: withAuthProps) => {
       </InputBlock>
 
       <InputBlock>
+        <AddTag
+          hashtagInput={hashtagInput}
+          handleInputChange={handleInputChange}
+          isEditing={isEditing}
+          handleInputBlur={handleInputBlur}
+          handleAddTagClick={handleAddTagClick}
+        />
         <InputWithButton
           label='해시태그'
           value={hashtagInput}
@@ -192,12 +232,21 @@ const Create = ({ userId, accessToken }: withAuthProps) => {
           }}
         />
         <Bottom style={{ marginBottom: '12px' }}>
-          <p className='info'>자주 사용하는 태그</p>
-          <FavoriteTagList tags={tagList} onClick={({ tagName }) => handleAddTags(tagName)} />
+          <p className='info'>나의 태그 목록</p>
+          <HashTagList
+            tagList={savedTagList}
+            TagComponent={HashTag}
+            handleClick={({ tagName }) => handleAddTags(tagName)}
+            highlightList={hashtagList}
+          />
         </Bottom>
+
         <HashTagList
-          tags={hashtagList}
-          handleDelete={(value) => setHashtagList((prev) => prev.filter((v) => v !== value))}
+          tagList={hashtagList}
+          TagComponent={HashTag}
+          handleClick={handleClick}
+          isDeletable
+          isHighLight
         />
       </InputBlock>
 
@@ -279,13 +328,13 @@ const ERROR_MESSAGE = {
 
 const validateForm = ({
   title,
-  tags: hashtagList,
+  tagList,
 }: {
   title: string;
-  tags: string[];
+  tagList: string[];
 }): typeof defaultErrorMessages => {
   const titleErrMsg = validateTitle(title);
-  const hashtagErrMsg = validateHashTagList(hashtagList);
+  const hashtagErrMsg = validateHashTagList(tagList);
 
   const errorMsg = {
     title: titleErrMsg,
