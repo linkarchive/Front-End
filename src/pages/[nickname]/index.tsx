@@ -34,7 +34,7 @@ const User: NextPageWithLayout = ({ accessToken }: withAuthProps) => {
   const queryKey = ['linkList', userId, userLink, selectedTagId];
 
   useEffect(() => {
-    dispatch(routerSlice.actions.loadUserPage());
+    dispatch(routerSlice.actions.loadArchiveUser());
   }, [dispatch]);
 
   useEffect(() => {

@@ -81,7 +81,7 @@ const SetNickname = ({ accessToken, userId }: withAuthProps) => {
   }, [debouncedNickname]);
 
   useEffect(() => {
-    dispatch(routerSlice.actions.loadSetNickname());
+    dispatch(routerSlice.actions.loadNicknamePage());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

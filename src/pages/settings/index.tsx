@@ -33,7 +33,7 @@ const Settings = ({ accessToken, userId }: withAuthProps) => {
   });
 
   useEffect(() => {
-    dispatch(routerSlice.actions.loadProfilePage());
+    dispatch(routerSlice.actions.loadMyProfilePage());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
