@@ -92,7 +92,7 @@ const Wrapper = styled.div`
 
 const TagGroup = styled.div<{ isButtonClicked: boolean }>`
   position: relative;
-  height: ${({ isButtonClicked }) => (isButtonClicked ? '150px' : '55px')};
+  max-height: ${({ isButtonClicked }) => (isButtonClicked ? '135px' : '55px')};
   padding: 4px;
   border-bottom: 8px solid ${({ theme }) => theme.gray.lightBlack};
   overflow-x: hidden;

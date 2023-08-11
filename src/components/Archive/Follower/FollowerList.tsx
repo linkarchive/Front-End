@@ -100,7 +100,7 @@ const Follower = ({
   nickname,
   userId,
   introduce,
-  profileImageFileName,
+  profileImage,
   isFollow,
   isUser,
 }: IFollower & { isUser: boolean }) => {
@@ -155,7 +155,7 @@ const Follower = ({
         <Link href={`/${userId}`}>
           <Box>
             <ProfileImage>
-              <Image alt='' src={profileImageFileName} fill />
+              <Image alt='' src={profileImage} fill />
             </ProfileImage>
             <TextInfoBox>
               <Nickname>{nickname}</Nickname>

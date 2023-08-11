@@ -12,13 +12,13 @@ export function middleware(request: NextRequest) {
 
   if (isLoggedIn) {
     // 닉네임 설정 페이지 허용
-    if (!nickname && request.nextUrl.pathname === `/settings/profile/set-nickname`) {
+    if (!nickname && request.nextUrl.pathname === `/settings/profile/nickname`) {
       return NextResponse.next();
     }
 
     // 닉네임 설정 페이지로 이동
     if (!nickname) {
-      return NextResponse.redirect(`${request.nextUrl.origin}/settings/profile/set-nickname`);
+      return NextResponse.redirect(`${request.nextUrl.origin}/settings/profile/nickname`);
     }
 
     // 로그인 페이지 접근 불가

@@ -2,7 +2,7 @@ interface IFollower {
   userId: number;
   nickname: string;
   introduce: string;
-  profileImageFileName: string;
+  profileImage: string;
   isFollow: boolean;
 }
 

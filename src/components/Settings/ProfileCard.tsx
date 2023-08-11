@@ -4,19 +4,19 @@ import ProfileImage from '../Archive/User/ProfileImage';
 import Link from 'next/link';
 
 interface ProfileCardProps {
-  profileImageFileName: string;
+  profileImage: string;
   nickname: string;
   followerCount: number;
   followingCount: number;
 }
 
 const ProfileCard = ({ ...data }: ProfileCardProps) => {
-  const { profileImageFileName, nickname, followerCount, followingCount } = data;
+  const { profileImage, nickname, followerCount, followingCount } = data;
 
   return (
     <Info>
       <ProfileWrapper>
-        <ProfileImage src={profileImageFileName} size='72px' />
+        <ProfileImage src={profileImage} size='72px' />
         <Username>{nickname}</Username>
       </ProfileWrapper>
       <InteractiveWrapper>
