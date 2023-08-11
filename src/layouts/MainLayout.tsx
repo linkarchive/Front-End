@@ -1,28 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
-import HomeHeader from '@/components/Home/HomeHeader';
 import { useSelector } from 'react-redux';
-import Header from '@/components/Common/Header/Header';
+import GoBackHeader from '@/components/Common/Header/GoBackHeader';
 import { RootState } from '@/store';
-import ArchiveHeader from '@/components/Archive/ArchiveHeader';
+import MainHeader from '@/components/Common/Header/MainHeader';
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
-  const { status, current } = useSelector((state: RootState) => state.router);
-  const main = status === 'MAIN';
-  const home = current === 'HOME';
-  const Archive = current === 'ARCHIVE';
-  const none = current === 'NONE';
+  const { status } = useSelector((state: RootState) => state.router);
+  const MAIN = status === 'MAIN';
+
   return (
     <>
       <WaterMark />
-      {!main && <Header />}
-      {main && (
-        <>
-          {home && <HomeHeader />}
-          {Archive && <ArchiveHeader />}
-          {none}
-        </>
-      )}
+      {MAIN ? <MainHeader /> : <GoBackHeader />}
       <Main>{children}</Main>
     </>
   );
