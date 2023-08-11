@@ -35,7 +35,7 @@ export const routerSlice = createSlice({
     },
     loadCreatePage(state) {
       state.status = 'OTHER';
-      state.name = '링크 추가';
+      state.name = '링크';
     },
     loadLoginPage(state) {
       state.status = 'OTHER';

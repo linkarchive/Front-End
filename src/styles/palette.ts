@@ -35,6 +35,7 @@ const palette = {
   },
   gray: {
     lightBlack: '#f5f5f5',
+    darkerGray: '#555555',
     darkGray: '#888888',
     mediumGray: '#858585',
     lightGray: '#aaaaaa',
