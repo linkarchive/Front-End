@@ -51,7 +51,7 @@ const API = {
     title: string;
     description: string;
     thumbnail: string;
-    tags: string[];
+    tagList: string[];
   }) => {
     const response = await clientInstance.post(`link`, {
       ...data,
@@ -278,6 +278,13 @@ const API = {
   /** 사용자별 마크 해시태그 리스트 조회 */
   getUsersMarksTagList: async (userId: number) => {
     const { data } = await clientInstance.get(`/mark/tags/user/${userId}`);
+
+    return data.tagList;
+  },
+
+  /** 둘러보기 해시태그 리스트 조회 */
+  getArchiveTagList: async () => {
+    const { data } = await clientInstance.get(`/tags/archive`);
 
     return data.tagList;
   },

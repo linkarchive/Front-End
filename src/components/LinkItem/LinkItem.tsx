@@ -1,9 +1,10 @@
 import { LinkItemProps } from '@/components/LinkItem/LinkItem.type';
-import TagLabelList from '@/components/LinkItem/TagLabelList';
 import { UtilsWrapper } from '@/components/LinkItem/LinkItem.styled';
 import MarkButton from './MarkButton';
 import LinkItemInfo from './LinkItemInfo';
 import LinkInfo from '@/components/LinkItem/LinkInfo';
+import HashTagList from '../Common/Tag/HashTagList';
+import HashTag from '../Common/Tag/HashTag';
 
 const LinkItem = ({ queryKey, ...props }: LinkItemProps) => {
   const { linkId, isRead, isMark, bookMarkCount, tagList } = props;
@@ -12,7 +13,12 @@ const LinkItem = ({ queryKey, ...props }: LinkItemProps) => {
     <LinkItemInfo>
       <LinkInfo {...props} />
       <UtilsWrapper>
-        <TagLabelList className='tag-list' tags={tagList} />
+        <HashTagList
+          tagList={tagList}
+          TagComponent={HashTag}
+          // eslint-disable-next-line no-console
+          handleClick={(tag) => console.log(tag.tagName)} // tag 클릭시 상호작용 추가?
+        />
       </UtilsWrapper>
 
       <LinkItemInfo.LinkItemBottom>
