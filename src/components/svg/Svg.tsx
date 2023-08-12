@@ -154,6 +154,24 @@ const CheckIcon = () => {
   );
 };
 
+const MarkIcon = () => {
+  return (
+    <svg width='17' height='17' viewBox='0 0 17 17' fill='none' xmlns='http://www.w3.org/2000/svg'>
+      <g clipPath='url(#clip0_354_2236)'>
+        <path
+          d='M16.4614 8.33301C16.4614 10.0535 12.7444 10.361 11.6174 11.489C10.4894 12.617 10.1829 16.333 8.46143 16.333C6.73998 16.333 6.43342 12.616 5.30544 11.489C4.17747 10.362 0.461426 10.0545 0.461426 8.33301C0.461426 6.61156 4.17845 6.30501 5.30544 5.17703C6.43244 4.04905 6.73998 0.333008 8.46143 0.333008C10.1829 0.333008 10.4894 4.05003 11.6174 5.17703C12.7454 6.30501 16.4614 6.61156 16.4614 8.33301Z'
+          fill='#DDDDDD'
+        />
+      </g>
+      <defs>
+        <clipPath id='clip0_354_2236'>
+          <rect width='16' height='16' fill='white' transform='translate(0.461426 0.333008)' />
+        </clipPath>
+      </defs>
+    </svg>
+  );
+};
+
 export {
   PhotoSvgIcon,
   ChevronUpAndDownSvg,
@@ -164,4 +182,5 @@ export {
   HomeSvg,
   ChevronRight,
   CheckIcon,
+  MarkIcon,
 };
