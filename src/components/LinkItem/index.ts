@@ -1,4 +1,4 @@
-import LinkItem from '@/components/LinkItem/LinkItemData';
+import LinkItem from '@/components/LinkItem/LinkItem';
 import LinkItemWithProfile from '@/components/LinkItem/LinkItemWithProfile';
 import { LinkItemList, LinkItemWithProfileList } from '@/components/LinkItem/LinkItemList';
 import {
