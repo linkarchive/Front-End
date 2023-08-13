@@ -176,13 +176,13 @@ const CheckIcon = () => {
   );
 };
 
-const MarkIcon = () => {
+const MarkIcon = ({ fill = '#DDDDDD' }: { fill?: string }) => {
   return (
     <svg width='17' height='17' viewBox='0 0 17 17' fill='none' xmlns='http://www.w3.org/2000/svg'>
       <g clipPath='url(#clip0_354_2236)'>
         <path
           d='M16.4614 8.33301C16.4614 10.0535 12.7444 10.361 11.6174 11.489C10.4894 12.617 10.1829 16.333 8.46143 16.333C6.73998 16.333 6.43342 12.616 5.30544 11.489C4.17747 10.362 0.461426 10.0545 0.461426 8.33301C0.461426 6.61156 4.17845 6.30501 5.30544 5.17703C6.43244 4.04905 6.73998 0.333008 8.46143 0.333008C10.1829 0.333008 10.4894 4.05003 11.6174 5.17703C12.7454 6.30501 16.4614 6.61156 16.4614 8.33301Z'
-          fill='#DDDDDD'
+          fill={fill}
         />
       </g>
       <defs>
@@ -209,6 +209,19 @@ const CircleXMark = ({ background, fill }: { background: string; fill: string })
   );
 };
 
+const MoreIcon = () => {
+  return (
+    <svg xmlns='http://www.w3.org/2000/svg' width='25' height='25' viewBox='0 0 25 25' fill='none'>
+      <circle cx='12.4634' cy='6.83105' r='1.5' fill='#888888' />
+      <circle cx='12.4634' cy='12.3311' r='1.5' fill='#888888' />
+      <path
+        d='M13.9634 17.8311C13.9634 18.6595 13.2918 19.3311 12.4634 19.3311C11.635 19.3311 10.9634 18.6595 10.9634 17.8311C10.9634 17.0026 11.635 16.3311 12.4634 16.3311C13.2918 16.3311 13.9634 17.0026 13.9634 17.8311Z'
+        fill='#888888'
+      />
+    </svg>
+  );
+};
+
 export {
   PhotoSvgIcon,
   ChevronUpAndDownSvg,
@@ -221,6 +234,7 @@ export {
   CheckIcon,
   MarkIcon,
   CircleXMark,
+  MoreIcon,
 };
 
 const CircleXMarkWrapper = styled.span<{ background: string }>`
