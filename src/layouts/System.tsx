@@ -1,11 +1,8 @@
-import { useSelector } from 'react-redux';
 import { ToastBar } from '@/components/ToastBar';
-import { destroyToastBar, toastBarState } from '@/store/slices/toastBarSlice';
-import { useAppDispatch } from '@/store';
+import useToastBar from '@/hooks/useToastBar';
 
 export const System = () => {
-  const dispatch = useAppDispatch();
-  const toast = useSelector(toastBarState);
+  const { toastState, destroyToastMessage } = useToastBar();
 
-  return <ToastBar {...toast} onToastEnd={() => dispatch(destroyToastBar())} />;
+  return <ToastBar {...toastState} onToastEnd={destroyToastMessage} />;
 };

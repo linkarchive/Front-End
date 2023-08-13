@@ -6,8 +6,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import API from '@/api/API';
 import { AxiosError } from 'axios';
 import { ErrorMessage } from '@/pages/settings/profile';
-import { createToastBar } from '@/store/slices/toastBarSlice';
 import { useAppDispatch } from '@/store';
+import useToastBar from '@/hooks/useToastBar';
 
 const Block = styled.div`
   width: 100%;
@@ -107,6 +107,8 @@ const Follower = ({
   const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
 
+  const { createToastMessage } = useToastBar();
+
   const buttonText = isFollow ? '팔로잉' : '팔로우';
 
   const followMutation = useMutation({
@@ -114,7 +116,7 @@ const Follower = ({
     onSuccess: () => {},
     onError: (error: AxiosError<ErrorMessage>) => {
       const errorMessage = error.response.data.message;
-      dispatch(createToastBar({ text: errorMessage }));
+      createToastMessage(errorMessage);
     },
     onSettled: () => {
       queryClient.invalidateQueries(['user', userId]);
@@ -126,7 +128,7 @@ const Follower = ({
     onSuccess: () => {},
     onError: (error: AxiosError<ErrorMessage>) => {
       const errorMessage = error.response.data.message;
-      dispatch(createToastBar({ text: errorMessage }));
+      createToastMessage(errorMessage);
     },
     onSettled: () => {
       queryClient.invalidateQueries(['user', nickname]);
