@@ -11,10 +11,10 @@ import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { withAuth } from '@/lib/withAuth';
 import { setAccessToken } from '@/api/customAPI';
-import { createToastBar } from '@/store/slices/toastBarSlice';
 import { cancelSource } from '@/utils/cancelToken';
 import { PhotoSvgIcon } from '@/components/svg/Svg';
 import MessageToaster from '../../../components/Settings/MessageToaster';
+import useToastBar from '@/hooks/useToastBar';
 
 export interface ErrorMessage {
   message: string;
@@ -41,6 +41,9 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
   setAccessToken(accessToken);
 
   const dispatch = useAppDispatch();
+
+  const { createToastMessage } = useToastBar();
+
   const [profile, setProfile] = useState<UserData>(initialState);
   const { imageUrl, setImageUrl, onImageChange } = useImage(''); // FIXME: 최초 렌더링시 깜빡이는 이슈 lazy-loading적용
   const debouncedNickname = useDebounce(profile.nickname.value, DEBOUNCED_DELAY);
@@ -84,7 +87,7 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
           });
 
           await API.setCookie({ name: 'nickname', value: debouncedNickname });
-          dispatch(createToastBar({ text: '프로필이 수정되었습니다.' }));
+          createToastMessage('프로필이 수정되었습니다.');
         },
         onError: (error: AxiosError<ErrorMessage>) => {
           // eslint-disable-next-line no-alert
