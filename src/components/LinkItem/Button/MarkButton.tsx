@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import IcoMark from 'public/assets/svg/link.svg';
 import { useToggleMark } from '@/hooks/useToggleMark';
 import { QueryKey } from '@tanstack/react-query';
+import { MarkIcon } from '@/components/svg/Svg';
 
 const MarkBtn = styled.button`
   display: flex;
@@ -18,18 +18,12 @@ const MarkBtn = styled.button`
   cursor: pointer;
 `;
 
-const Mark = styled.span<{ isActivated: boolean }>`
-  svg path {
-    fill: ${({ isActivated, theme }) => (isActivated ? theme.primary.main : '')};
-  }
+const MarkIconBox = styled.span`
+  margin-right: 8px;
 `;
 
-const MarkIcon = styled.div`
-  position: relative;
-
-  width: 12px;
-  height: 12px;
-  margin-right: 8px;
+const BookMarkCountBox = styled.span`
+  margin-top: -3px;
 `;
 
 const MarkButton = ({
@@ -53,12 +47,10 @@ const MarkButton = ({
         handleToggleMark();
       }}
     >
-      <MarkIcon>
-        <Mark isActivated={isMark}>
-          <IcoMark />
-        </Mark>
-      </MarkIcon>
-      {bookMarkCount}
+      <MarkIconBox>
+        <MarkIcon fill={isMark ? '#FF5248' : '#ddd'} />
+      </MarkIconBox>
+      <BookMarkCountBox>{bookMarkCount}</BookMarkCountBox>
     </MarkBtn>
   );
 };
