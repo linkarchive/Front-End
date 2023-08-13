@@ -1,7 +1,7 @@
 import LinkItem, { LinkItemWithProfile, LinkItemListProps } from '@/components/LinkItem';
 import React from 'react';
 import styled from 'styled-components';
-import { DeleteButton } from './DeleteButton';
+import { DeleteButton } from '@/components/LinkItem/Button/DeleteButton';
 import LinkItemListLayout from '@/layouts/LinkItemLayout';
 
 const Block = styled.div`

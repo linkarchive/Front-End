@@ -15,7 +15,6 @@ const Title = styled.h1`
 
   font-weight: 500;
   font-size: 16px;
-  line-height: 21px;
   white-space: nowrap;
   color: ${({ theme }) => theme.common.black};
   font-style: normal;
@@ -38,23 +37,22 @@ const Desc = styled.p`
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-
   overflow: hidden;
 
-  word-break: break-all;
   font-size: 14px;
-  font-style: normal;
   font-weight: 500;
   line-height: 130%; /* 18.2px */
   color: ${({ theme }) => theme.gray.darkGray};
+  word-break: break-all;
 `;
 
 const Thumb = styled.div`
   position: relative;
+  overflow: hidden;
+
   min-width: 80px;
   width: 80px;
   height: 80px;
-  overflow: hidden;
 
   border-radius: 10px;
 

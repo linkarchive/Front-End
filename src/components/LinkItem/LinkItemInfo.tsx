@@ -1,15 +1,14 @@
 import styled from 'styled-components';
-import { BottomBlock, InfoWrapper } from '@/components/LinkItem/LinkItem.styled';
+import {
+  BottomBlock,
+  Header,
+  HashTagBlock,
+  BorderBottom,
+  LinkInfoBlock,
+} from '@/components/LinkItem/LinkItem/LinkItem.styled';
 
 const Wrapper = styled.article`
-  padding: 24px 0 24px;
-`;
-
-const Header = styled(InfoWrapper)`
-  display: flex;
-  gap: 8px;
-
-  margin-bottom: 22.5px;
+  padding-top: 24px;
 `;
 
 const LinkItemMain = ({ children }: { children: React.ReactNode }) => {
@@ -17,8 +16,11 @@ const LinkItemMain = ({ children }: { children: React.ReactNode }) => {
 };
 
 const LinkItemInfo = Object.assign(LinkItemMain, {
-  LinkItemHeader: Header,
-  LinkItemBottom: BottomBlock,
+  Header,
+  HashTagBlock,
+  LinkInfoBlock,
+  Bottom: BottomBlock,
+  BorderBottom,
 });
 
 export default LinkItemInfo;
