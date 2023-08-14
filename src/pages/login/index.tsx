@@ -31,7 +31,7 @@ const Login = () => {
           </AuthGroup>
 
           <Link href='/archive'>
-            <WithOutLoginButton>로그인 없이 불편하게 이용하기</WithOutLoginButton>
+            <WithOutLoginButton>로그인 없이 이용하기</WithOutLoginButton>
           </Link>
         </AuthWrapper>
       </Wrapper>
