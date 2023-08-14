@@ -22,7 +22,7 @@ const Profile = ({
   id,
   nickname,
   introduce,
-  profileImageFileName,
+  profileImage,
   followerCount,
   followingCount,
   isFollow,
@@ -85,7 +85,7 @@ const Profile = ({
           <ProfileIntro>{introduce}</ProfileIntro>
         </div>
 
-        <ProfileImage src={profileImageFileName} size='72px' />
+        <ProfileImage src={profileImage} size='72px' />
       </ProfileWrapper>
 
       <InteractiveWrapper>

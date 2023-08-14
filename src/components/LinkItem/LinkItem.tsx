@@ -61,7 +61,7 @@ const Thumbnail = ({ src, alt }: { src: string; alt: string }) => {
 };
 
 const LinkItem = ({ Header, queryKey, ...props }: LinkItemProps) => {
-  const { linkId, url, title, description, thumbnail, isRead, isMark, bookMarkCount, tagList } =
+  const { linkId, url, title, description, thumbnail, isRead, isMark, bookmarkCount, tagList } =
     props;
   const { handleToggleMark } = useToggleMark({ linkId, isMark, queryKey });
 
@@ -113,7 +113,7 @@ const LinkItem = ({ Header, queryKey, ...props }: LinkItemProps) => {
                   <IcoMark />
                 </Mark>
               </div>
-              {bookMarkCount}
+              {bookmarkCount}
             </button>
           </div>
         </UtilsWrapper>

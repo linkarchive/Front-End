@@ -42,7 +42,7 @@ export const useToggleMark = ({
 };
 
 /**
- * linkItem의 isMark와 bookMarkCount 상태 업데이트
+ * linkItem의 isMark와 bookmarkCount 상태 업데이트
  */
 function updateLinkItem({ linkList, linkId }: { linkList: unknown; key?: string; linkId: number }) {
   const keys = ['linkArchive', 'linkList', 'markList']; // TODO key를 인자로 받도록 하드코딩 개선
@@ -54,7 +54,7 @@ function updateLinkItem({ linkList, linkId }: { linkList: unknown; key?: string;
         page[key] = page[key].map((link) => {
           if (link.linkId === linkId) {
             link.isMark = !link.isMark;
-            link.bookMarkCount += link.isMark ? 1 : -1;
+            link.bookmarkCount += link.isMark ? 1 : -1;
           }
           return link;
         });

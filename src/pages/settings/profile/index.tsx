@@ -111,7 +111,7 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
       introduce: { value: data?.introduce, initialValue: data?.introduce },
     });
 
-    setImageUrl(data?.profileImageFileName);
+    setImageUrl(data?.profileImage);
   };
 
   const validateNicknameMutation = useMutation(API.validateNickname, {

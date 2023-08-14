@@ -15,7 +15,7 @@ export const useImage = (initialImageUrl: string) => {
       { file },
       {
         onSuccess: (response) => {
-          setImageUrl(response.data.profileImageFileName);
+          setImageUrl(response.data.profileImage);
         },
         onError: () => {
           // eslint-disable-next-line no-console
