@@ -1,12 +1,14 @@
 import ProfileImage from '@/components/Archive/User/ProfileImage';
 import { LogoIcon, NotificationIcon } from '@/components/svg/Svg';
+import { RootState } from '@/store';
 import Link from 'next/link';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-const SampleImage = '프로필 이미지';
-
 const MainHeader = () => {
+  const { myProfileImage } = useSelector((state: RootState) => state.user);
+
   return (
     <HeaderContainer>
       <Link href='/'>
@@ -18,7 +20,7 @@ const MainHeader = () => {
         </NotificationIconBox>
         <Link href='/settings'>
           <ProfileWrapper>
-            <ProfileImage src={SampleImage} size='24px' />
+            {myProfileImage && <ProfileImage src={myProfileImage} size='24px' />}
           </ProfileWrapper>
         </Link>
       </ActionsWrapper>
