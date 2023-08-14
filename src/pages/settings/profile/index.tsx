@@ -139,7 +139,7 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
   useEffect(() => {
     setMyProfile();
 
-    dispatch(routerSlice.actions.loadProfileDetailPage());
+    dispatch(routerSlice.actions.loadProfileEditPage());
     return () => {
       // axios 요청 취소
       cancelSource();

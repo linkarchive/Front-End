@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import HomeBtn from './HomeBtn';
-import SettingsBtn from './SettingsBtn';
+import FeedBtn from './SettingsBtn';
 import { zIndex } from '@/constants/zIndex';
 import CreateBtn from './CreateBtn';
 import BottomLine from './BottomLine';
@@ -16,7 +16,7 @@ const BottomNav = () => {
     const path = router.pathname;
     const getActiveItem = () => {
       if (path === '/' || path === '/create' || path === '/login') return 'home';
-      if (path.startsWith('/settings')) return 'settings';
+      if (path.startsWith('/feed')) return 'feed';
       return 'archive';
     };
     setActiveItem(getActiveItem());
@@ -27,7 +27,7 @@ const BottomNav = () => {
       <FooterWrapper>
         <Nav>
           <ArchiveBtn activeItem={activeItem} />
-          <SettingsBtn activeItem={activeItem} />
+          <FeedBtn activeItem={activeItem} />
           <HomeBtn activeItem={activeItem} />
         </Nav>
         <CreateBtn />

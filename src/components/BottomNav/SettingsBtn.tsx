@@ -7,11 +7,11 @@ type SettingsBtnProps = {
   activeItem: string;
 };
 
-const SettingsBtn = ({ activeItem }: SettingsBtnProps) => {
+const FeedBtn = ({ activeItem }: SettingsBtnProps) => {
   return (
     <SvgWrapper>
-      <Link href='/settings'>
-        <SvgIcon isActive={activeItem === 'settings'}>
+      <Link href='/feed'>
+        <SvgIcon isActive={activeItem === 'feed'}>
           <FollowSvg />
         </SvgIcon>
       </Link>
@@ -19,4 +19,4 @@ const SettingsBtn = ({ activeItem }: SettingsBtnProps) => {
   );
 };
 
-export default SettingsBtn;
+export default FeedBtn;
