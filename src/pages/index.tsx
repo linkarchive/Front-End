@@ -4,12 +4,11 @@ import InfinityScroll from '@/components/Common/InfinityScroll';
 import { HomeLinkItemList } from '@/components/LinkItem/LinkItemList';
 import { withAuth, withAuthProps } from '@/lib/withAuth';
 import { RootState, useAppDispatch } from '@/store';
-import { HashTagSlice } from '@/store/slices/hashTagSlice';
+import { hashTagSlice } from '@/store/slices/hashTagSlice';
 import { routerSlice } from '@/store/slices/routerSlice';
 import { ReactElement, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import BottomNav from '@/components/BottomNav/BottomNav';
 
 export const getServerSideProps = withAuth();
 
@@ -38,38 +37,35 @@ const Home = ({ accessToken }: withAuthProps) => {
     dispatch(routerSlice.actions.loadHomePage());
 
     return () => {
-      dispatch(HashTagSlice.actions.setInitialState());
+      dispatch(hashTagSlice.actions.setInitialState());
     };
   }, [dispatch, myMark]);
 
   return (
-    <>
-      <MainLayoutWrapper>
-        <InfinityScroll
-          renderList={({ pages }) => <HomeLinkItemList data={pages} queryKey={queryKey} />}
-          fetchFn={fetchFn}
-          queryKey={queryKey}
-          getNextPageParam={(lastPage_) => {
-            const hasNext = lastPage_?.hasNext;
-            if (!hasNext) return undefined;
+    <MainLayoutWrapper>
+      <InfinityScroll
+        renderList={({ pages }) => <HomeLinkItemList data={pages} queryKey={queryKey} />}
+        fetchFn={fetchFn}
+        queryKey={queryKey}
+        getNextPageParam={(lastPage_) => {
+          const hasNext = lastPage_?.hasNext;
+          if (!hasNext) return undefined;
 
-            if (myLink) {
-              const lastPage = lastPage_?.linkList;
-              const lastItem = lastPage[lastPage.length - 1].linkId;
-
-              return lastItem;
-            }
-
-            const lastPage = lastPage_?.markList;
-            const lastItem = lastPage[lastPage.length - 1].markId;
+          if (myLink) {
+            const lastPage = lastPage_?.linkList;
+            const lastItem = lastPage[lastPage.length - 1].linkId;
 
             return lastItem;
-          }}
-          config={myMark && { staleTime: 0 }}
-        />
-      </MainLayoutWrapper>
-      <BottomNav />
-    </>
+          }
+
+          const lastPage = lastPage_?.markList;
+          const lastItem = lastPage[lastPage.length - 1].markId;
+
+          return lastItem;
+        }}
+        config={myMark && { staleTime: 0 }}
+      />
+    </MainLayoutWrapper>
   );
 };
 
@@ -79,6 +75,7 @@ Home.getLayout = function getLayout(page: ReactElement) {
 
 export const MainLayoutWrapper = styled.div`
   position: relative;
+  height: 100%;
 `;
 
 export default Home;
