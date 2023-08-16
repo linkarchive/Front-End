@@ -7,7 +7,7 @@ import API from '@/api/API';
 import ProfileLayout from '@/layouts/ProfileLayout';
 import { NextPageWithLayout } from '../_app';
 import { useSelector } from 'react-redux';
-import { HashTagSlice } from '@/store/slices/hashTagSlice';
+import { hashTagSlice } from '@/store/slices/hashTagSlice';
 import InfinityScroll from '@/components/Common/InfinityScroll';
 import { withAuth, withAuthProps } from '@/lib/withAuth';
 import { setAccessToken } from '@/api/customAPI';
@@ -38,7 +38,7 @@ const User: NextPageWithLayout = ({ accessToken }: withAuthProps) => {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(HashTagSlice.actions.setInitialState());
+    dispatch(hashTagSlice.actions.setInitialState());
   }, [dispatch, userLink]);
 
   return (

@@ -10,7 +10,7 @@ const initialState: HashTag = {
   selectedTagName: 'All',
 };
 
-export const HashTagSlice = createSlice({
+export const hashTagSlice = createSlice({
   name: 'hashTag',
   initialState,
   reducers: {
@@ -25,4 +25,4 @@ export const HashTagSlice = createSlice({
   },
 });
 
-export const { onClickHashTag } = HashTagSlice.actions;
+export const { onClickHashTag } = hashTagSlice.actions;
