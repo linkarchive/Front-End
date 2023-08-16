@@ -48,3 +48,7 @@ a {
 [class]::after {
   box-sizing: border-box;
 }
+
+#__next {
+  height: 100vh;
+}

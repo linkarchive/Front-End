@@ -18,6 +18,7 @@ const CreateBtn = () => {
 export default CreateBtn;
 
 const Wrapper = styled.div`
+  position: relative;
   z-index: ${zIndex.CreateBtn};
   transform: translate(-9px, -18px);
 `;
