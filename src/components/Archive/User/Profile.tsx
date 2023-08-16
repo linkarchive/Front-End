@@ -6,11 +6,11 @@ import { AlarmBellSvg, PlusSvg } from '@/components/svg/Svg';
 import API from '@/api/API';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { RootState, useAppDispatch } from '@/store';
-import { createToastBar } from '@/store/slices/toastBarSlice';
 import { AxiosError } from 'axios';
 import { ErrorMessage } from '@/pages/settings/profile';
 import { useSelector } from 'react-redux';
 import ProfileImage from './ProfileImage';
+import useToastBar from '@/hooks/useToastBar';
 
 interface ProfileProps extends User {
   followerCount: number;
@@ -22,7 +22,7 @@ const Profile = ({
   id,
   nickname,
   introduce,
-  profileImageFileName,
+  profileImage,
   followerCount,
   followingCount,
   isFollow,
@@ -32,12 +32,14 @@ const Profile = ({
   const queryClient = useQueryClient();
   const { myId } = useSelector((state: RootState) => state.user);
 
+  const { createToastMessage } = useToastBar();
+
   const followMutation = useMutation({
     mutationFn: API.followUser,
     onSuccess: () => {},
     onError: (error: AxiosError<ErrorMessage>) => {
       const errorMessage = error.response.data.message;
-      dispatch(createToastBar({ text: errorMessage }));
+      createToastMessage(errorMessage);
     },
     onSettled: () => {
       queryClient.invalidateQueries(['user', id]);
@@ -49,7 +51,7 @@ const Profile = ({
     onSuccess: () => {},
     onError: (error: AxiosError<ErrorMessage>) => {
       const errorMessage = error.response.data.message;
-      dispatch(createToastBar({ text: errorMessage }));
+      createToastMessage(errorMessage);
     },
     onSettled: () => {
       queryClient.invalidateQueries(['user', id]);
@@ -83,7 +85,7 @@ const Profile = ({
           <ProfileIntro>{introduce}</ProfileIntro>
         </div>
 
-        <ProfileImage src={profileImageFileName} size='72px' />
+        <ProfileImage src={profileImage} size='72px' />
       </ProfileWrapper>
 
       <InteractiveWrapper>

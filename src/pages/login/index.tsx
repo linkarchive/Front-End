@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { KakaoAuthUrl } from '../../constants';
 import Link from 'next/link';
 import styled from 'styled-components';
@@ -16,36 +16,67 @@ const Login = () => {
 
   return (
     <Container>
-      <LogoWrapper>
-        <Logo />
-      </LogoWrapper>
+      <Wrapper>
+        <LogoWrapper>
+          <Logo />
+        </LogoWrapper>
 
-      <AuthWrapper>
-        <div>
-          <KakaoAuthBox>
-            <Link href={KakaoAuthUrl}>
-              <KakaoButton />
-            </Link>
-          </KakaoAuthBox>
-        </div>
-      </AuthWrapper>
+        <AuthWrapper>
+          <AuthGroup>
+            <KakaoAuthBox>
+              <Link href={KakaoAuthUrl}>
+                <KakaoButton />
+              </Link>
+            </KakaoAuthBox>
+          </AuthGroup>
+
+          <Link href='/archive'>
+            <WithOutLoginButton>로그인 없이 이용하기</WithOutLoginButton>
+          </Link>
+        </AuthWrapper>
+      </Wrapper>
     </Container>
   );
 };
 
+Login.getFullLayout = function getFullLayout(page: ReactElement) {
+  return page;
+};
+
 const Container = styled.div`
   position: absolute;
-  display: flex;
   width: 375px;
-
-  /* FIXME: header 높이 변수화 해서 동적으로 처리해야함 */
-  height: calc(100% - 48px);
+  height: 100%;
   margin: auto;
 
   background-color: #f8f6ef;
+`;
+
+const Wrapper = styled.div`
+  position: relative;
+  display: flex;
+
+  height: 90%;
+
   flex-direction: column;
   justify-content: center;
   align-items: center;
+`;
+
+const AuthGroup = styled.div`
+  position: relative;
+`;
+
+const WithOutLoginButton = styled.div`
+  padding-top: 10px;
+
+  color: ${({ theme }) => theme.gray.lightGray};
+  border-bottom: 1px solid ${({ theme }) => theme.gray.lightGray};
+  cursor: pointer;
+
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18.2px;
 `;
 
 const LogoWrapper = styled.div`
@@ -57,6 +88,7 @@ const LogoWrapper = styled.div`
 
 const AuthWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   flex-grow: 1;

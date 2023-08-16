@@ -10,7 +10,6 @@ import LinkInfo from '@/components/Create/LinkInfo';
 import { MetaData } from '@/components/LinkItem';
 import { setAccessToken } from '@/api/customAPI';
 import Spinner from '@/components/Spinner';
-import { createToastBar } from '@/store/slices/toastBarSlice';
 import HashTagList from '@/components/Common/Tag/HashTagList';
 import { validateHashTag } from '@/utils/validation';
 import { useFetchTagsByUserId } from '@/queries';
@@ -18,6 +17,7 @@ import { withAuthProps, withAuth } from '@/lib/withAuth';
 import { Tag } from '@/components/Common/Tag/BaseTag';
 import HashTag from '@/components/Common/Tag/HashTag';
 import AddTag from '@/components/Common/Tag/AddTag';
+import useToastBar from '@/hooks/useToastBar';
 
 const defaultErrorMessages = {
   url: '',
@@ -32,6 +32,8 @@ const Create = ({ userId, accessToken }: withAuthProps) => {
 
   const dispatch = useAppDispatch();
   const router = useRouter();
+
+  const { createToastMessage } = useToastBar();
 
   const urlInput = useRef('');
   const [title, setTitle] = useState('');
@@ -155,7 +157,7 @@ const Create = ({ userId, accessToken }: withAuthProps) => {
       { url, title, description, thumbnail, tagList },
       {
         onSuccess: () => {
-          dispatch(createToastBar({ text: '링크가 추가되었습니다.' }));
+          createToastMessage('링크가 추가되었습니다.');
           router.push('/');
         },
       }

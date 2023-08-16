@@ -11,7 +11,7 @@ const Page = () => {
         description='Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sequi nesciunt cum harum qui ipsum quos libero porro odit iusto nam eius assumenda culpa sed, quidem saepe impedit perferendis, quo magni.'
         linkId={0}
         url='https://www.naver.com'
-        bookMarkCount={3}
+        bookmarkCount={3}
         isRead={false}
         isMark={false}
         tagList={[
@@ -35,7 +35,7 @@ const Page = () => {
         description='Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sequi nesciunt cum harum qui ipsum quos libero porro odit iusto nam eius assumenda culpa sed, quidem saepe impedit perferendis, quo magni.'
         linkId={0}
         url='https://www.naver.com'
-        bookMarkCount={3}
+        bookmarkCount={3}
         isRead={false}
         isMark={false}
         tagList={[

@@ -13,17 +13,17 @@ const Wrapper = styled.div<{ show?: boolean }>`
   align-items: center;
   transform: translateX(-50%);
 
-  width: 343px;
-  height: 62px;
+  padding: 12px 32px;
   box-sizing: border-box;
-  padding: 0 23px;
-  border-radius: 6px;
+  border-radius: 40px;
   border: none;
 
-  background: ${({ theme }) => theme.success.main};
+  background: ${({ theme }) => theme.common.black};
 
-  font-weight: 600;
-  font-size: 18px;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 130%;
   color: ${({ theme }) => theme.common.white};
 
   transition: all ${showTime}s;

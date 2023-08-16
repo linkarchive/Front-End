@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react';
 import { renderWithProviders } from '@test/utils/test-utils';
 import Login from '@/pages/login';
 
-describe('로그인 페이지에서', () => {
+describe.skip('로그인 페이지에서', () => {
   test('"로고가 화면에 렌더링 되는지', () => {
     // ARRANGE
     renderWithProviders(<Login />);

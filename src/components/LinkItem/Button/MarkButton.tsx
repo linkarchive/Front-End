@@ -30,12 +30,12 @@ const MarkButton = ({
   linkId,
   queryKey,
   isMark,
-  bookMarkCount,
+  bookmarkCount,
 }: {
   linkId: number;
   queryKey: QueryKey;
   isMark: boolean;
-  bookMarkCount: number;
+  bookmarkCount: number;
 }) => {
   const { handleToggleMark } = useToggleMark({ linkId, isMark, queryKey });
 
@@ -50,7 +50,7 @@ const MarkButton = ({
       <MarkIconBox>
         <MarkIcon fill={isMark ? '#FF5248' : '#ddd'} />
       </MarkIconBox>
-      <BookMarkCountBox>{bookMarkCount}</BookMarkCountBox>
+      <BookMarkCountBox>{bookmarkCount}</BookMarkCountBox>
     </MarkBtn>
   );
 };

@@ -2,7 +2,7 @@ import API from '@/api/API';
 import { setAccessToken } from '@/api/customAPI';
 import FollowerList from '@/components/Archive/Follower/FollowerList';
 import Tab from '@/components/Archive/Follower/Tab';
-import Header from '@/components/Common/Header/Header';
+import GoBackHeader from '@/components/Common/Header/GoBackHeader';
 import useTabs from '@/hooks/useFollowerTabs';
 import { withAuth, withAuthProps } from '@/lib/withAuth';
 import { useQuery } from '@tanstack/react-query';
@@ -13,7 +13,6 @@ export const getServerSideProps = withAuth();
 const Page = ({ accessToken, userId: authUserId }: withAuthProps) => {
   setAccessToken(accessToken);
   const userId = 3; // TODO 조회할 유저의 userId 필요
-  const nickname = '푸바오'; // TODO 조회할 유저의 nickname 필요
   const { activeItem } = useTabs();
   const { data } = useQuery({
     queryKey: [activeItem, userId],
@@ -27,7 +26,7 @@ const Page = ({ accessToken, userId: authUserId }: withAuthProps) => {
 
   return (
     <>
-      <Header title={nickname} />
+      <GoBackHeader />
       <Tab tabs={[{ text: '팔로워' }, { text: '팔로잉' }]} />
       <FollowerList authUserId={String(authUserId)} followerList={followerList} />
     </>

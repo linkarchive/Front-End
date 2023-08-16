@@ -4,7 +4,7 @@ import LinkItemInfo from '@/components/LinkItem/LinkItemInfo';
 import LinkInfo from '@/components/LinkItem/LinkInfo';
 
 const LinkItem = ({ queryKey, ...props }: LinkItemProps) => {
-  const { linkId, isRead, isMark, bookMarkCount } = props;
+  const { linkId, isRead, isMark, bookmarkCount } = props;
 
   return (
     <LinkItemInfo>
@@ -25,7 +25,7 @@ const LinkItem = ({ queryKey, ...props }: LinkItemProps) => {
             linkId={linkId}
             queryKey={queryKey}
             isMark={isMark}
-            bookMarkCount={bookMarkCount}
+            bookmarkCount={bookmarkCount}
           />
         </LinkItemInfo.Bottom>
       </LinkItemInfo.LinkInfoBlock>

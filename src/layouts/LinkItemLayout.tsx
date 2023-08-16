@@ -1,4 +1,6 @@
 import API from '@/api/API';
+import SearchBox from '@/components/Common/SearchBox/SearchBox';
+import MainTab from '@/components/Common/Tab/MainTab';
 import { Tag } from '@/components/Common/Tag/BaseTag';
 import FilteringTag from '@/components/Common/Tag/FilteringTag';
 import HashTagList from '@/components/Common/Tag/HashTagList';
@@ -25,25 +27,25 @@ const LinkItemListLayout = ({ children }: LinkItemListLayoutProps) => {
   const [isButtonClicked, setIsButtonClicked] = useState(false);
 
   const userId = Number(router.query.userId) || myId;
-  const home = current === 'HOME';
-  const archive = current === 'ARCHIVE';
-  const useLink = home ? myLink : userLink;
+  const HOME_PAGE = current === 'HOME_PAGE';
+  const ARCHIVE_PAGE = current === 'ARCHIVE_PAGE';
+  const USER_LINK = HOME_PAGE ? myLink : userLink;
 
   const { data: tagList } = useQuery({
-    queryKey: ['tagList', myLink, userLink, current, archive],
+    queryKey: ['tagList', myLink, userLink, current, ARCHIVE_PAGE],
     queryFn: () => fetchFn(userId),
   });
 
   const fetchFn = (id: number) => {
-    if (archive) {
+    if (ARCHIVE_PAGE) {
       return API.getArchiveTagList();
     }
 
-    if (useLink) {
+    if (USER_LINK) {
       return API.getUsersLinksTagList(id);
     }
 
-    if (!useLink) {
+    if (!USER_LINK) {
       return API.getUsersMarksTagList(id);
     }
 
@@ -67,6 +69,8 @@ const LinkItemListLayout = ({ children }: LinkItemListLayoutProps) => {
   }, [tagList, myLink, userLink]);
   return (
     <>
+      {HOME_PAGE && <MainTab />}
+      {ARCHIVE_PAGE && <SearchBox />}
       <Wrapper>
         <Toggle>
           <ChevronUpAndDownSvg isButtonClicked={isButtonClicked} onClick={handleButtonClick} />
@@ -92,7 +96,7 @@ const Wrapper = styled.div`
 
 const TagGroup = styled.div<{ isButtonClicked: boolean }>`
   position: relative;
-  height: ${({ isButtonClicked }) => (isButtonClicked ? '150px' : '55px')};
+  max-height: ${({ isButtonClicked }) => (isButtonClicked ? '135px' : '55px')};
   padding: 4px;
   border-bottom: 8px solid ${({ theme }) => theme.gray.lightBlack};
   overflow-x: hidden;
