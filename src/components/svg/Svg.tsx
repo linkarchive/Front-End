@@ -298,6 +298,32 @@ const MoreIcon = () => {
   );
 };
 
+const EmptyIcon = () => {
+  return (
+    <svg width='81' height='81' viewBox='0 0 81 81' fill='none' xmlns='http://www.w3.org/2000/svg'>
+      <path
+        d='M80.9614 40.7896C80.9614 49.3919 62.3763 50.9296 56.7413 56.5695C51.1014 62.2094 49.5687 80.7896 40.9614 80.7896C32.3542 80.7896 30.8214 62.2044 25.1815 56.5695C19.5416 50.9345 0.961426 49.3968 0.961426 40.7896C0.961426 32.1823 19.5465 30.6495 25.1815 25.0096C30.8165 19.3698 32.3542 0.789551 40.9614 0.789551C49.5687 0.789551 51.1014 19.3747 56.7413 25.0096C62.3812 30.6495 80.9614 32.1823 80.9614 40.7896Z'
+        fill='#EEEEEE'
+      />
+    </svg>
+  );
+};
+
+const SpeechBubblesIcon = () => {
+  return (
+    <svg
+      width='141'
+      height='50.43'
+      viewBox='0 0 151 52'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+    >
+      <rect y='0.854492' width='151' height='45' rx='22.5' fill='#111111' />
+      <path d='M117.244 51.2869L107.182 38.4495H127.306L117.244 51.2869Z' fill='#111111' />
+    </svg>
+  );
+};
+
 export {
   PhotoSvgIcon,
   ChevronUpAndDownSvg,
@@ -315,6 +341,8 @@ export {
   EllipsisIcon,
   LogoIcon,
   SearchIcon,
+  EmptyIcon,
+  SpeechBubblesIcon,
 };
 
 const CircleXMarkWrapper = styled.span<{ background: string }>`
