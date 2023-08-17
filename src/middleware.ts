@@ -6,7 +6,7 @@ export function middleware(request: NextRequest) {
   const nickname = request.cookies.get(NICKNAME)?.value || '';
 
   // 비로그인 둘러보기 허용
-  if (!isLoggedIn && request.nextUrl.pathname === '/archive') {
+  if (request.nextUrl.pathname === '/archive') {
     return NextResponse.next();
   }
 
