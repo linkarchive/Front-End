@@ -4,16 +4,21 @@ import { useSelector } from 'react-redux';
 import GoBackHeader from '@/components/Common/Header/GoBackHeader';
 import { RootState } from '@/store';
 import MainHeader from '@/components/Common/Header/MainHeader';
+import BottomNav from '@/components/BottomNav/BottomNav';
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
-  const { status } = useSelector((state: RootState) => state.router);
+  const { status, current } = useSelector((state: RootState) => state.router);
   const MAIN = status === 'MAIN';
+  const ARCHIVE = current === 'ARCHIVE_PAGE';
+  const HOME = current === 'HOME_PAGE';
+  const FEED = current === 'FEED_PAGE';
 
   return (
     <>
       <WaterMark />
       {MAIN ? <MainHeader /> : <GoBackHeader />}
       <Main>{children}</Main>
+      {(HOME || ARCHIVE || FEED) && <BottomNav />}
     </>
   );
 };
@@ -21,7 +26,10 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
 export default MainLayout;
 
 const Main = styled.main`
-  padding-bottom: 70px;
+  position: relative;
+
+  /* 100 viewPoint - headerHeight - footerHeight */
+  height: calc(100vh - 60px - 91px);
 `;
 
 const WaterMark = () => {
@@ -35,6 +43,7 @@ const WaterMark = () => {
 };
 
 const Wrapper = styled.h2`
+  z-index: 100;
   display: inline-flex;
   position: fixed;
   inset: 0;
@@ -47,4 +56,6 @@ const Wrapper = styled.h2`
   color: ${({ theme }) => theme.primary.main};
   transform: rotate(45deg);
   opacity: 0.2;
+
+  pointer-events: none;
 `;

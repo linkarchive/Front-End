@@ -68,28 +68,34 @@ const LinkItemListLayout = ({ children }: LinkItemListLayoutProps) => {
     return () => setHashTagList([]);
   }, [tagList, myLink, userLink]);
   return (
-    <>
+    <Container>
       {HOME_PAGE && <MainTab />}
       {ARCHIVE_PAGE && <SearchBox />}
-      <Wrapper>
-        <Toggle>
-          <ChevronUpAndDownSvg isButtonClicked={isButtonClicked} onClick={handleButtonClick} />
-        </Toggle>
-        <TagGroup isButtonClicked={isButtonClicked}>
-          <TagBox isButtonClicked={isButtonClicked}>
-            <HashTagList
-              tagList={hashTagList}
-              handleClick={handleClickTag}
-              TagComponent={FilteringTag}
-            />
-          </TagBox>
-        </TagGroup>
-      </Wrapper>
+      {tagList?.length > 0 && (
+        <Wrapper>
+          <Toggle>
+            <ChevronUpAndDownSvg isButtonClicked={isButtonClicked} onClick={handleButtonClick} />
+          </Toggle>
+          <TagGroup isButtonClicked={isButtonClicked}>
+            <TagBox isButtonClicked={isButtonClicked}>
+              <HashTagList
+                tagList={hashTagList}
+                handleClick={handleClickTag}
+                TagComponent={FilteringTag}
+              />
+            </TagBox>
+          </TagGroup>
+        </Wrapper>
+      )}
       {children}
-    </>
+    </Container>
   );
 };
 
+const Container = styled.div`
+  position: relative;
+  height: 100%;
+`;
 const Wrapper = styled.div`
   position: relative;
 `;
