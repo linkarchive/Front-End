@@ -24,6 +24,7 @@ const LinkItemListLayout = ({ children }: LinkItemListLayoutProps) => {
   const { myLink, userLink } = useSelector((state: RootState) => state.nav);
   const { myId } = useSelector((state: RootState) => state.user);
   const { current } = useSelector((state: RootState) => state.router);
+  const { linkCount } = useSelector((state: RootState) => state.count);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
 
   const userId = Number(router.query.userId) || myId;
@@ -32,7 +33,7 @@ const LinkItemListLayout = ({ children }: LinkItemListLayoutProps) => {
   const USER_LINK = HOME_PAGE ? myLink : userLink;
 
   const { data: tagList } = useQuery({
-    queryKey: ['tagList', myLink, userLink, current, ARCHIVE_PAGE],
+    queryKey: ['tagList', myLink, userLink, current, ARCHIVE_PAGE, linkCount],
     queryFn: () => fetchFn(userId),
   });
 
@@ -61,9 +62,7 @@ const LinkItemListLayout = ({ children }: LinkItemListLayoutProps) => {
   };
 
   useEffect(() => {
-    if (tagList) {
-      setHashTagList(tagList);
-    }
+    setHashTagList(tagList);
 
     return () => setHashTagList([]);
   }, [tagList, myLink, userLink]);
@@ -94,7 +93,6 @@ const LinkItemListLayout = ({ children }: LinkItemListLayoutProps) => {
 
 const Container = styled.div`
   position: relative;
-  height: 100%;
 `;
 const Wrapper = styled.div`
   position: relative;
