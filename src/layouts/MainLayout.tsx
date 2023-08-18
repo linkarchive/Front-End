@@ -27,9 +27,7 @@ export default MainLayout;
 
 const Main = styled.main`
   position: relative;
-
-  /* 100 viewPoint - headerHeight - footerHeight */
-  height: calc(100vh - 60px - 91px);
+  min-height: calc(100vh - 91px - 60px);
 `;
 
 const WaterMark = () => {
