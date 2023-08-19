@@ -5,22 +5,39 @@ import Thumbnail from '@/components/LinkItem/MetaData/Thumbnail';
 import { InfoWrapper } from '@/components/LinkItem/LinkItem/LinkItem.styled';
 
 const LinkInfoWrapper = styled(InfoWrapper)`
+  display: flex;
+
   width: 100%;
+  align-items: center;
+  gap: 16px;
 `;
 
 const LinkInfoMetaWrapper = styled.div`
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 8px;
 `;
 
-// TODO 디자인 수정
-const LinkInfo = ({ metaThumbnail: thumbnail, metaDescription: description }: MetaData) => {
+const LinkTitle = styled.p`
+  color: ${({ theme }) => theme.gray.mediumGray};
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 130%;
+`;
+
+const LinkInfo = ({
+  metaThumbnail: thumbnail,
+  metaDescription: description,
+  metaTitle: title,
+}: MetaData) => {
   return (
     <LinkInfoWrapper>
+      <Thumbnail src={thumbnail} alt={title} size={72} />
       <LinkInfoMetaWrapper>
+        <LinkTitle>{title}</LinkTitle>
         <Desc>{description}</Desc>
       </LinkInfoMetaWrapper>
-      <Thumbnail src={thumbnail} alt='' />
     </LinkInfoWrapper>
   );
 };
