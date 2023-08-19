@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import BaseTag from './BaseTag';
 import { PlusSvg } from '@/components/svg/Svg';
+import { InputHTMLAttributes, useState } from 'react';
 
-interface AddTagProps {
+interface AddTagProps extends InputHTMLAttributes<HTMLInputElement> {
   hashtagInput: string;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleAddTagClick: () => void;
-  isEditing: boolean;
   handleInputBlur: () => void;
 }
 
@@ -14,18 +14,28 @@ const AddTag = ({
   hashtagInput,
   handleInputChange,
   handleAddTagClick,
-  isEditing,
   handleInputBlur,
+  onKeyDown,
 }: AddTagProps) => {
+  const [isEditing, setIsEditing] = useState(false);
   return (
-    <AddTagWrapper onClick={handleAddTagClick}>
+    <AddTagWrapper
+      onClick={() => {
+        setIsEditing(true);
+        handleAddTagClick();
+      }}
+    >
       <PlusSvg color='#FF5248' />
       {isEditing ? (
         <StyledInput
           type='text'
           value={hashtagInput}
           onChange={handleInputChange}
-          onBlur={handleInputBlur}
+          onBlur={() => {
+            setIsEditing(false);
+            handleInputBlur();
+          }}
+          onKeyDown={onKeyDown}
           autoFocus
         />
       ) : (
