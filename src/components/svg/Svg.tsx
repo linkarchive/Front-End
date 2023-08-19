@@ -324,6 +324,20 @@ const SpeechBubblesIcon = () => {
   );
 };
 
+const InputClearIcon = () => {
+  return (
+    <svg width='16' height='17' viewBox='0 0 16 17' fill='none' xmlns='http://www.w3.org/2000/svg'>
+      <circle cx='8' cy='8.54395' r='8' fill='#D9D9D9' />
+      <path
+        fillRule='evenodd'
+        clipRule='evenodd'
+        d='M10.6464 11.8975C10.8417 12.0928 11.1583 12.0928 11.3536 11.8975C11.5488 11.7022 11.5488 11.3857 11.3536 11.1904L8.70711 8.54395L11.3536 5.8975C11.5488 5.70224 11.5488 5.38565 11.3536 5.19039C11.1583 4.99513 10.8417 4.99513 10.6464 5.19039L8 7.83684L5.35355 5.19039C5.15829 4.99513 4.84171 4.99513 4.64645 5.19039C4.45118 5.38565 4.45118 5.70224 4.64645 5.8975L7.29289 8.54395L4.64645 11.1904C4.45118 11.3857 4.45118 11.7022 4.64645 11.8975C4.84171 12.0928 5.15829 12.0928 5.35355 11.8975L8 9.25105L10.6464 11.8975Z'
+        fill='white'
+      />
+    </svg>
+  );
+};
+
 export {
   PhotoSvgIcon,
   ChevronUpAndDownSvg,
@@ -343,6 +357,7 @@ export {
   SearchIcon,
   EmptyIcon,
   SpeechBubblesIcon,
+  InputClearIcon,
 };
 
 const CircleXMarkWrapper = styled.span<{ background: string }>`
