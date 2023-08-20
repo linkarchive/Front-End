@@ -1,7 +1,8 @@
 import { InputClearIcon } from '@/components/svg/Svg';
 import { InputHTMLAttributes, useState } from 'react';
 import styled from 'styled-components';
-import ErrorMessage from '@/components/Common/TextInput/ErrorMessage';
+import ErrorMessage from '@/components/Create/TextInput/ErrorMessage';
+import Label from '../Label';
 
 interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -13,8 +14,6 @@ interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {
 const ProfileInputWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: 100px;
-  margin-bottom: 10px;
 `;
 
 const StyledH3 = styled.h3`
@@ -92,12 +91,10 @@ const TextInput = ({
 
   return (
     <ProfileInputWrapper>
-      <label htmlFor={id}>
-        <StyledH3>
-          {label}
-          {required && <StyledSpan>*</StyledSpan>}
-        </StyledH3>
-      </label>
+      <Label htmlFor={id}>
+        {label}
+        {required && <StyledSpan>*</StyledSpan>}
+      </Label>
       <InputBlock>
         <Input
           type='text'
