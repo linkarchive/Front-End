@@ -5,19 +5,23 @@ import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import styled from 'styled-components';
 import API from '@/api/API';
-import Input, { InputWithButton } from '@/components/Input';
 import LinkInfo from '@/components/Create/LinkInfo';
 import { MetaData } from '@/components/LinkItem';
 import { setAccessToken } from '@/api/customAPI';
 import Spinner from '@/components/Spinner';
-import HashTagList from '@/components/Common/Tag/HashTagList';
+import HashTagList from '@/components/Create/Tag/HashTagList';
 import { validateHashTag } from '@/utils/validation';
 import { useFetchTagsByUserId } from '@/queries';
 import { withAuthProps, withAuth } from '@/lib/withAuth';
 import { Tag } from '@/components/Common/Tag/BaseTag';
-import HashTag from '@/components/Common/Tag/HashTag';
+import HashTag from '@/components/Create/Tag/HashTag';
 import AddTag from '@/components/Common/Tag/AddTag';
 import useToastBar from '@/hooks/useToastBar';
+import TextInput from '@/components/Create/TextInput';
+import ErrorMessage from '@/components/Create/TextInput/ErrorMessage';
+import useDebounce from '@/hooks/useDebounce';
+import { LabelIcon } from '@/components/svg/Svg';
+import Label from '@/components/Create/Label';
 
 const defaultErrorMessages = {
   url: '',
@@ -35,7 +39,7 @@ const Create = ({ userId, accessToken }: withAuthProps) => {
 
   const { createToastMessage } = useToastBar();
 
-  const urlInput = useRef('');
+  const [url, setUrl] = useState('');
   const [title, setTitle] = useState('');
   const [hashtagInput, setHashTagInput] = useState('');
   const [hashtagList, setHashtagList] = useState<Tag[]>([]);
@@ -43,15 +47,9 @@ const Create = ({ userId, accessToken }: withAuthProps) => {
   const [errorMessages, setErrorMessages] = useState(defaultErrorMessages);
   const [isValid, setIsValid] = useState(false);
   const [nextTagId, setNextTagId] = React.useState(0);
-  const [isEditing, setIsEditing] = useState(false);
 
   const handleInputBlur = () => {
-    setIsEditing(false);
     setHashTagInput('');
-  };
-
-  const handleAddTagClick = () => {
-    setIsEditing(true);
   };
 
   const initErrorMessage = () => {
@@ -74,10 +72,6 @@ const Create = ({ userId, accessToken }: withAuthProps) => {
     setErrorMessages(errmsgs);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setHashTagInput(e.target.value);
-  };
-
   const { data: tagListData } = useFetchTagsByUserId({ userId });
   const savedTagList = tagListData?.tagList || [];
 
@@ -98,9 +92,9 @@ const Create = ({ userId, accessToken }: withAuthProps) => {
   const handleFetchURL = () => {
     if (isLoading) return;
 
-    const urlErrorMsg = validateUrl(urlInput.current);
+    const urlErrorMsg = validateUrl(url);
     if (!urlErrorMsg) {
-      fetchMetaData(urlInput.current);
+      fetchMetaData(url);
     } else {
       setErrorMessage({ key: 'url', message: urlErrorMsg });
       invalidateForm();
@@ -139,8 +133,7 @@ const Create = ({ userId, accessToken }: withAuthProps) => {
 
     const tagNameList = hashtagList.map((tag) => tag.tagName);
 
-    const [url, thumbnail, description, tagList] = [
-      urlInput.current,
+    const [thumbnail, description, tagList] = [
       metaData?.metaThumbnail,
       truncateDesc(metaData?.metaDescription),
       [...tagNameList],
@@ -173,6 +166,15 @@ const Create = ({ userId, accessToken }: withAuthProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const debouncedUrl = useDebounce(url, 2000);
+
+  useEffect(() => {
+    if (debouncedUrl) {
+      handleFetchURL();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedUrl]);
+
   return (
     <Form
       onSubmit={(e) => {
@@ -180,81 +182,92 @@ const Create = ({ userId, accessToken }: withAuthProps) => {
         handleCreate();
       }}
     >
-      <InputBlock>
-        <InputWithButton
-          text='불러오기'
-          ButtonChildren={isLoading && <Spinner width='16' color='#fff' />}
-          onClick={handleFetchURL}
+      <Block style={{ marginBottom: '14px' }}>
+        <TextInput
+          id='url'
           label='링크'
-          errMessage={errorMessages.url}
+          placeholder='URL을 입력하거나 복사한 URL을 입력해주세요.'
+          errorMessage={errorMessages.url}
+          value={url}
           onChange={(e) => {
-            urlInput.current = e.target.value;
+            setUrl(e.target.value);
             invalidateForm();
           }}
+          onClear={() => {
+            setUrl('');
+          }}
         />
-      </InputBlock>
-      <InputBlock>
-        <Input
+      </Block>
+
+      <Block style={{ marginBottom: '14px' }}>
+        <TextInput
+          id='title'
           label='제목'
+          placeholder='제목을 입력하세요. (200자)'
+          errorMessage={errorMessages.title}
           value={title}
-          errMessage={errorMessages.title}
           onChange={(e) => {
             const { value } = e.target;
             setTitle(value);
           }}
+          onClear={() => {
+            setTitle('');
+          }}
         />
-        <Bottom style={{ marginBottom: '29px' }}>
-          <p className='info'>미리보기</p>
-          <LinkInfo {...(metaData as MetaData)} />
-        </Bottom>
-      </InputBlock>
+      </Block>
 
-      <InputBlock>
-        <AddTag
-          hashtagInput={hashtagInput}
-          handleInputChange={handleInputChange}
-          isEditing={isEditing}
-          handleInputBlur={handleInputBlur}
-          handleAddTagClick={handleAddTagClick}
-        />
-        <InputWithButton
-          label='해시태그'
-          value={hashtagInput}
-          onKeyDown={(e) => {
-            if (e.key === ' ') e.preventDefault();
-          }}
-          onChange={(e) => {
-            setHashTagInput(e.target.value);
-          }}
-          text='추가'
-          errMessage={errorMessages.hashtag}
-          onClick={() => {
-            if (!hashtagInput) return;
-            handleAddTags(hashtagInput.trim());
-          }}
-        />
-        <Bottom style={{ marginBottom: '12px' }}>
-          <p className='info'>나의 태그 목록</p>
-          <HashTagList
-            tagList={savedTagList}
-            TagComponent={HashTag}
-            handleClick={({ tagName }) => handleAddTags(tagName)}
-            highlightList={hashtagList}
-          />
-        </Bottom>
+      <Block style={{ marginBottom: '29px' }}>
+        <Label>
+          미리보기
+          {isLoading && <Spinner width='12px' />}
+        </Label>
+        {!isLoading && <LinkInfo {...(metaData as MetaData)} />}
+      </Block>
 
+      <Block>
+        <Label>해시태그</Label>
         <HashTagList
           tagList={hashtagList}
           TagComponent={HashTag}
           handleClick={handleClick}
           isDeletable
           isHighLight
+        >
+          <AddTag
+            hashtagInput={hashtagInput}
+            handleInputChange={(e) => {
+              setHashTagInput(e.target.value);
+            }}
+            handleInputBlur={handleInputBlur}
+            handleAddTagClick={() => {
+              if (!hashtagInput) return;
+              handleAddTags(hashtagInput.trim());
+            }}
+            onKeyDown={(e) => {
+              if (e.key === ' ') e.preventDefault();
+              if (e.key === 'Enter') handleAddTags(hashtagInput.trim());
+            }}
+          />
+        </HashTagList>
+        <ErrorMessage message={errorMessages.hashtag} />
+      </Block>
+
+      <Block style={{ marginBottom: '12px' }}>
+        <Label>
+          <LabelIcon />
+          내가 저장한 태그
+        </Label>
+        <HashTagList
+          tagList={savedTagList}
+          TagComponent={HashTag}
+          handleClick={({ tagName }) => handleAddTags(tagName)}
+          highlightList={hashtagList}
         />
-      </InputBlock>
+      </Block>
 
       <ButtonBlock>
         <Button type='submit' disabled={!isValid}>
-          추가하기
+          완료
         </Button>
       </ButtonBlock>
     </Form>
@@ -264,28 +277,11 @@ const Create = ({ userId, accessToken }: withAuthProps) => {
 export default Create;
 
 const Form = styled.form`
-  padding-top: 16px;
+  padding: 16px 16px 0;
 `;
 
-const InputBlock = styled.div`
-  padding: 0 5px;
-  margin: 0 auto 6px;
-  width: 310px;
-`;
-
-const Bottom = styled.div`
-  width: 276px;
+const Block = styled.div`
   margin: 0 auto;
-
-  > p {
-    margin-bottom: 5px;
-
-    color: #858585;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 12px;
-    line-height: 14px;
-  }
 `;
 
 const ButtonBlock = styled.div`
@@ -301,7 +297,7 @@ const ButtonBlock = styled.div`
 const Button = styled.button`
   width: 343px;
   height: 53px;
-  border-radius: 4px;
+  border-radius: 10px;
 
   background: ${({ theme }) => theme.primary.main};
 
@@ -312,7 +308,7 @@ const Button = styled.button`
   text-align: center;
 
   &:disabled {
-    opacity: 0.3;
+    background: ${({ theme }) => theme.gray.lighterGray};
   }
 `;
 
