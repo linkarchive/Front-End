@@ -4,6 +4,10 @@ const ERROR_MESSAGE = {
     TOO_SHORT: '최소 2글자 입력해주세요',
     NO_SPECIAL: '특수기호는 안돼요',
     NO_SPACE: '공백을 제거해주세요',
+    MAXIMUM: '최대 10개까지 등록할 수 있어요',
+  },
+  URL: {
+    INVALID: 'URL을 다시 확인해주세요',
   },
 };
 
@@ -31,4 +35,13 @@ const validateHashTag = (text: string): string => {
   return '';
 };
 
-export { validateHashTag };
+const validateUrl = (url: string): string => {
+  const urlRegex =
+    // eslint-disable-next-line no-useless-escape
+    /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
+  if (!urlRegex.test(url)) return ERROR_MESSAGE.URL.INVALID;
+
+  return '';
+};
+
+export { validateHashTag, validateUrl, ERROR_MESSAGE };
