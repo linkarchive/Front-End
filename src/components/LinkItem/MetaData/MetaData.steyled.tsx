@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const MetaDataWrapper = styled.div`
   overflow: hidden;
@@ -46,13 +46,21 @@ const Desc = styled.p`
   word-break: break-all;
 `;
 
-const Thumb = styled.div`
+const Thumb = styled.div<{ size?: number }>`
   position: relative;
   overflow: hidden;
 
   min-width: 80px;
   width: 80px;
   height: 80px;
+
+  ${({ size }) =>
+    size &&
+    css`
+      min-width: ${size}px;
+      width: ${size}px;
+      height: ${size}px;
+    `};
 
   border-radius: 10px;
 
