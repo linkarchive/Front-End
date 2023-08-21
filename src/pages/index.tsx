@@ -75,7 +75,6 @@ Home.getLayout = function getLayout(page: ReactElement) {
 
 export const MainLayoutWrapper = styled.div`
   position: relative;
-  height: 100%;
 `;
 
 export default Home;

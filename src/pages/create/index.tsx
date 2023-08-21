@@ -18,6 +18,7 @@ import { Tag } from '@/components/Common/Tag/BaseTag';
 import HashTag from '@/components/Common/Tag/HashTag';
 import AddTag from '@/components/Common/Tag/AddTag';
 import useToastBar from '@/hooks/useToastBar';
+import BottomButton from '@/components/Common/Bottom/BottomButton';
 
 const defaultErrorMessages = {
   url: '',
@@ -251,12 +252,7 @@ const Create = ({ userId, accessToken }: withAuthProps) => {
           isHighLight
         />
       </InputBlock>
-
-      <ButtonBlock>
-        <Button type='submit' disabled={!isValid}>
-          추가하기
-        </Button>
-      </ButtonBlock>
+      <BottomButton text='추가하기' isAbled={isValid} />
     </Form>
   );
 };
@@ -285,34 +281,6 @@ const Bottom = styled.div`
     font-weight: 700;
     font-size: 12px;
     line-height: 14px;
-  }
-`;
-
-const ButtonBlock = styled.div`
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  bottom: 70px;
-
-  width: '40px';
-  padding-bottom: 29px;
-`;
-
-const Button = styled.button`
-  width: 343px;
-  height: 53px;
-  border-radius: 4px;
-
-  background: ${({ theme }) => theme.primary.main};
-
-  color: ${({ theme }) => theme.common.white};
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 21px;
-  text-align: center;
-
-  &:disabled {
-    opacity: 0.3;
   }
 `;
 

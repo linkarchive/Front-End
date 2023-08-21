@@ -3,7 +3,6 @@ import useInfinityScroll, { IuseInfinityScroll } from '@/hooks/useInfinityScroll
 
 const Wrapper = styled.div`
   position: relative;
-  height: 100%;
 `;
 
 interface InfinityScrollProps extends IuseInfinityScroll {

@@ -15,6 +15,7 @@ import { cancelSource } from '@/utils/cancelToken';
 import { PhotoSvgIcon } from '@/components/svg/Svg';
 import MessageToaster from '../../../components/Settings/MessageToaster';
 import useToastBar from '@/hooks/useToastBar';
+import BottomButton from '@/components/Common/Bottom/BottomButton';
 
 export interface ErrorMessage {
   message: string;
@@ -244,16 +245,13 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
         />
         {isIntroduceChanged && <MessageToaster isValid={isIntroduceValid} message={message2} />}
       </ProfileInputWrapper>
-      <BottomButton type='submit' disabled={!isFormValid}>
-        수정하기
-      </BottomButton>
+      <BottomButton text='수정하기' isAbled={isFormValid} />
     </FormWrapper>
   );
 };
 
 const FormWrapper = styled.form`
   padding: 0 16px;
-  height: 100%;
 `;
 
 export const StyledH3 = styled.h3`
@@ -367,24 +365,24 @@ const SvgIcon = styled.span`
   }
 `;
 
-export const BottomButton = styled.button`
-  position: absolute;
-  bottom: 22px;
-  width: 343px;
-  height: 56px;
+// export const BottomButton = styled.button`
+//   position: absolute;
+//   bottom: 22px;
+//   width: 343px;
+//   height: 56px;
 
-  background: ${({ theme }) => theme.primary.main};
-  border: none;
-  border-radius: 10px;
-  gap: 8px;
+//   background: ${({ theme }) => theme.primary.main};
+//   border: none;
+//   border-radius: 10px;
+//   gap: 8px;
 
-  color: ${({ theme }) => theme.common.white};
-  cursor: pointer;
+//   color: ${({ theme }) => theme.common.white};
+//   cursor: pointer;
 
-  &:disabled {
-    background: ${({ theme }) => theme.warning.dark};
-    cursor: not-allowed;
-  }
-`;
+//   &:disabled {
+//     background: ${({ theme }) => theme.warning.dark};
+//     cursor: not-allowed;
+//   }
+// `;
 
 export default Profile;
