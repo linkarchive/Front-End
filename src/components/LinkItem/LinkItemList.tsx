@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import LinkItemListLayout from '@/layouts/LinkItemLayout';
 import Suggestion from '../Home/Suggestion/Suggestion';
 import { useAppDispatch } from '@/store';
-import { setLinkCount } from '@/store/slices/countSlice';
+import { setLinkCount, setMarkCount } from '@/store/slices/countSlice';
 
 interface LinkItemListRendererProps extends LinkItemListProps {
   ItemComponent: React.ComponentType;
@@ -36,9 +36,16 @@ const LinkItemListRenderer = ({
     }));
   });
 
+  // 링크 수 계산 후 dispatch
   useEffect(() => {
     const totalLinkCount = data.reduce((acc, curr) => acc + (curr.linkList?.length || 0), 0);
     dispatch(setLinkCount(totalLinkCount));
+  }, [data, dispatch]);
+
+  // 마크 수 계산 후 dispatch
+  useEffect(() => {
+    const totalMarkCount = data.reduce((acc, curr) => acc + (curr.markList?.length || 0), 0);
+    dispatch(setMarkCount(totalMarkCount));
   }, [data, dispatch]);
 
   return (

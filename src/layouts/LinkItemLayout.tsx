@@ -24,7 +24,7 @@ const LinkItemListLayout = ({ children }: LinkItemListLayoutProps) => {
   const { myLink, userLink } = useSelector((state: RootState) => state.nav);
   const { myId } = useSelector((state: RootState) => state.user);
   const { current } = useSelector((state: RootState) => state.router);
-  const { linkCount } = useSelector((state: RootState) => state.count);
+  const { linkCount, markCount } = useSelector((state: RootState) => state.count);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
 
   const userId = Number(router.query.userId) || myId;
@@ -33,7 +33,7 @@ const LinkItemListLayout = ({ children }: LinkItemListLayoutProps) => {
   const USER_LINK = HOME_PAGE ? myLink : userLink;
 
   const { data: tagList } = useQuery({
-    queryKey: ['tagList', myLink, userLink, current, ARCHIVE_PAGE, linkCount],
+    queryKey: ['tagList', myLink, userLink, current, ARCHIVE_PAGE, linkCount, markCount],
     queryFn: () => fetchFn(userId),
   });
 
