@@ -25,7 +25,6 @@ const useInfinityScroll = <TPage>({
       return fetchFn(pageParam || '');
     },
     getNextPageParam: (lastPage, pages) => getNextPageParam(lastPage, pages),
-    staleTime: 5000,
     retry: 1,
     ...config,
   });

@@ -17,7 +17,10 @@ export const countSlice = createSlice({
     setLinkCount: (state, action: PayloadAction<number>) => {
       state.linkCount = action.payload;
     },
+    setMarkCount: (state, action: PayloadAction<number>) => {
+      state.markCount = action.payload;
+    },
   },
 });
 
-export const { setLinkCount } = countSlice.actions;
+export const { setLinkCount, setMarkCount } = countSlice.actions;
