@@ -25,9 +25,7 @@ const Page = ({ accessToken, userId }: withAuthProps) => {
 
   const queryClient = useQueryClient();
   const updateFavoriteTagList = () => {
-    queryClient.fetchQuery({
-      queryKey: ['user', 'tagList', 10], // TODO 페이지네이션
-    });
+    queryClient.invalidateQueries([userId, 'tagList']);
   };
 
   return (
