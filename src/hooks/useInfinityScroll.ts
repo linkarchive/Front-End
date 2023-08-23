@@ -22,7 +22,7 @@ const useInfinityScroll = <TPage>({
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey,
     queryFn: ({ pageParam }) => {
-      return fetchFn(pageParam || '');
+      return fetchFn({ linkId: pageParam } || '');
     },
     getNextPageParam: (lastPage, pages) => getNextPageParam(lastPage, pages),
     retry: 1,
