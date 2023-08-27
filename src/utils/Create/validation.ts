@@ -1,7 +1,7 @@
 const ERROR_MESSAGE = {
   TITLE: {
     INVALID: '제목을 입력해주세요',
-    MAXIMUM: '255자만 입력이 가능합니다.',
+    MAXIMUM: '50자만 입력이 가능합니다.',
   },
   HASHTAG: {
     TOO_LONG: '최대 8글자 입력해주세요',
@@ -62,4 +62,12 @@ const validateHashTagList = (hashtagList: string[]): string => {
   return errors[0] || '';
 };
 
-export { validateHashTag, validateUrl, ERROR_MESSAGE, validateHashTagList };
+const validateTitle = (title: string): string => {
+  const MAX = 50;
+  if (!title) return ERROR_MESSAGE.TITLE.INVALID;
+  if (title.length > MAX) return ERROR_MESSAGE.TITLE.MAXIMUM;
+
+  return '';
+};
+
+export { validateHashTag, validateUrl, ERROR_MESSAGE, validateHashTagList, validateTitle };
