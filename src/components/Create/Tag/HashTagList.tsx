@@ -37,25 +37,26 @@ const HashTagList = ({
           handleClick={() => dispatch(onClickHashTag({ tagId: 0, tagName: 'All' }))}
         />
       )}
-      {tagList.map((tag) => {
-        let isTagHighLight = defaultHighlight || false;
+      {tagList.length > 0 &&
+        tagList.map((tag) => {
+          let isTagHighLight = defaultHighlight || false;
 
-        if (highlightList) {
-          isTagHighLight = highlightList.some(
-            (highlightTag) => highlightTag.tagName === tag.tagName
+          if (highlightList?.length > 0) {
+            isTagHighLight = highlightList.some(
+              (highlightTag) => highlightTag.tagName === tag.tagName
+            );
+          }
+
+          return (
+            <TagComponent
+              key={tag.tagId}
+              tag={tag}
+              handleClick={handleClick}
+              isDeletable={isDeletable}
+              isHighLight={isTagHighLight}
+            />
           );
-        }
-
-        return (
-          <TagComponent
-            key={tag.tagId}
-            tag={tag}
-            handleClick={handleClick}
-            isDeletable={isDeletable}
-            isHighLight={isTagHighLight}
-          />
-        );
-      })}
+        })}
       {children}
     </Wrapper>
   );
