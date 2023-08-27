@@ -1,4 +1,8 @@
 const ERROR_MESSAGE = {
+  TITLE: {
+    INVALID: '제목을 입력해주세요',
+    MAXIMUM: '255자만 입력이 가능합니다.',
+  },
   HASHTAG: {
     TOO_LONG: '최대 8글자 입력해주세요',
     TOO_SHORT: '최소 2글자 입력해주세요',
@@ -44,4 +48,18 @@ const validateUrl = (url: string): string => {
   return '';
 };
 
-export { validateHashTag, validateUrl, ERROR_MESSAGE };
+const validateHashTagList = (hashtagList: string[]): string => {
+  const MAX_HASHTAG = 10; // 최대 10개 등록 가능
+
+  if (hashtagList.length > MAX_HASHTAG) {
+    return ERROR_MESSAGE.HASHTAG.MAXIMUM;
+  }
+
+  const errors = hashtagList
+    .map((hashtag) => validateHashTag(hashtag))
+    .filter((errMesg) => errMesg !== '');
+
+  return errors[0] || '';
+};
+
+export { validateHashTag, validateUrl, ERROR_MESSAGE, validateHashTagList };
