@@ -35,7 +35,7 @@ const HashTagList = ({
           handleClick={() => dispatch(onClickHashTag({ tagId: 0, tagName: 'All' }))}
         />
       )}
-      {tagList.map((tag) => {
+      {tagList?.map((tag) => {
         let isTagHighLight = defaultHighlight || false;
 
         if (highlightList) {

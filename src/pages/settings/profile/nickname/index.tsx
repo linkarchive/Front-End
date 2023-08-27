@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BottomButton, InputWrapper, ProfileInputWrapper, StyledH3, StyledSpan } from '..';
+import { InputWrapper, ProfileInputWrapper, StyledH3, StyledSpan } from '..';
 import MessageToaster from '../../../../components/Settings/MessageToaster';
 import styled from 'styled-components';
 import { useMutation } from '@tanstack/react-query';
@@ -10,6 +10,7 @@ import { withAuth, withAuthProps } from '@/lib/withAuth';
 import { setAccessToken } from '@/api/customAPI';
 import { useAppDispatch } from '@/store';
 import { routerSlice } from '@/store/slices/routerSlice';
+import BottomButton from '@/components/Common/Bottom/BottomButton';
 
 export interface MessageWrapperProps {
   isEmpty: boolean;
@@ -115,9 +116,7 @@ const SetNickname = ({ accessToken, userId }: withAuthProps) => {
           />
         </ProfileInputWrapper>
 
-        <BottomButton type='submit' disabled={!isValid}>
-          수정하기
-        </BottomButton>
+        <BottomButton text='수정하기' isAbled={isValid} />
       </FormWrapper>
     </Container>
   );
@@ -127,7 +126,6 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   padding: 0 16px;
-  height: 100vh;
 `;
 
 const FormWrapper = styled.form`

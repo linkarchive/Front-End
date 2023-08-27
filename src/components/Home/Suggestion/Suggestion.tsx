@@ -47,10 +47,11 @@ const Suggestion = () => {
 
 const Container = styled.div`
   display: flex;
-  height: 100%;
   flex-direction: column;
   justify-content: center;
+  height: calc(100vh - 91px - 60px - 91px);
 `;
+
 const Wrapper = styled.div`
   position: relative;
   display: flex;
@@ -58,15 +59,18 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
 `;
+
 const Content = styled.div`
   position: absolute;
   bottom: 0;
   right: 0;
-  transform: translate(-155px, -70px);
+  transform: translate(-155px, -30px);
 `;
+
 const IconBox = styled.div`
   margin-bottom: 20px;
 `;
+
 const TextBox = styled.p`
   margin-bottom: 20px;
 
