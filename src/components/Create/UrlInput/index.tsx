@@ -3,23 +3,19 @@ import { useMutation } from '@tanstack/react-query';
 import API from '@/api/API';
 import useDebounce from '@/hooks/useDebounce';
 import TextInput from '@/components/Create/TextInput';
-import { ERROR_MESSAGE, validateUrl } from '@/utils/validation';
+import { ERROR_MESSAGE, validateUrl } from '@/utils/Create/validation';
 import { Block } from '@/components/Create/Create.styled';
 
 const UrlInput = ({
   value,
   onInputChange,
   onUrlFetchSuccess,
-  onUrlFetchError,
-  onUrlInvalid,
-  observeLoadingState,
+  watchLoadingState,
 }: {
   value: string;
   onInputChange: (e?: React.ChangeEvent<HTMLInputElement>) => void;
   onUrlFetchSuccess: (data: unknown) => void;
-  onUrlFetchError: () => void;
-  onUrlInvalid: () => void;
-  observeLoadingState?: (isLoading: boolean) => void;
+  watchLoadingState?: (isLoading: boolean) => void;
 }) => {
   const [url, setUrl] = useState(value);
   const [errorMessage, setErrorMessage] = useState('');
@@ -32,13 +28,12 @@ const UrlInput = ({
       setErrorMessage('');
     },
     onError: () => {
-      onUrlFetchError();
       setErrorMessage(ERROR_MESSAGE.URL.INVALID);
     },
   });
 
   useEffect(() => {
-    if (observeLoadingState) observeLoadingState(isLoading);
+    if (watchLoadingState) watchLoadingState(isLoading);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
@@ -50,7 +45,6 @@ const UrlInput = ({
       fetchMetaData(url);
     } else {
       setErrorMessage(urlErrorMsg);
-      onUrlInvalid();
     }
   };
 
