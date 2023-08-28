@@ -7,7 +7,7 @@
         다양한 사람들의 북마크를 참고하여 나의 북마크를 확장시켜보아요.
     </p>
     <p>
-        <a href="https://www.link-archive.com/" target="_blank">바로 이용해보기</a>
+        <a href="https://www.link-archive.com/" target="_blank">바로 이용해보기</a><span> (~ 23.08.31)</span>
     </p>
     <a href="https://github.com/linkarchive/Front-End/wiki" target="_blank">WIKI</a> &nbsp; &nbsp; |&nbsp; &nbsp; 
     <a href="https://github.com/linkarchive/Front-End/wiki/2023%E2%80%9004%E2%80%9019-%ED%9A%8C%EC%9D%98%EB%A1%9D" target="_blank">회의록</a> &nbsp; &nbsp; |&nbsp; &nbsp;
