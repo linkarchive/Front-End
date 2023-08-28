@@ -1,8 +1,8 @@
 import { InputClearIcon } from '@/components/svg/Svg';
-import { InputHTMLAttributes, useState } from 'react';
+import { InputHTMLAttributes, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ErrorMessage from '@/components/Create/TextInput/ErrorMessage';
-import Label from '../Label';
+import Label from '@/components/Create/Label';
 
 interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -14,15 +14,6 @@ interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {
 const ProfileInputWrapper = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const StyledH3 = styled.h3`
-  padding: 15px 0;
-
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 18.2px;
-  color: ${({ theme }) => theme.gray.mediumGray};
 `;
 
 const StyledSpan = styled.span`
@@ -77,9 +68,15 @@ const TextInput = ({
 }: TextInputProps) => {
   const [text, setText] = useState(value);
 
+  useEffect(() => {
+    // 상위 value가 변경될 때마다 state 업데이트
+    setText(value);
+  }, [value]);
+
   const isChanged = text !== '';
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
     setText(e.target.value);
     onChange(e);
   };
@@ -98,15 +95,25 @@ const TextInput = ({
       <InputBlock>
         <Input
           type='text'
-          id='nickname'
+          id={id}
           value={text}
           isChanged={isChanged}
           onChange={handleChange}
           placeholder={placeholder}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault(); // 엔터시 clearButton 클릭 이벤트를 막음
+            }
+          }}
         />
         {isChanged && (
           <div>
-            <ClearButton role='button' onClick={handleClear}>
+            <ClearButton
+              role='button'
+              onClick={() => {
+                handleClear();
+              }}
+            >
               <InputClearIcon />
             </ClearButton>
           </div>

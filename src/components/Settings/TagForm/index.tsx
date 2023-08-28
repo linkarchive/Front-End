@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { InputWithButton } from '@/components/Input';
-import { validateHashTag } from '@/utils/validation';
+import { validateHashTag } from '@/utils/Create/validation';
 import { useMutation } from '@tanstack/react-query';
 import API from '@/api/API';
 
