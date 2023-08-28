@@ -18,10 +18,10 @@ const KakaoAuth = () => {
       loginMutation.mutate(
         { code },
         {
-          onSuccess: async (response) => {
-            const { accessToken, refreshToken, userId, nickname } = response.data;
-            await API.setAllCookies({ accessToken, refreshToken, userId, nickname });
-            await dispatch(setUser({ myId: userId, myNickname: nickname }));
+          onSuccess: (response) => {
+            const { accessToken, refreshToken, userId, nickname, profileImage } = response.data;
+            API.setAllCookies({ accessToken, refreshToken, userId, nickname });
+            dispatch(setUser({ myId: userId, myNickname: nickname, myProfileImage: profileImage }));
 
             window.location.href = '/archive';
           },

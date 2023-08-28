@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { KakaoAuthUrl } from '../../constants';
 import Link from 'next/link';
-import Image from 'next/image';
 import styled from 'styled-components';
 import { routerSlice } from '@/store/slices/routerSlice';
 import { useAppDispatch } from '@/store';
+import KakaoButton from './KakaoButton';
+import Logo from './Logo';
 
 const Login = () => {
   const dispatch = useAppDispatch();
@@ -14,31 +15,87 @@ const Login = () => {
   }, [dispatch]);
 
   return (
-    <Wrapper>
-      <h2>로그인 해주세요.</h2>
-      <Link href={KakaoAuthUrl}>
-        <Content>
-          <Image src='/kakao_login.png' alt='kakao_login' fill />
-        </Content>
-      </Link>
-    </Wrapper>
+    <Container>
+      <Wrapper>
+        <LogoWrapper>
+          <Logo />
+        </LogoWrapper>
+
+        <AuthWrapper>
+          <AuthGroup>
+            <KakaoAuthBox>
+              <Link href={KakaoAuthUrl}>
+                <KakaoButton />
+              </Link>
+            </KakaoAuthBox>
+          </AuthGroup>
+
+          <Link href='/archive'>
+            <WithOutLoginButton>로그인 없이 이용하기</WithOutLoginButton>
+          </Link>
+        </AuthWrapper>
+      </Wrapper>
+    </Container>
   );
 };
 
+Login.getFullLayout = function getFullLayout(page: ReactElement) {
+  return page;
+};
+
+const Container = styled.div`
+  position: absolute;
+  width: 375px;
+  height: 100%;
+  margin: auto;
+
+  background-color: #f8f6ef;
+`;
+
 const Wrapper = styled.div`
+  position: relative;
+  display: flex;
+
+  height: 90%;
+
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const AuthGroup = styled.div`
+  position: relative;
+`;
+
+const WithOutLoginButton = styled.div`
+  padding-top: 10px;
+
+  color: ${({ theme }) => theme.gray.lightGray};
+  border-bottom: 1px solid ${({ theme }) => theme.gray.lightGray};
+  cursor: pointer;
+
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18.2px;
+`;
+
+const LogoWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 3;
+`;
+
+const AuthWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  inset: 0 0 20%;
-  margin: auto;
+  flex-grow: 1;
 `;
 
-const Content = styled.div`
-  position: relative;
-  width: 200px;
-  height: 50px;
+const KakaoAuthBox = styled.div`
+  padding: 8px;
 
   img {
     :hover {

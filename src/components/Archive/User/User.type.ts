@@ -1,6 +1,6 @@
 type User = {
-  id: string;
-  profileImageFileName: string;
+  id: number;
+  profileImage: string;
   nickname: string;
   introduce: string;
 };

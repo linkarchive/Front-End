@@ -51,7 +51,7 @@ const API = {
     title: string;
     description: string;
     thumbnail: string;
-    tags: string[];
+    tagList: string[];
   }) => {
     const response = await clientInstance.post(`link`, {
       ...data,
@@ -66,11 +66,11 @@ const API = {
   },
 
   /** 임시 삭제 보관함 조회 */
-  getTrashedLinks: async ({ linkId, tag }: { linkId?: string; tag?: string }) => {
+  getTrashedLinks: async ({ linkId, tagId }: { linkId?: number; tagId?: number }) => {
     const { data } = await clientInstance.get(`/links/trash`, {
       params: {
         linkId,
-        tag,
+        tagId,
       },
     });
     return data;
@@ -80,10 +80,11 @@ const API = {
   // TODO
 
   /** 링크 둘러보기 */
-  getLinksArchive: async (linkId?: string) => {
+  getLinksArchive: async ({ linkId, tagId }: { linkId: number; tagId: number }) => {
     const { data } = await clientInstance.get(`links/archive`, {
       params: {
         linkId,
+        tagId,
       },
     });
     return data;
@@ -91,18 +92,18 @@ const API = {
 
   /** 사용자별 링크 둘러보기 */
   getLinksArchiveByUserId: async ({
-    nickname,
+    userId,
     linkId,
-    tag,
+    tagId,
   }: {
-    nickname: string;
-    linkId?: string;
-    tag?: string;
+    userId: number;
+    linkId?: number;
+    tagId?: number;
   }) => {
-    const { data } = await clientInstance.get(`links/user/${nickname}`, {
+    const { data } = await clientInstance.get(`links/user/${userId}`, {
       params: {
         linkId,
-        tag,
+        tagId,
       },
     });
     return data;
@@ -110,40 +111,40 @@ const API = {
 
   /** 사용자별 북마크 둘러보기 */
   getMarksArchiveByUserId: async ({
-    nickname,
+    userId,
     markId,
-    tag,
+    tagId,
   }: {
-    nickname: string;
-    markId?: string;
-    tag?: string;
+    userId: number;
+    markId?: number;
+    tagId?: number;
   }) => {
-    const { data } = await clientInstance.get(`mark/links/user/${nickname}`, {
+    const { data } = await clientInstance.get(`mark/links/user/${userId}`, {
       params: {
         markId,
-        tag,
+        tagId,
       },
     });
     return data;
   },
 
   /** 내 링크 둘러보기 */
-  getUserLinksArchive: async (linkId: string, tag?: string) => {
+  getUserLinksArchive: async (linkId: number, tagId?: number) => {
     const { data } = await clientInstance.get(`links/user`, {
       params: {
         linkId,
-        tag,
+        tagId,
       },
     });
     return data;
   },
 
   /** 내 마크 둘러보기 */
-  getUserMarksArchive: async (markId: string, tag?: string) => {
+  getUserMarksArchive: async (markId: number, tagId?: number) => {
     const { data } = await clientInstance.get(`mark/links/user`, {
       params: {
         markId,
-        tag,
+        tagId,
       },
     });
     return data;
@@ -171,16 +172,16 @@ const API = {
 
   /**
    * 사용자 해시태그 리스트
-   * @param usernickname 조회할 사용자 닉네임
+   * @param userId 조회할 사용자 닉네임
    * @param size 조회할 해시태그 수
    */
-  getTagsByNickname: async ({ usernickname, size }: { usernickname: string; size?: number }) => {
-    const { data } = size
-      ? await clientInstance.get(`limited-tags/user/${usernickname}?size=${size}`)
-      : await clientInstance.get(`tags/user/${usernickname}`);
+  getTagsByUserId: async ({ userId }: { userId: number }) => {
+    const { data } = await clientInstance.get(`tags/user/${userId}`);
+
     return data;
   },
 
+  /** 프로필 이미지 수정 */
   uploadImage: async ({ file }: { file: File }): Promise<AxiosResponse> => {
     const formData = new FormData();
     formData.append('image', file);
@@ -189,6 +190,7 @@ const API = {
     return response;
   },
 
+  /** 본인 프로필 페이지 조회 */
   getMyProfile: async () => {
     const source = createSource();
     try {
@@ -204,33 +206,42 @@ const API = {
     }
   },
 
-  getUserProfile: async (nickname: string) => {
-    const { data } = await clientInstance.get(`user/${nickname}`);
+  /** 유저 프로필 조회 */
+  getUserProfile: async (userId: number) => {
+    const { data } = await clientInstance.get(`user/${userId}`);
+
     return data;
   },
 
+  /** 프로필 수정 */
   updateUserProfile: async ({ nickname, introduce }: { nickname: string; introduce: string }) => {
     const response = await clientInstance.patch('user', {
       nickname,
       introduce,
     });
+
     return response.data;
   },
 
-  updateNickname: async ({ nickname, userId }: { nickname: string; userId: string }) => {
+  /** 닉네임 수정 */
+  updateNickname: async ({ nickname, userId }: { nickname: string; userId: number }) => {
     const response = await clientInstance.patch(`/user/${userId}/nickname`, {
       nickname,
     });
+
     return response;
   },
 
+  /** 닉네임 검증 */
   validateNickname: async (nickname: string) => {
     const response = await clientInstance.post(`/nickname`, {
       nickname,
     });
+
     return response.data;
   },
 
+  /** 엑세스 토큰 재발급 */
   getNewAccessToken: async ({
     refreshToken,
     accessToken,
@@ -250,28 +261,58 @@ const API = {
     return response;
   },
 
-  /** 사용자별 해시태그 리스트 조회 */
-  getUsersLinksTagList: async (nickname: string) => {
-    const { data } = await clientInstance.get(`/tags/user/${nickname}`);
+  /** 사용자별 자주 사용하는 링크 해시태그 리스트 조회 */
+  getUsersTagList: async (userId: number) => {
+    const { data } = await clientInstance.get(`/tags/user/${userId}`);
 
     return data.tagList;
   },
 
-  getUsersMarksTagList: async (nickname: string) => {
-    const { data } = await clientInstance.get(`/mark/tags/user/${nickname}`);
+  /** 사용자별 자주 사용하는 링크 해시태그 리스트 조회 */
+  getUsersLinksTagList: async (userId: number) => {
+    const { data } = await clientInstance.get(`/links/tags/user/${userId}`);
 
     return data.tagList;
   },
 
-  /** 팔로우/언팔로우 요청 */
-  followUser: async (followeeId: string) => {
-    const { data } = await clientInstance.post(`/follow/${followeeId}`);
+  /** 사용자별 마크 해시태그 리스트 조회 */
+  getUsersMarksTagList: async (userId: number) => {
+    const { data } = await clientInstance.get(`/mark/tags/user/${userId}`);
+
+    return data.tagList;
+  },
+
+  /** 둘러보기 해시태그 리스트 조회 */
+  getArchiveTagList: async () => {
+    const { data } = await clientInstance.get(`/tags/archive`);
+
+    return data.tagList;
+  },
+
+  /** 팔로우 요청 */
+  followUser: async (followeeId: number) => {
+    const { data } = await clientInstance.post(`/follow/user/${followeeId}`);
 
     return data;
   },
 
-  unFollowUser: async (followeeId: string) => {
-    const { data } = await clientInstance.delete(`/unfollow/${followeeId}`);
+  /** 언팔로우 요청 */
+  unFollowUser: async (followeeId: number) => {
+    const { data } = await clientInstance.delete(`/unfollow/user/${followeeId}`);
+
+    return data;
+  },
+
+  /** 팔로워 리스트 조회 */
+  getFollowerList: async (userId: number) => {
+    const { data } = await clientInstance.get(`/follower-list/user/${userId}`);
+
+    return data;
+  },
+
+  /** 팔로잉 리스트 조회 */
+  getFollowingList: async (userId: number) => {
+    const { data } = await clientInstance.get(`/following-list/user/${userId}`);
 
     return data;
   },

@@ -1,11 +1,10 @@
 import API from '@/api/API';
 import { setAccessToken } from '@/api/customAPI';
 import InfinityScroll from '@/components/Common/InfinityScroll';
-import CreateBtn from '@/components/Home/CreateBtn';
 import { HomeLinkItemList } from '@/components/LinkItem/LinkItemList';
 import { withAuth, withAuthProps } from '@/lib/withAuth';
 import { RootState, useAppDispatch } from '@/store';
-import { HashTagSlice } from '@/store/slices/hashTagSlice';
+import { hashTagSlice } from '@/store/slices/hashTagSlice';
 import { routerSlice } from '@/store/slices/routerSlice';
 import { ReactElement, useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -19,36 +18,31 @@ const Home = ({ accessToken }: withAuthProps) => {
   const dispatch = useAppDispatch();
 
   const { myLink } = useSelector((state: RootState) => state.nav);
-  const { selectedTagName } = useSelector((state: RootState) => state.hashTag);
+  const { selectedTagId } = useSelector((state: RootState) => state.hashTag);
   const myMark = !myLink;
 
-  const fetchFn = (id: string) => {
-    const tag = selectedTagName === 'All' ? undefined : selectedTagName;
+  const fetchFn = (id: number) => {
+    const tagId = selectedTagId === 0 ? undefined : selectedTagId;
 
-    return myLink ? API.getUserLinksArchive(id, tag) : API.getUserMarksArchive(id, tag);
+    return myLink ? API.getUserLinksArchive(id, tagId) : API.getUserMarksArchive(id, tagId);
   };
 
-  const queryKey = ['linkList', 'user', 'link', 'mark', myLink, selectedTagName];
+  const queryKey = ['linkList', 'user', 'link', 'mark', myLink, selectedTagId];
 
   useEffect(() => {
     dispatch(routerSlice.actions.loadHomePage());
   }, [dispatch]);
 
   useEffect(() => {
-    fetchFn('');
-  }, []);
-
-  useEffect(() => {
     dispatch(routerSlice.actions.loadHomePage());
 
     return () => {
-      dispatch(HashTagSlice.actions.setInitialState());
+      dispatch(hashTagSlice.actions.setInitialState());
     };
   }, [dispatch, myMark]);
 
   return (
     <MainLayoutWrapper>
-      <CreateBtn />
       <InfinityScroll
         renderList={({ pages }) => <HomeLinkItemList data={pages} queryKey={queryKey} />}
         fetchFn={fetchFn}

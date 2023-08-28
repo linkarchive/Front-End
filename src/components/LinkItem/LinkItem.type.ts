@@ -7,7 +7,7 @@ interface ILinkItem {
   markId?: number;
   linkId: number;
   url: string;
-  bookMarkCount: number;
+  bookmarkCount: number;
   isRead: boolean;
   isMark: boolean;
   tagList: Tag[];
@@ -29,7 +29,6 @@ interface Tag {
 }
 
 interface LinkItemProps extends ILinkItem {
-  Header?: JSX.Element;
   queryKey: QueryKey;
   onClick?: (linkId: number) => void;
 }

@@ -10,14 +10,14 @@ export const handlers = [
         id: 1,
         nickname: 'nickname test',
         introduce: 'introduce test',
-        profileImageFileName: 'test',
+        profileImage: 'test',
       })
     );
   }),
 
   /** 이미지 변경 */
   rest.patch(`${API_BASE_URL}/profile-image`, (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ profileImageFileName: '/new-image.png' }));
+    return res(ctx.status(200), ctx.json({ profileImage: '/new-image.png' }));
   }),
 
   /** 로그아웃 */

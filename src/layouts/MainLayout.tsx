@@ -1,34 +1,24 @@
 import React from 'react';
-import BottomNav from '@/components/BottomNav/BottomNav';
 import styled from 'styled-components';
-import HomeHeader from '@/components/Home/HomeHeader';
 import { useSelector } from 'react-redux';
-import Header from '@/components/Header/Header';
+import GoBackHeader from '@/components/Common/Header/GoBackHeader';
 import { RootState } from '@/store';
-import ArchiveHeader from '@/components/Archive/ArchiveHeader';
-import SettingsHeader from '@/components/Settings/SettingsHeader';
+import MainHeader from '@/components/Common/Header/MainHeader';
+import BottomNav from '@/components/BottomNav/BottomNav';
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const { status, current } = useSelector((state: RootState) => state.router);
-  const main = status === 'MAIN';
-  const home = current === 'HOME';
-  const Archive = current === 'ARCHIVE';
-  const settings = current === 'SETTINGS';
-  const none = current === 'NONE';
+  const MAIN = status === 'MAIN';
+  const ARCHIVE = current === 'ARCHIVE_PAGE';
+  const HOME = current === 'HOME_PAGE';
+  const FEED = current === 'FEED_PAGE';
+
   return (
     <>
       <WaterMark />
-      {!main && <Header />}
-      {main && (
-        <>
-          {home && <HomeHeader />}
-          {Archive && <ArchiveHeader />}
-          {settings && <SettingsHeader />}
-          {none}
-        </>
-      )}
+      {MAIN ? <MainHeader /> : <GoBackHeader />}
       <Main>{children}</Main>
-      <BottomNav />
+      {(HOME || ARCHIVE || FEED) && <BottomNav />}
     </>
   );
 };
@@ -36,25 +26,27 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
 export default MainLayout;
 
 const Main = styled.main`
-  padding-bottom: 70px;
+  position: relative;
+  min-height: calc(100vh - 91px - 60px);
 `;
 
 const WaterMark = () => {
   let envText = '';
-  // if (process.env.NEXT_PUBLIC_APP_ENV === 'production') {
-  //   return null;
-  // }
+  if (process.env.NEXT_PUBLIC_APP_ENV === 'production') {
+    return null;
+  }
   envText = `${process.env.NEXT_PUBLIC_APP_ENV}`;
 
   return <Wrapper>{envText}</Wrapper>;
 };
 
 const Wrapper = styled.h2`
-  z-index: -1;
-  display: flex;
+  z-index: 100;
+  display: inline-flex;
   position: fixed;
   inset: 0;
   margin: auto;
+  width: 0;
 
   justify-content: center;
   align-items: center;
@@ -62,4 +54,6 @@ const Wrapper = styled.h2`
   color: ${({ theme }) => theme.primary.main};
   transform: rotate(45deg);
   opacity: 0.2;
+
+  pointer-events: none;
 `;

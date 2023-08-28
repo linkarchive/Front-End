@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import Image from 'next/image';
 import { User } from '@/components/Archive/User/User.type';
 import { useState } from 'react';
 import Button from './Button';
@@ -7,10 +6,11 @@ import { AlarmBellSvg, PlusSvg } from '@/components/svg/Svg';
 import API from '@/api/API';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { RootState, useAppDispatch } from '@/store';
-import { createToastBar } from '@/store/slices/toastBarSlice';
 import { AxiosError } from 'axios';
 import { ErrorMessage } from '@/pages/settings/profile';
 import { useSelector } from 'react-redux';
+import ProfileImage from './ProfileImage';
+import useToastBar from '@/hooks/useToastBar';
 
 interface ProfileProps extends User {
   followerCount: number;
@@ -22,7 +22,7 @@ const Profile = ({
   id,
   nickname,
   introduce,
-  profileImageFileName,
+  profileImage,
   followerCount,
   followingCount,
   isFollow,
@@ -32,15 +32,17 @@ const Profile = ({
   const queryClient = useQueryClient();
   const { myId } = useSelector((state: RootState) => state.user);
 
+  const { createToastMessage } = useToastBar();
+
   const followMutation = useMutation({
     mutationFn: API.followUser,
     onSuccess: () => {},
     onError: (error: AxiosError<ErrorMessage>) => {
       const errorMessage = error.response.data.message;
-      dispatch(createToastBar({ text: errorMessage }));
+      createToastMessage(errorMessage);
     },
     onSettled: () => {
-      queryClient.invalidateQueries(['user', nickname]);
+      queryClient.invalidateQueries(['user', id]);
     },
   });
 
@@ -49,10 +51,10 @@ const Profile = ({
     onSuccess: () => {},
     onError: (error: AxiosError<ErrorMessage>) => {
       const errorMessage = error.response.data.message;
-      dispatch(createToastBar({ text: errorMessage }));
+      createToastMessage(errorMessage);
     },
     onSettled: () => {
-      queryClient.invalidateQueries(['user', nickname]);
+      queryClient.invalidateQueries(['user', id]);
     },
   });
 
@@ -65,7 +67,9 @@ const Profile = ({
     try {
       if (isFollow) {
         await unfollowMutation.mutateAsync(id);
-      } else {
+      }
+
+      if (!isFollow) {
         await followMutation.mutateAsync(id);
       }
     } catch (error) {
@@ -81,9 +85,7 @@ const Profile = ({
           <ProfileIntro>{introduce}</ProfileIntro>
         </div>
 
-        <ProfileImage>
-          <Image alt='profile_image' src={profileImageFileName} fill />
-        </ProfileImage>
+        <ProfileImage src={profileImage} size='72px' />
       </ProfileWrapper>
 
       <InteractiveWrapper>
@@ -149,16 +151,6 @@ const ProfileIntro = styled.div`
   font-size: 14px;
   line-height: 18.2px;
   color: ${({ theme }) => theme.gray.lightGray};
-`;
-
-const ProfileImage = styled.div`
-  position: relative;
-  overflow: hidden;
-
-  width: 72px;
-  height: 72px;
-  margin-right: 8px;
-  border-radius: 100%;
 `;
 
 const InteractiveWrapper = styled.div`

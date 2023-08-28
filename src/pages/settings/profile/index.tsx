@@ -11,22 +11,15 @@ import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { withAuth } from '@/lib/withAuth';
 import { setAccessToken } from '@/api/customAPI';
-import { MessageWrapperProps } from '@/components/Archive/NicknameModal';
-import { createToastBar } from '@/store/slices/toastBarSlice';
 import { cancelSource } from '@/utils/cancelToken';
 import { PhotoSvgIcon } from '@/components/svg/Svg';
+import MessageToaster from '../../../components/Settings/MessageToaster';
+import useToastBar from '@/hooks/useToastBar';
+import BottomButton from '@/components/Common/Bottom/BottomButton';
 
 export interface ErrorMessage {
   message: string;
 }
-
-type ProfileInputProps = {
-  title: string;
-  id: string;
-  value: string;
-  initialValue: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-};
 
 type ValueWithInitial = {
   value: string;
@@ -43,31 +36,17 @@ const initialState: UserData = {
   introduce: { value: '', initialValue: '' },
 };
 
-const initialImage = '/white.png';
-
 export const getServerSideProps = withAuth();
-
-const ProfileInput = ({ title, id, value, initialValue, onChange }: ProfileInputProps) => (
-  <ProfileInputWrapper>
-    <label htmlFor={id}>
-      <h3>{title}</h3>
-    </label>
-    <InputWrapper
-      type='text'
-      id={id}
-      value={value}
-      isChanged={value !== initialValue}
-      onChange={onChange}
-    />
-  </ProfileInputWrapper>
-);
 
 const Profile = ({ accessToken }: { accessToken: string }) => {
   setAccessToken(accessToken);
 
   const dispatch = useAppDispatch();
+
+  const { createToastMessage } = useToastBar();
+
   const [profile, setProfile] = useState<UserData>(initialState);
-  const { imageUrl, setImageUrl, onImageChange } = useImage(initialImage);
+  const { imageUrl, setImageUrl, onImageChange } = useImage(''); // FIXME: 최초 렌더링시 깜빡이는 이슈 lazy-loading적용
   const debouncedNickname = useDebounce(profile.nickname.value, DEBOUNCED_DELAY);
   const [message1, setMessage1] = useState<string | null>(null);
   const [message2, setMessage2] = useState<string | null>(null);
@@ -83,7 +62,7 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
     (isIntroduceChanged && isIntroduceValid && !isNicknameChanged) ||
     (isNicknameChanged && isIntroduceChanged && isNicknameValid && isIntroduceValid);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target;
     setProfile((prevState) => ({
       ...prevState,
@@ -109,7 +88,7 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
           });
 
           await API.setCookie({ name: 'nickname', value: debouncedNickname });
-          dispatch(createToastBar({ text: '프로필이 수정되었습니다.' }));
+          createToastMessage('프로필이 수정되었습니다.');
         },
         onError: (error: AxiosError<ErrorMessage>) => {
           // eslint-disable-next-line no-alert
@@ -133,7 +112,7 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
       introduce: { value: data?.introduce, initialValue: data?.introduce },
     });
 
-    setImageUrl(data?.profileImageFileName);
+    setImageUrl(data?.profileImage);
   };
 
   const validateNicknameMutation = useMutation(API.validateNickname, {
@@ -161,11 +140,12 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
   useEffect(() => {
     setMyProfile();
 
-    dispatch(routerSlice.actions.loadProfileDetailPage());
+    dispatch(routerSlice.actions.loadProfileEditPage());
     return () => {
       // axios 요청 취소
       cancelSource();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -226,34 +206,67 @@ const Profile = ({ accessToken }: { accessToken: string }) => {
           </SvgIcon>
         </ImgContainer>
       </ImgWrapper>
-      <ProfileInput title='아이디' id='nickname' {...profile.nickname} onChange={handleChange} />
-      {isNicknameChanged && (
-        <NicknameMessageWrapper isValid={isNicknameValid}>{message1}</NicknameMessageWrapper>
-      )}
-      <ProfileInput
-        title='자기소개'
-        id='introduce'
-        {...profile.introduce}
-        onChange={handleChange}
-      />
-      {isIntroduceChanged && (
-        <IntroduceMessageWrapper isValid={isIntroduceValid}>{message2}</IntroduceMessageWrapper>
-      )}
-      <Button type='submit' disabled={!isFormValid}>
-        수정하기
-      </Button>
+      <ProfileInputWrapper>
+        <label htmlFor='nickname'>
+          <StyledH3>
+            닉네임 <StyledSpan>*</StyledSpan>
+          </StyledH3>
+        </label>
+
+        <InputWrapper
+          type='text'
+          id='nickname'
+          value={profile.nickname.value}
+          isChanged={profile.nickname.value !== profile.nickname.initialValue}
+          onChange={handleChange}
+          placeholder={profile.nickname.initialValue}
+        />
+        {isNicknameChanged && (
+          <MessageToaster
+            isEmpty={profile.nickname.value === ''}
+            isValid={isNicknameValid}
+            message={message1}
+            icon={isNicknameValid}
+          />
+        )}
+      </ProfileInputWrapper>
+
+      <ProfileInputWrapper>
+        <label htmlFor='nickname'>
+          <StyledH3>소개</StyledH3>
+        </label>
+
+        <TextAreaWrapper
+          placeholder='소개글을 입력해주세요.'
+          id='introduce'
+          value={profile.introduce.value}
+          isChanged={profile.introduce.value !== profile.introduce.initialValue}
+          onChange={handleChange}
+        />
+        {isIntroduceChanged && <MessageToaster isValid={isIntroduceValid} message={message2} />}
+      </ProfileInputWrapper>
+      <BottomButton text='수정하기' isAbled={isFormValid} />
     </FormWrapper>
   );
 };
 
 const FormWrapper = styled.form`
-  input {
-    margin: 10px 0;
-    height: 30px;
+  padding: 0 16px;
+`;
 
-    font-size: 16px;
-    outline: none;
-  }
+export const StyledH3 = styled.h3`
+  padding: 15px 0;
+
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18.2px;
+`;
+
+export const StyledSpan = styled.span`
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18.2px;
+  color: ${({ theme }) => theme.primary.main};
 `;
 
 const ImgWrapper = styled.div`
@@ -263,10 +276,10 @@ const ImgWrapper = styled.div`
   align-items: center;
 `;
 
-const ProfileInputWrapper = styled.div`
+export const ProfileInputWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100px;
+  min-height: 100px;
   margin-bottom: 10px;
 `;
 
@@ -275,26 +288,59 @@ const ImgContainer = styled.span`
 `;
 
 const ImgContent = styled.span`
+  box-sizing: content-box;
   display: flex;
   overflow: hidden;
   position: relative;
-  border: 1px solid ${({ theme }) => theme.gray.darkGray};
   justify-content: center;
   align-items: center;
   border-radius: 100%;
 
-  width: 70px;
-  height: 70px;
+  width: 100px;
+  height: 100px;
 `;
 
-const InputWrapper = styled.input<{ isChanged: boolean }>`
+export const InputWrapper = styled.input<{ isChanged: boolean }>`
   border: none;
   border-bottom: 1px solid black;
   padding-bottom: 10px;
+  height: 30px;
 
-  color: ${({ theme }) => theme.gray.darkGray};
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 23.4px;
+
+  outline: none;
+
+  color: ${({ theme }) => theme.common.black};
   border-color: ${({ isChanged, theme }) =>
-    isChanged ? theme.primary.main : theme.gray.mediumGray};
+    isChanged ? theme.primary.main : theme.gray.lighterGray};
+
+  ::placeholder {
+    color: ${({ theme }) => theme.gray.lighterGray};
+  }
+`;
+
+const TextAreaWrapper = styled.textarea<{ isChanged: boolean }>`
+  display: block;
+  position: relative;
+  width: 343px;
+  min-height: 96px;
+  padding: 10px;
+  outline: none;
+  resize: none;
+  border: 1px solid
+    ${({ isChanged, theme }) => (isChanged ? theme.primary.main : theme.gray.lighterGray)};
+  border-radius: 10px;
+
+  color: ${({ theme }) => theme.common.black};
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20.8px;
+
+  &::placeholder {
+    color: ${({ theme }) => theme.gray.lighterGray};
+  }
 `;
 
 const SvgIcon = styled.span`
@@ -302,59 +348,41 @@ const SvgIcon = styled.span`
   right: 0;
   bottom: 0;
   border-radius: 100%;
-  padding: 6px;
+  padding: 4px;
 
-  background-color: ${({ theme }) => theme.gray.darkGray};
+  background-color: ${({ theme }) => theme.common.black};
   cursor: pointer;
 
   svg {
     display: flex;
     justify-content: center;
     margin: auto;
-    width: 12px;
-    height: 12px;
-    fill: ${({ theme }) => theme.gray.lightGray};
+    fill: ${({ theme }) => theme.common.white};
   }
 
-  &:hover svg {
-    fill: ${({ theme }) => theme.primary.main};
+  :hover > svg {
+    fill: ${({ theme }) => theme.gray.lighterGray};
   }
 `;
 
-const NicknameMessageWrapper = styled.div<MessageWrapperProps>`
-  position: sticky;
-  width: 165px;
-  margin-top: 5px;
+// export const BottomButton = styled.button`
+//   position: absolute;
+//   bottom: 22px;
+//   width: 343px;
+//   height: 56px;
 
-  color: ${({ isValid, theme }) => (isValid ? theme.primary.main : theme.warning.main)};
-  font-size: 10px;
-`;
+//   background: ${({ theme }) => theme.primary.main};
+//   border: none;
+//   border-radius: 10px;
+//   gap: 8px;
 
-const IntroduceMessageWrapper = styled.div<MessageWrapperProps>`
-  position: sticky;
-  width: 165px;
-  margin-top: 5px;
+//   color: ${({ theme }) => theme.common.white};
+//   cursor: pointer;
 
-  color: ${({ isValid, theme }) => (isValid ? theme.primary.main : theme.warning.main)};
-  font-size: 10px;
-`;
-
-const Button = styled.button`
-  width: 70px;
-  height: 30px;
-  margin-top: 15px;
-
-  background: ${({ theme }) => theme.primary.main};
-  border: none;
-  border-radius: 4px;
-
-  color: ${({ theme }) => theme.common.white};
-  cursor: pointer;
-
-  &:disabled {
-    background: ${({ theme }) => theme.warning.main};
-    cursor: not-allowed;
-  }
-`;
+//   &:disabled {
+//     background: ${({ theme }) => theme.warning.dark};
+//     cursor: not-allowed;
+//   }
+// `;
 
 export default Profile;

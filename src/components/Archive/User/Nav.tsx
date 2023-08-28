@@ -52,7 +52,7 @@ const Item = styled.li<{ isActive?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 2px solid ${({ theme }) => theme.gray.darkWhite};
+  border-bottom: 2px solid ${({ theme }) => theme.gray.lightBlack};
 
   width: 100%;
   height: 100%;

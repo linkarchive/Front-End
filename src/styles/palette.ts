@@ -5,9 +5,9 @@ const palette = {
     dark: '#FFC7C3',
   },
   secondary: {
-    // light: '#',
-    // main: '#',
-    // dark: '#',
+    light: '#',
+    main: '#FFDBD9',
+    dark: '#',
   },
   error: {
     light: '#e57373',
@@ -16,8 +16,8 @@ const palette = {
   },
   warning: {
     light: '#ffb74d',
-    main: '#ffa726',
-    dark: '#f57c00',
+    main: '#EB4852',
+    dark: '#DDDDDD',
   },
   info: {
     light: '#4fc3f7',
@@ -35,11 +35,12 @@ const palette = {
   },
   gray: {
     lightBlack: '#f5f5f5',
+    darkerGray: '#555555',
     darkGray: '#888888',
     mediumGray: '#858585',
     lightGray: '#aaaaaa',
     lighterGray: '#DDDDDD',
-    darkWhite: '#F5F5F5',
+    darkWhite: '#EEEEEE',
   },
 };
 
