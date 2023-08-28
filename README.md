@@ -31,63 +31,42 @@
 <br /><br />
 
 <h2>⚙️ 인프라 구조</h2>
-<h3> BackEnd </h3>
 <img src="https://github.com/linkarchive/.github/assets/95176511/6d4605bf-08b7-450c-85cb-6be3baeeb26a" width="1000" />
 
+## 🛠 주요 기능
 
-
-<!-- ## 🚀 프로젝트 소개 -->
-
-<!-- <img src="https://i.imgur.com/j5kF45V.png" />
-
- 🎨 <b>게임 설명</b>
-> 1. **나만의 단어를 만들어요!**  
-게임이 시작하면 모든 유저는 다른 사람이 그릴 단어를 써서 제출해요.  
-> 2. **그림을 그려봐요!**  
-다른 유저가 제출한 독특한 단어를 그림으로 묘사해요.  
-> 3. **무슨 그림인가요?**  
-다른 유저가 무엇을 그렸는지 맞추어봐요.  
-> 4. **짜잔! 나만의 단어가 어떻게 변했을까요?**  
-내가 적은 단어가 여러 유저를 거쳐 어떻게 바뀌었는지 다같이 확인해봐요.
-
-<br /> -->
-
-<!-- ## 🛠 주요 기능 -->
-
- <!-- <table>
+ <table>
     <tr>
-      <td align="center">메인</td>
-      <td align="center">게임 로비</td>
+      <td align="center">로그인</td>
+      <td align="center">닉네임 변경</td>
     </tr>
     <tr>
-      <td align="center"><img src="https://user-images.githubusercontent.com/68578916/208236070-54e9dd7b-b759-431a-a45e-855603a3ad32.png" width="500" /></td>
-      <td align="center"><img src="https://i.imgur.com/jmaE5tl.png" /></td>
+      <td align="center" width="500"><img src="https://github.com/linkarchive/Front-End/assets/79697414/bf481ecb-f7be-4f21-aaba-81a6b787b1c5" width="400" /></td>
+      <td align="center" width="500"><img src="https://github.com/linkarchive/Front-End/assets/79697414/74664e8a-9d8e-43fa-87f9-d2ae16521227" width="400"/></td>
     </tr>
     <tr>
-      <td align="center">그림 보고 답하기</td>
-      <td align="center">단어 보고 그리기</td>
+      <td align="center">링크 추가</td>
+      <td align="center">마크 하기</td>
     </tr>
     <tr>
-      <td align="center"><img src="https://i.imgur.com/SytOLd2.png" /></td>
-      <td align="center"><img src="https://i.imgur.com/nlhj1R5.pngg" /></td>
+      <td align="center" width="500"><img src="https://github.com/linkarchive/Front-End/assets/79697414/fdd7db05-72e3-4cee-8823-ef24cc425f03" width="400"/></td>
+      <td align="center" width="500"><img src="https://github.com/linkarchive/Front-End/assets/79697414/49edc7b7-b292-4748-9b94-0a254133a2cf" width="400"/></td>
     </tr>
     <tr>
-      <td align="center">게임 결과 확인</td>
-      <td align="center">어드민 페이지</td>
+      <td align="center">둘러보기 & 팔로우</td>
+      <td align="center">프로필 수정</td>
     </tr>
     <tr>
-      <td align="center"><img src="https://i.imgur.com/i9v2reE.png" /></td>
-      <td align="center"><img src="https://user-images.githubusercontent.com/33686751/208235589-d43b71f0-e0d9-461b-bdea-6a39a56f2431.png" /></td>
+      <td align="center" width="500"><img src="https://github.com/linkarchive/Front-End/assets/79697414/4bf55cdd-9cf7-48c0-9ef5-2ee6e164189f" width="400"/></td>
+      <td align="center" width="500"><img src="https://github.com/linkarchive/Front-End/assets/79697414/b5d1c5d8-85e5-47cb-b39f-2ac047f87bf4" width="400"/></td>
     </tr>
- </table> -->
+ </table>
 
-<!-- <h2>⚙️ 인프라 구조</h2> -->
 
-<!-- <img src="https://user-images.githubusercontent.com/33686751/207779000-5deeaae6-4ac2-426b-86cf-223d4bfe7b2e.png" width="800" />
-<img src="https://user-images.githubusercontent.com/33686751/207778406-66108b03-ad69-41e8-ae9c-0c8b4aeaa2c5.png" width="800" /> -->
+
 
 <h2>🧑‍💻 팀원 소개</h2>
-  <table>
+  <table align="center">
     <tr>
       <td align="center"><img src="https://github.com/taegyun1995.png" width="160"></td>
       <td align="center"><img src="https://github.com/1yoouoo.png" width="160"></td>
